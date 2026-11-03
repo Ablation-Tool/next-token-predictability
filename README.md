@@ -2,6 +2,8 @@
 
 A self-contained research paper and reproducible evidence package by Nicholas Michael Kloster.
 
+**[Read the signed research paper (PDF)](./accessible-volume-significance-signed.pdf)**
+
 ## What the equation shows
 
 Before a language model produces a token, it assigns probabilities to the alternatives. A token can be a word or part of a word.
@@ -168,3 +170,8 @@ The first command reproduces all 120 original-equation distributions and reports
 The two Foundation-Sec-8B variants were not run: each repository contains approximately 16.06 GB of weights, exceeding the available test-system storage. No experimental claim is made about those models.
 
 The signing certificate is self-signed. It provides document integrity, not military, Anthropic, or third-party identity validation. No private key is included.
+
+## Contributors
+
+- **[Ablation-Tool](https://github.com/Ablation-Tool)** — Repository owner, project development, Ablation + GEM integration, and maintenance.
+- **Nicholas Michael Kloster [1505393089]** — Accessible-volume research, equation, experiments, paper, and evidence package.
