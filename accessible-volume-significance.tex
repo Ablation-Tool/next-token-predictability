@@ -23,6 +23,7 @@
 \usepackage[colorlinks=true,linkcolor=blue!60!black,urlcolor=blue!60!black,pdftitle={The Significance of Accessible Volume},pdfauthor={Nicholas Michael Kloster}]{hyperref}
 \usepackage{listings}
 \usepackage{embedfile}
+\embedfilesetup{stringmethod=escape}
 \lstset{basicstyle=\ttfamily\scriptsize,breaklines=true,breakatwhitespace=false,columns=fullflexible,keepspaces=true,showstringspaces=false}
 
 \title{\textbf{The Significance of Accessible Volume}\\[5pt]
@@ -116,10 +117,92 @@ The immediate meaning is straightforward: the model is not spreading its above-t
 
 A repeated forward pass on the same context produced identical input IDs and probability values. Controlled context perturbations changed some threshold counts and left others unchanged. This confirms that the instrument measures the distribution associated with a particular model and context rather than a universal property of the prompt.
 
+\section{Three ways to hold back a target}
+The same equation can measure different prediction mechanisms, provided that each model supplies a complete probability distribution over a finite vocabulary. The input construction must remain explicit because these mechanisms are not interchangeable.
+
+A BERT-style masked-language model replaces the target with its special mask token. It can use the context on both sides of that mask. The target's position remains known, but its identity is removed from the model input.
+
+XLNet uses a different mechanism. Its content stream represents token identities for use as context, while its query stream represents the target position without access to the target identity. Target mapping selects the position, and the permutation mask blocks query-stream access to that token. This is not the same as inserting a BERT-style mask token.
+
+An autoregressive model receives only the prefix preceding the target. Its final-position logits therefore describe an ordinary next-token forecast. The target and all later text are absent by construction.
+
+In every case, accessible volume is applied without changing the equation, threshold grid, temperature, or model weights. The result describes one model's distribution for one input construction. It does not by itself compare training objectives or establish which architecture is better.
+
+\section{An XLNet query-stream extension}
+The instrument can also examine a prediction for a token already present in the input, not only an ordinary next-token forecast. We used the public XLNet-Base and XLNet-Large models' query streams with the target token masked out of query-stream attention. The input ended with the paper's phrase ``Accessible volume addresses this gap.'' Each resulting distribution contained 32,000 token probabilities.
+
+For XLNet-Base, the most likely token was a period, with probability $0.559758$. The second was ``issue,'' with probability $0.068510$. The actual hidden token ``gap'' had probability $0.012354$, ranked 12th. Entropy was $3.5946$ bits and the ten most probable tokens contained $82.22\%$ of the mass.
+
+XLNet-Large assigned the highest probability to ``problem'' ($0.235085$), followed by ``in'' ($0.139887$) and a period ($0.099426$). The hidden token ``gap'' had probability $0.015083$, ranked eighth. Entropy was $5.7603$ bits and the ten most probable tokens contained $65.16\%$ of the mass.
+
+\begin{table}[h]
+\centering
+\caption{Accessible volume for two XLNet query-stream predictions.}
+\label{tab:xlnet}
+\begin{tabular}{lrrrrrr}
+\toprule
+Variant & 0.02 & 0.05 & 0.10 & 0.15 & 0.30 & 0.50 \\
+\midrule
+XLNet-Base & 6 & 2 & 1 & 1 & 1 & 1 \\
+XLNet-Large & 5 & 4 & 2 & 1 & 0 & 0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+For each model, replacing the target token ID with each of three alternatives produced bit-for-bit identical probability distributions. This confirms that the target token's identity did not enter either query-stream prediction. The query stream could use the remaining context, but not the hidden token itself. Both experiments used PyTorch 2.14.1+cu130 and Transformers 5.18.0; the scripts, complete probability vectors, and input IDs are included as evidence.
+
+A separate offline XLNet-Base reproduction matched the input IDs, all six threshold counts, and the target-token rank and ordering. Its maximum absolute probability difference was $2.3443\times10^{-7}$. It was therefore numerically close, but not bit-for-bit identical across the two runtimes. The reported threshold counts are reproducible observations; exact raw-probability equality across different runtimes is not claimed.
+
+This extension demonstrates that accessible volume can describe a leakage-free prediction for an existing input token as well as a forecast of what comes next. The two model results are measurements of specific contexts, not a general ranking of model capability. They remain token-level measurements, not evidence about complete actions, correctness, or safety.
+
+\section{Cross-model and domain comparisons}
+We next applied the unchanged equation to sixteen additional models. The general-language cases used the same target, ``gap,'' for BERT-Base, RoBERTa-Base, ALBERT-Base, and GPT-2. Security models used a firmware-vulnerability reporting sentence. The remaining cases covered biomedical, clinical, scientific, legal, financial, programming, multilingual, chemistry, protein-sequence, and mathematical inputs. Every requested category is represented.
+
+\begin{table}[h]
+\centering
+\caption{Accessible volume across the fixed threshold grid. Counts describe individual model--input pairs, not a quality leaderboard.}
+\label{tab:model-comparison}
+{\scriptsize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{llrrrrrr}
+\toprule
+Category & Model & 0.02 & 0.05 & 0.10 & 0.15 & 0.30 & 0.50 \\
+\midrule
+General & BERT-Base & 2 & 1 & 1 & 1 & 1 & 1 \\
+General & RoBERTa-Base & 2 & 2 & 1 & 1 & 1 & 1 \\
+General & ALBERT-Base & 5 & 1 & 1 & 1 & 1 & 0 \\
+General & GPT-2 (causal) & 7 & 3 & 2 & 1 & 0 & 0 \\
+Security & SecureBERT & 6 & 4 & 2 & 0 & 0 & 0 \\
+Security & CySecBERT & 2 & 0 & 0 & 0 & 0 & 0 \\
+Biomedical & BioBERT & 1 & 0 & 0 & 0 & 0 & 0 \\
+Clinical & Bio\_ClinicalBERT & 6 & 2 & 2 & 1 & 0 & 0 \\
+Scientific & SciBERT & 6 & 3 & 2 & 0 & 0 & 0 \\
+Legal & Legal-BERT & 7 & 2 & 1 & 1 & 1 & 0 \\
+Financial & FinBERT & 5 & 3 & 2 & 2 & 0 & 0 \\
+Programming & CodeBERT & 4 & 3 & 1 & 1 & 1 & 0 \\
+Multilingual & XLM-RoBERTa-Base & 6 & 3 & 1 & 0 & 0 & 0 \\
+Chemistry & ChemBERTa & 8 & 5 & 0 & 0 & 0 & 0 \\
+Protein & ProtBERT & 18 & 9 & 0 & 0 & 0 & 0 \\
+Mathematics & Qwen2.5-Math-1.5B (causal) & 9 & 8 & 4 & 2 & 0 & 0 \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+The results illustrate why accessible volume and entropy are different instruments. BioBERT had entropy $9.8879$ bits but only one token above probability 0.02. CySecBERT had entropy $9.7536$ bits but two tokens above that threshold. A broad tail of very small probabilities can produce high entropy without producing many alternatives above a fixed cutoff.
+
+The target was the highest-probability token in two of these sixteen cases: Legal-BERT's ``agreement'' and Qwen2.5-Math-1.5B's ``4.'' This is not a model ranking. Most domain cases used different contexts, targets, vocabularies, and input formats. A single masked-token or next-token prediction is not a benchmark of correctness or domain competence.
+
+The case manifest records every exact public model identifier, immutable revision, input, target, and prediction style. The sixteen runs used CPU inference with PyTorch 2.14.1+cu130 and Transformers 4.56.2. Evaluation mode and deterministic inference were used throughout, with no sampling or model-weight training. Every model repeated its forward pass bit-for-bit. Masked cases contained exactly one prediction mask, and causal cases included only tokens preceding the target.
+
+The complete input IDs and probability vectors are included for all sixteen cases. The verification script independently recomputed every threshold count, target rank, entropy, top-ten mass, top-token ordering, and raw-array hash from the saved artifacts. All sixteen cases passed.
+
 \section{What the result does not establish}
 The experiment does not establish that a concentrated choice is a correct choice. It does not establish that a broad choice is a better choice. It does not demonstrate how later tokens will behave, and it does not turn a single-step measurement into a prediction of a complete response.
 
-The measured model is also not interchangeable with Kimi, Claude, or Ablation's semantic encoders. Those systems require their own probability distributions before equivalent measurements can be made. A distribution over command-text tokens is not automatically a distribution over complete structured actions.
+The measured models are also not interchangeable with Kimi, Claude, or Ablation's semantic encoders. Those systems require their own probability distributions before equivalent measurements can be made. A distribution over command-text tokens is not automatically a distribution over complete structured actions.
+
+The two Foundation-Sec-8B variants were not run. Each published repository contains approximately 16.06 GB of model weights, exceeding the available test-system storage for this experiment. They require a separate resource configuration; no result or limitation of those models is inferred here.
 
 These limits do not weaken the measurement. They define its proper use. Accessible volume describes the shape of a particular forecast at a particular moment. Broader interpretations require separate evidence.
 
@@ -139,6 +222,8 @@ The significance of accessible volume is that it makes a previously hidden aspec
 
 The measured example shows the instrument working in practice. Four tokens exceed 0.02, two exceed 0.05, and one exceeds 0.15. That is the finding: a real investigation context produced a concentrated next-token decision surface, and the equation made it measurable.
 
+The XLNet and sixteen additional comparisons show the same instrument operating across masked, query-stream, and causal prediction mechanisms. Their results also demonstrate that accessible volume and entropy can describe different aspects of the same distribution. These are individual, reproducible observations, not universal claims about model quality or safety.
+
 \appendix
 
 \section{Ablation + GEM as the working implementation}
@@ -155,18 +240,24 @@ The experiment used the public \href{https://huggingface.co/onnx-community/disti
 \centering
 \caption{Evidence identity and scope.}
 \label{tab:manifest}
-\begin{tabular}{lp{10cm}}
+\begin{tabular}{lp{8cm}}
 \toprule
 Item & Value \\
 \midrule
-Model SHA-256 & \begin{minipage}[t]{10cm}\ttfamily\scriptsize 0f79f192f3137e9a90213f1b5d4a52b6d896\\b735f9cb82160e5de7cc6e539c41\end{minipage} \\
-Tokenizer SHA-256 & \begin{minipage}[t]{10cm}\ttfamily\scriptsize a6aa29bf8416d74ad795a73262b1aa3f98\\5564ee338adbee7ffbc5861f78b6b8\end{minipage} \\
-Model configuration SHA-256 & \begin{minipage}[t]{10cm}\ttfamily\scriptsize dffb0253be590126da5dc43b75475f6f\\6ef4576439dec46e8ec83bf0408fcf83\end{minipage} \\
-Probability values SHA-256 & \begin{minipage}[t]{10cm}\ttfamily\scriptsize 5f6313599e77e72947435e52b273054fab\\da1e97006d0636658350ac253ed638\end{minipage} \\
-Input IDs SHA-256 & \begin{minipage}[t]{10cm}\ttfamily\scriptsize 970665aaaafdd2964012f3759b993e53\\dfe43e6d1793edc68a6b3896089fdbf8\end{minipage} \\
-Entropy evidence SHA-256 & \begin{minipage}[t]{10cm}\ttfamily\scriptsize fd551e583e54753744900d66acee85b9\\9a6c07bdcef123f4fd92186a0cc8880d\end{minipage} \\
-Original AFL paper SHA-256 & \begin{minipage}[t]{10cm}\ttfamily\scriptsize dec64904f5954e29b44105ba6d41a97f38915ffbecf972554e4eda70d8abbebc\end{minipage} \\
-AFL disclosure SHA-256 & \begin{minipage}[t]{10cm}\ttfamily\scriptsize bfa75181d631aca4f8a95d0344819ec6c80ad3ac16ac9cd92ce3986e03055196\end{minipage} \\
+Model SHA-256 & \begin{minipage}[t]{8cm}\ttfamily\scriptsize 0f79f192f3137e9a90213f1b5d4a52b6d896\\b735f9cb82160e5de7cc6e539c41\end{minipage} \\
+Tokenizer SHA-256 & \begin{minipage}[t]{8cm}\ttfamily\scriptsize a6aa29bf8416d74ad795a73262b1aa3f98\\5564ee338adbee7ffbc5861f78b6b8\end{minipage} \\
+Model configuration SHA-256 & \begin{minipage}[t]{8cm}\ttfamily\scriptsize dffb0253be590126da5dc43b75475f6f\\6ef4576439dec46e8ec83bf0408fcf83\end{minipage} \\
+Probability values SHA-256 & \begin{minipage}[t]{8cm}\ttfamily\scriptsize 5f6313599e77e72947435e52b273054fab\\da1e97006d0636658350ac253ed638\end{minipage} \\
+Input IDs SHA-256 & \begin{minipage}[t]{8cm}\ttfamily\scriptsize 970665aaaafdd2964012f3759b993e53\\dfe43e6d1793edc68a6b3896089fdbf8\end{minipage} \\
+Entropy evidence SHA-256 & \begin{minipage}[t]{8cm}\ttfamily\scriptsize fd551e583e54753744900d66acee85b9\\9a6c07bdcef123f4fd92186a0cc8880d\end{minipage} \\
+Original AFL paper SHA-256 & \begin{minipage}[t]{8cm}\ttfamily\scriptsize dec64904f5954e29b44105ba6d41a97f\\38915ffbecf972554e4eda70d8abbebc\end{minipage} \\
+AFL disclosure SHA-256 & \begin{minipage}[t]{8cm}\ttfamily\scriptsize bfa75181d631aca4f8a95d0344819ec6c\\80ad3ac16ac9cd92ce3986e03055196\end{minipage} \\
+XLNet-Base probability values SHA-256 & \begin{minipage}[t]{8cm}\ttfamily\scriptsize c445b5ca7d6e46a01b071720c65f88db\\4411c69fcaf32a59b2a124c472b6d2ff\end{minipage} \\
+XLNet-Large probability values SHA-256 & \begin{minipage}[t]{8cm}\ttfamily\scriptsize a304a47ccd7d55bc3e5dbb2d616715e0\\8444641529372789e2158da1ff72014\end{minipage} \\
+XLNet input IDs SHA-256 (both models) & \begin{minipage}[t]{8cm}\ttfamily\scriptsize 2b84113e5c3b6006c097f5bea0966a97\\2833d7a43de8e745c22a15c7b10c60ac\end{minipage} \\
+Comparison manifest SHA-256 & \begin{minipage}[t]{8cm}\ttfamily\scriptsize a278cbc15b5d9c6027678154c76a591f\\a5c95fb8c6e3e01ee26034d4a224e129\end{minipage} \\
+Comparison summary SHA-256 & \begin{minipage}[t]{8cm}\ttfamily\scriptsize c4e69b647d1f9ceb6f1c4c0d292ae1f2\\a3f7e6ee3bc4c778103f7ccd4d632611\end{minipage} \\
+Verified comparison cases & 16 models, each with a complete raw probability vector \\
 Context length & 963 tokens \\
 Vocabulary size & 50,257 tokens \\
 Probability sum & Approximately 1.0 within floating-point precision \\
@@ -189,6 +280,22 @@ The following procedure reproduces the numerical measurement in the tested CPU e
 \end{enumerate}
 
 The numerical values and raw-value hashes are the reproducible evidence. Timing values and archive-container metadata may differ between runs.
+
+For the XLNet extension, extract \texttt{xlnet-accessible-volume.py}. Place the artifact writer, \texttt{ablation\_gem\_artifacts.py}, in the same working directory. Install NumPy, PyTorch 2.14.1, Transformers 5.18.0, and the tokenizer requirements. Run the script with \texttt{--model xlnet/xlnet-base-cased} and then with \texttt{--model xlnet/xlnet-large-cased}, using a different \texttt{--output} directory for each. The script performs a repeated prediction, checks all three target-token replacements, saves every probability and input ID, and independently recomputes the sweep. Compare the saved reports and raw arrays with the included evidence. Small floating-point differences may occur across runtimes; compare threshold counts and token ordering separately from exact probability hashes.
+
+For the sixteen additional comparisons, use a separate Python 3.14 environment with NumPy 2.5.3, PyTorch 2.14.1, Transformers 4.56.2, Tokenizers 0.22.1, SentencePiece 0.2.2, and Hugging Face Hub 0.36.2. Keep the case manifest, runner, measurement harness, verifier, and artifact writer together. The runner uses the immutable revisions in the manifest, executes models sequentially, and removes only its own temporary per-model caches.
+
+\begin{lstlisting}
+python run-model-comparison.py --all \
+  --output evidence/comparison \
+  --cache-dir /path/to/temporary-cache
+
+python verify-model-comparison.py \
+  --manifest model-comparison-cases.json \
+  --evidence evidence/comparison
+\end{lstlisting}
+
+The optional cache directory must be writable and have enough space for the largest selected model. Use \texttt{--model} with an exact identifier from the manifest instead of \texttt{--all} to repeat one case. The second command verifies the included evidence without downloading model weights. A repeated BERT-Base case executed through this runner produced bit-identical probabilities, input IDs, and JSON output in the tested runtime. As with XLNet, exact raw-value equality across other runtimes is not assumed.
 
 \section{Controlled context evidence}
 The baseline was repeated before perturbing the context. It produced identical input IDs and probability values. Table~\ref{tab:context-proof} reports the controlled follow-up measurements.
@@ -223,7 +330,7 @@ These differences are observations about specific model/context pairs. They do n
 \lstinputlisting{evidence/ablation-gem-distilgpt2-config.json}
 
 \section{Embedded evidence}
-The complete evidence package is embedded in this PDF as attachments. It includes the exact prompt and report, all 50,257 probabilities, all 963 input IDs, the full entropy output, the model configuration, both measurement harnesses, the artifact writer, and every controlled context variant with its raw probability vector. No external filesystem is needed to inspect the evidence.
+The complete evidence package is embedded in this PDF as attachments. It includes the baseline experiment, original research documents, XLNet Base and Large results, and all sixteen additional model comparisons. For every comparison, the exact model input, original input, complete probability vector, JSON report, immutable model revision, and raw-artifact hashes are preserved. The case manifest, sequential runner, measurement harness, independent verifier, and aggregate JSON and CSV summaries are included. No external filesystem is needed to inspect the evidence; public model downloads are needed only to repeat inference.
 
 \embedfile{evidence/ablation-gem-accessible-volume.json}
 \embedfile{evidence/ablation-gem-next-token-probabilities.npz}
@@ -236,22 +343,66 @@ The complete evidence package is embedded in this PDF as attachments. It include
 \embedfile{ablation_gem_artifacts.py}
 \embedfile{evidence/Ambiguity_Autonomy_Compliance_Cascade.pdf}
 \embedfile{evidence/afl_disclosure.docx.pdf}
+\embedfile{xlnet-accessible-volume.py}
+\embedfile{evidence/xlnet-hidden-token-accessible-volume.json}
+\embedfile{evidence/xlnet-hidden-token-probabilities.npz}
+\embedfile{evidence/xlnet-large/xlnet-hidden-token-accessible-volume.json}
+\embedfile{evidence/xlnet-large/xlnet-hidden-token-probabilities.npz}
+\embedfile{evidence/xlnet-offline-reproduction.json}
+\embedfile{model-comparison-cases.json}
+\embedfile{prediction-accessible-volume.py}
+\embedfile{run-model-comparison.py}
+\embedfile{verify-model-comparison.py}
+\embedfile{evidence/comparison/model-comparison-summary.json}
+\embedfile{evidence/comparison/model-comparison-summary.csv}
+\embedfile{evidence/comparison/bert-base-cased-accessible-volume.json}
+\embedfile{evidence/comparison/bert-base-cased-probabilities.npz}
+\embedfile{evidence/comparison/roberta-base-accessible-volume.json}
+\embedfile{evidence/comparison/roberta-base-probabilities.npz}
+\embedfile{evidence/comparison/albert-base-v2-accessible-volume.json}
+\embedfile{evidence/comparison/albert-base-v2-probabilities.npz}
+\embedfile{evidence/comparison/gpt2-accessible-volume.json}
+\embedfile{evidence/comparison/gpt2-probabilities.npz}
+\embedfile{evidence/comparison/securebert-accessible-volume.json}
+\embedfile{evidence/comparison/securebert-probabilities.npz}
+\embedfile{evidence/comparison/cysecbert-accessible-volume.json}
+\embedfile{evidence/comparison/cysecbert-probabilities.npz}
+\embedfile{evidence/comparison/biobert-base-cased-v1.2-accessible-volume.json}
+\embedfile{evidence/comparison/biobert-base-cased-v1.2-probabilities.npz}
+\embedfile{evidence/comparison/bio_clinicalbert-accessible-volume.json}
+\embedfile{evidence/comparison/bio_clinicalbert-probabilities.npz}
+\embedfile{evidence/comparison/scibert_scivocab_cased-accessible-volume.json}
+\embedfile{evidence/comparison/scibert_scivocab_cased-probabilities.npz}
+\embedfile{evidence/comparison/legal-bert-base-uncased-accessible-volume.json}
+\embedfile{evidence/comparison/legal-bert-base-uncased-probabilities.npz}
+\embedfile{evidence/comparison/finbert-pretrain-accessible-volume.json}
+\embedfile{evidence/comparison/finbert-pretrain-probabilities.npz}
+\embedfile{evidence/comparison/codebert-base-accessible-volume.json}
+\embedfile{evidence/comparison/codebert-base-probabilities.npz}
+\embedfile{evidence/comparison/xlm-roberta-base-accessible-volume.json}
+\embedfile{evidence/comparison/xlm-roberta-base-probabilities.npz}
+\embedfile{evidence/comparison/chemberta-zinc-base-v1-accessible-volume.json}
+\embedfile{evidence/comparison/chemberta-zinc-base-v1-probabilities.npz}
+\embedfile{evidence/comparison/prot_bert-accessible-volume.json}
+\embedfile{evidence/comparison/prot_bert-probabilities.npz}
+\embedfile{evidence/comparison/qwen2.5-math-1.5b-accessible-volume.json}
+\embedfile{evidence/comparison/qwen2.5-math-1.5b-probabilities.npz}
 
 \section{Source signature}
 \textbf{Signatory: Nicholas Michael Kloster [1505393089]}
 
-\textbf{Timestamp (UTC): 2026-11-03T20:07:55Z}
+\textbf{Timestamp (UTC): 2026-11-03T21:37:18Z}
 
 The UTF-8 LaTeX source payload preceding this section has SHA-256:
 \begin{verbatim}
-d453ad69d807d334abd1fd4805bfeee99c3d9beea1b049e1bd1731c8825ef5d2
+013aa710cc52bf1ef7168e9e9fcac906d2420d7d0969ddde426cea5b6eb27467
 \end{verbatim}
 This digest binds the named signatory to the exact source payload. It is an integrity record, not a third-party identity certificate.
 
 % SHA256-SIGNATURE-BEGIN
 % signer: Nicholas Michael Kloster [1505393089]
-% timestamp_utc: 2026-11-03T20:07:55Z
+% timestamp_utc: 2026-11-03T21:37:18Z
 % payload: UTF-8 LaTeX source preceding \section{Source signature}
-% sha256: d453ad69d807d334abd1fd4805bfeee99c3d9beea1b049e1bd1731c8825ef5d2
+% sha256: 013aa710cc52bf1ef7168e9e9fcac906d2420d7d0969ddde426cea5b6eb27467
 % SHA256-SIGNATURE-END
 \end{document}
