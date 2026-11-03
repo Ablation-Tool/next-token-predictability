@@ -36,7 +36,7 @@
 \thispagestyle{fancy}
 
 \begin{abstract}
-A language model's output tells us what it generated. It does not, by itself, tell us how many plausible continuations preceded that output. Accessible volume addresses this gap. The metric counts the next tokens whose probabilities exceed a chosen threshold. It turns a high-dimensional probability distribution into a direct measurement of how open or concentrated the next-token decision is. This paper explains the significance of that measurement and demonstrates it with a real Ablation + GEM experiment. In the measured context, only four tokens exceed probability 0.02, two exceed 0.05, and one exceeds 0.15. The result shows that the model's immediate decision surface is concentrated on a small set of alternatives. The significance is practical: accessible volume makes the shape of an impending choice observable before the choice is made.
+Before a language model produces a token, it assigns probabilities to the alternatives. Accessible volume turns that forecast into a direct measurement of next-token predictability. It counts how many alternatives have probabilities above a chosen threshold. A small count means the next-token choice is concentrated on a few alternatives; a large count means many alternatives remain in play. The final text records which token was selected, while accessible volume shows how open or settled the decision was before selection. This makes the model's hidden decision surface measurable, comparable, and reproducible. Experiments with Ablation + GEM, XLNet, and sixteen additional models demonstrate the measurement on real probability distributions. In a subsequent 120-case BioBERT experiment, the original fixed rule at $\tau=0.05$ outperformed an optimized adaptive equation on held-out biomedical documents, achieving AUROC $0.7737$ and AUPRC $0.7978$ compared with $0.7008$ and $0.6599$ for distinguishing incorrect and correct top predictions. The adaptive rule improved validation measurements, but the simpler original equation transferred better to unseen cases.
 \end{abstract}
 
 \section{The missing information in an output}
@@ -61,6 +61,8 @@ A_\tau(S)=\sum_{a\in\mathcal{O}}\mathbf{1}\!\left[P(a\mid h_T(S))>\tau\right].
 \end{equation}
 
 The indicator is one when the probability is strictly greater than $\tau$ and zero otherwise. Tokens exactly at the threshold are excluded. The count measures the number of continuations that remain above the selected probability bar.
+
+For example, suppose the model assigns probabilities $0.70$, $0.20$, $0.08$, and $0.02$ to four possible next tokens. At $\tau=0.05$, the first three tokens are above the cutoff, so $A_{0.05}(S)=3$. A smaller count means a more concentrated, predictable choice; a larger count means a broader choice with more plausible alternatives. This is next-token predictability expressed as a reproducible number.
 
 A normalized form divides the count by vocabulary size:
 \begin{equation}
@@ -197,6 +199,43 @@ The case manifest records every exact public model identifier, immutable revisio
 
 The complete input IDs and probability vectors are included for all sixteen cases. The verification script independently recomputed every threshold count, target rank, entropy, top-ten mass, top-token ordering, and raw-array hash from the saved artifacts. All sixteen cases passed.
 
+\section{BioBERT: does an adaptive equation improve the original?}
+We next tested whether an adaptive version of accessible volume could improve detection of BioBERT's top-1 masked-token prediction errors. The experiment used 120 cases from 30 Creative Commons-licensed Europe PMC abstracts. Each document supplied four eligible, non-repeated, single-token targets. Document-grouped splits contained 60 development, 20 validation, and 40 test cases, assigned with seed 20261103 before inference. No document crossed splits.
+
+The original equation was evaluated first on every case. BioBERT produced 29 errors among 60 development cases, 11 among 20 validation cases, and 23 among 40 test cases. Every prediction was repeated bit-for-bit, and every original threshold count was recomputed from the saved full-vocabulary distribution.
+
+The candidate adaptive equation was
+\begin{equation}
+A_{\alpha,\beta}(x)=\sum_i\mathbf{1}\!\left[p_i>\max\!\left(\beta,\alpha p_{\max}(x)\right)\right].
+\label{eq:adaptive-volume}
+\end{equation}
+It replaces a fixed cutoff with the larger of an absolute floor $\beta$ and a fraction $\alpha$ of the maximum probability. The search covered 54 predefined parameter pairs. Selection used validation AUROC (area under the receiver-operating-characteristic curve), then validation AUPRC (average precision), then development AUROC, with deterministic tie-breaking. Only after selection were the parameters evaluated on the test documents.
+
+The selected rule was $\alpha=0.001,\beta=0$, counting every token above $0.1\%$ of the maximum probability. Table~\ref{tab:biobert-optimization} reports the result. AUROC and AUPRC measure how well each score separates incorrect top predictions from correct ones; larger values are better.
+
+\begin{table}[h]
+\centering
+\caption{BioBERT original and adaptive equations for top-1 error detection.}
+\label{tab:biobert-optimization}
+{\scriptsize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{p{5.2cm}rrrr}
+\toprule
+Rule & Dev AUROC & Val AUROC & Test AUROC & Test AUPRC \\
+\midrule
+Adaptive ($\alpha=0.001,\beta=0$) & 0.7848 & 0.8737 & 0.7008 & 0.6599 \\
+Original ($\tau=0.05$) & 0.7219 & 0.8232 & \textbf{0.7737} & \textbf{0.7978} \\
+Best validation original ($\tau=0.02$) & 0.7681 & 0.8283 & 0.7391 & 0.7502 \\
+Entropy & 0.7920 & 0.8990 & 0.6957 & 0.6538 \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+\textbf{The original equation worked better on the held-out BioBERT cases.} The fixed $\tau=0.05$ rule exceeded the adaptive rule by $0.0729$ AUROC and $0.1379$ AUPRC. The adaptive equation improved development and validation measurements but did not transfer that improvement to unseen documents. On test cases, its mean score was 42.43 for errors and 36.59 for correct predictions; the original $\tau=0.05$ scores were 3.17 and 1.88, a substantially clearer separation.
+
+The significance is direct: making the threshold responsive to the maximum probability did not improve the instrument on this dataset. The original fixed-threshold equation was simpler and stronger where it mattered, on data excluded from parameter selection. All 120 raw distributions, reports, source manifests, candidate searches, and per-case scores are included. An independent implementation recomputed every reported AUROC and AUPRC value from the raw artifacts.
+
 \section{What the result does not establish}
 The experiment does not establish that a concentrated choice is a correct choice. It does not establish that a broad choice is a better choice. It does not demonstrate how later tokens will behave, and it does not turn a single-step measurement into a prediction of a complete response.
 
@@ -218,11 +257,13 @@ The measurement also suggests directions for further work, without establishing 
 These are possible paths for investigation, not claims established by the present experiment.
 
 \section{Conclusion}
-The significance of accessible volume is that it makes a previously hidden aspect of generation visible: the breadth of the next-token decision before selection occurs. It gives Ablation + GEM a direct way to observe whether a model's immediate choice is concentrated on few alternatives or spread across many.
+Accessible volume turns next-token predictability into a measurement. It counts the alternatives above a probability cutoff, showing whether a model's immediate choice is concentrated on a few options or spread across many. The final output records a selection; accessible volume reveals the decision surface that preceded it.
 
 The measured example shows the instrument working in practice. Four tokens exceed 0.02, two exceed 0.05, and one exceeds 0.15. That is the finding: a real investigation context produced a concentrated next-token decision surface, and the equation made it measurable.
 
 The XLNet and sixteen additional comparisons show the same instrument operating across masked, query-stream, and causal prediction mechanisms. Their results also demonstrate that accessible volume and entropy can describe different aspects of the same distribution. These are individual, reproducible observations, not universal claims about model quality or safety.
+
+The BioBERT experiment provides a direct practical result. The original fixed rule at $\tau=0.05$ distinguished incorrect and correct top predictions more effectively than the optimized adaptive equation on held-out biomedical documents. Although the adaptive rule improved validation measurements, the original equation achieved the stronger test AUROC and AUPRC. For this experiment, the simpler original equation was the better measurement of prediction uncertainty.
 
 \appendix
 
@@ -258,6 +299,11 @@ XLNet input IDs SHA-256 (both models) & \begin{minipage}[t]{8cm}\ttfamily\script
 Comparison manifest SHA-256 & \begin{minipage}[t]{8cm}\ttfamily\scriptsize a278cbc15b5d9c6027678154c76a591f\\a5c95fb8c6e3e01ee26034d4a224e129\end{minipage} \\
 Comparison summary SHA-256 & \begin{minipage}[t]{8cm}\ttfamily\scriptsize c4e69b647d1f9ceb6f1c4c0d292ae1f2\\a3f7e6ee3bc4c778103f7ccd4d632611\end{minipage} \\
 Verified comparison cases & 16 models, each with a complete raw probability vector \\
+BioBERT case manifest SHA-256 & \begin{minipage}[t]{8cm}\ttfamily\scriptsize cd743b76dc7e9ccc6d1c17dba546544271ea\\c22dc557cb152c601c824e8922b6\end{minipage} \\
+BioBERT baseline SHA-256 & \begin{minipage}[t]{8cm}\ttfamily\scriptsize 2f213c3e0338895c63e292ea2fe09ababa\\904cce22132eb99a8a2a8626de1b6d\end{minipage} \\
+BioBERT optimization SHA-256 & \begin{minipage}[t]{8cm}\ttfamily\scriptsize 3c5829a65876959a904d417cffa7b95361\\6be446b60b16fce768167d8e6fb42f\end{minipage} \\
+BioBERT attachment list SHA-256 & \begin{minipage}[t]{8cm}\ttfamily\scriptsize e612fe3b6b0cfdd80c1e02adfb1b233bdb\\5321eeff28a3fa0ded3d7313aafd20\end{minipage} \\
+Verified BioBERT cases & 120 distributions; 60 development, 20 validation, 40 test \\
 Context length & 963 tokens \\
 Vocabulary size & 50,257 tokens \\
 Probability sum & Approximately 1.0 within floating-point precision \\
@@ -297,6 +343,16 @@ python verify-model-comparison.py \
 
 The optional cache directory must be writable and have enough space for the largest selected model. Use \texttt{--model} with an exact identifier from the manifest instead of \texttt{--all} to repeat one case. The second command verifies the included evidence without downloading model weights. A repeated BERT-Base case executed through this runner produced bit-identical probabilities, input IDs, and JSON output in the tested runtime. As with XLNet, exact raw-value equality across other runtimes is not assumed.
 
+The BioBERT experiment uses the same Python and model-runtime versions as the sixteen additional comparisons. Keep the three experiment scripts, the independent verifier, the artifact writer, and the frozen \texttt{evidence/biobert-optimization} directory together. The included case and split manifests are the authoritative inputs; downloading new source documents is not required. Run:
+
+\begin{lstlisting}
+python biobert-accessible-volume.py
+python optimize-biobert.py
+python verify-biobert-optimization.py
+\end{lstlisting}
+
+The first command downloads the pinned BioBERT model and reproduces all 120 baseline distributions and reports. The second verifies the raw artifacts, selects adaptive parameters using development and validation cases only, and evaluates the frozen choice on the test cases. The third independently recomputes every AUROC and AUPRC value. Use \texttt{prepare-biobert-cases.py} only when constructing a new source-document manifest; it must complete before any model predictions are inspected.
+
 \section{Controlled context evidence}
 The baseline was repeated before perturbing the context. It produced identical input IDs and probability values. Table~\ref{tab:context-proof} reports the controlled follow-up measurements.
 
@@ -330,7 +386,7 @@ These differences are observations about specific model/context pairs. They do n
 \lstinputlisting{evidence/ablation-gem-distilgpt2-config.json}
 
 \section{Embedded evidence}
-The complete evidence package is embedded in this PDF as attachments. It includes the baseline experiment, original research documents, XLNet Base and Large results, and all sixteen additional model comparisons. For every comparison, the exact model input, original input, complete probability vector, JSON report, immutable model revision, and raw-artifact hashes are preserved. The case manifest, sequential runner, measurement harness, independent verifier, and aggregate JSON and CSV summaries are included. No external filesystem is needed to inspect the evidence; public model downloads are needed only to repeat inference.
+The complete evidence package is embedded in this PDF as 305 attachments. It includes the baseline experiment, original research documents, XLNet Base and Large results, all sixteen additional model comparisons, and the focused BioBERT optimization study. Exact model inputs, complete probability vectors, JSON reports, immutable revisions, and raw-artifact hashes are preserved. The BioBERT package contains all 120 raw distributions and reports, frozen cases and document splits, source metadata and licenses, the complete parameter search, per-case scores, and an independent metric verifier. No external filesystem is needed to inspect the evidence; public model downloads are needed only to repeat inference.
 
 \embedfile{evidence/ablation-gem-accessible-volume.json}
 \embedfile{evidence/ablation-gem-next-token-probabilities.npz}
@@ -387,22 +443,33 @@ The complete evidence package is embedded in this PDF as attachments. It include
 \embedfile{evidence/comparison/prot_bert-probabilities.npz}
 \embedfile{evidence/comparison/qwen2.5-math-1.5b-accessible-volume.json}
 \embedfile{evidence/comparison/qwen2.5-math-1.5b-probabilities.npz}
+\embedfile{prepare-biobert-cases.py}
+\embedfile{biobert-accessible-volume.py}
+\embedfile{optimize-biobert.py}
+\embedfile{verify-biobert-optimization.py}
+\embedfile{evidence/biobert-optimization/cases.json}
+\embedfile{evidence/biobert-optimization/splits.json}
+\embedfile{evidence/biobert-optimization/sources.json}
+\embedfile{evidence/biobert-optimization/baseline-summary.json}
+\embedfile{evidence/biobert-optimization/optimization.json}
+\embedfile{evidence/biobert-optimization/optimization-scores.csv}
+\input{biobert-attachments}
 
 \section{Source signature}
 \textbf{Signatory: Nicholas Michael Kloster [1505393089]}
 
-\textbf{Timestamp (UTC): 2026-11-03T21:37:18Z}
+\textbf{Timestamp (UTC): 2026-11-03T22:58:38Z}
 
 The UTF-8 LaTeX source payload preceding this section has SHA-256:
 \begin{verbatim}
-013aa710cc52bf1ef7168e9e9fcac906d2420d7d0969ddde426cea5b6eb27467
+d8fe3401f6fcf1a710451d07a893ab61243cdf7a0f85de6e1743df051b21eaf3
 \end{verbatim}
 This digest binds the named signatory to the exact source payload. It is an integrity record, not a third-party identity certificate.
 
 % SHA256-SIGNATURE-BEGIN
 % signer: Nicholas Michael Kloster [1505393089]
-% timestamp_utc: 2026-11-03T21:37:18Z
+% timestamp_utc: 2026-11-03T22:58:38Z
 % payload: UTF-8 LaTeX source preceding \section{Source signature}
-% sha256: 013aa710cc52bf1ef7168e9e9fcac906d2420d7d0969ddde426cea5b6eb27467
+% sha256: d8fe3401f6fcf1a710451d07a893ab61243cdf7a0f85de6e1743df051b21eaf3
 % SHA256-SIGNATURE-END
 \end{document}

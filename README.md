@@ -2,22 +2,59 @@
 
 A self-contained research paper and reproducible evidence package by Nicholas Michael Kloster.
 
-## Research record
+## What the equation shows
 
-The paper introduces accessible volume as a direct measurement of next-token breadth:
+Before a language model produces a token, it assigns probabilities to the alternatives. A token can be a word or part of a word.
+
+Imagine the model is deciding the next token in “The cat sat on the ___.” Its forecast might be:
+
+```text
+mat:   70%
+floor: 20%
+roof:   8%
+rug:    2%
+```
+
+If we set the probability cutoff to 5%, three alternatives are above it. Accessible volume is therefore 3:
 
 `A_tau(S) = sum over tokens a in O of 1[P(a | h_T(S)) > tau]`
 
-It documents the research origin in the March 2026 Ambiguity Front-Loading and autoregressive compliance-cascade work, the March 4, 2026 discovery account, the Ablation + GEM implementation, and a real forward-pass measurement using 963 tokens of actual investigation evidence.
+In plain language, **the equation counts how many next-token alternatives remain above a chosen probability cutoff**. This makes next-token predictability measurable:
 
-Measured result:
+- A **small count** means the choice is concentrated on a few alternatives.
+- A **large count** means many alternatives remain plausible.
+
+The final text shows which token was selected. Accessible volume shows how open or settled that decision was **before selection**. That is its significance: it turns the model’s hidden forecast into a number we can measure, compare, preserve, and use to study prediction errors.
+
+## Main finding: the original equation worked better
+
+We tested 120 biomedical masked-token cases from 30 documents. First, we measured the original equation. Then we optimized an adaptive version using only development and validation data:
+
+`A_alpha_beta(x) = sum over tokens i of 1[p_i > max(beta, alpha * p_max(x))]`
+
+Instead of always using the same cutoff, this version adjusts the cutoff using the largest probability in each distribution. The selected parameters were `alpha = 0.001` and `beta = 0`.
+
+We then compared both equations on 40 unseen test cases. The task was to distinguish incorrect top predictions from correct ones using prediction breadth as the uncertainty score:
+
+| Error-detection metric | Original equation, 5% cutoff | Optimized adaptive equation |
+|---|---:|---:|
+| AUROC | **0.7737** | 0.7008 |
+| AUPRC | **0.7978** | 0.6599 |
+
+AUROC has a direct interpretation: when comparing one incorrect and one correct prediction, the original equation ranked the incorrect one as more uncertain about **77.4%** of the time, versus **70.1%** for the adaptive equation. AUPRC is another measure of how well errors rank above correct predictions; higher is better.
+
+The original rule improved AUROC by **0.0729** and AUPRC by **0.1379**. The adaptive equation looked better during validation but did not retain that advantage on unseen documents. **The simpler original equation was the stronger way to measure prediction uncertainty in this experiment.**
+
+## Research record
+
+The paper documents the research origin in the March 2026 Ambiguity Front-Loading and autoregressive compliance-cascade work, the March 4, 2026 discovery account, the Ablation + GEM implementation, and a real forward-pass measurement using 963 tokens of actual investigation evidence.
+
+Original Ablation + GEM measurement:
 
 ```text
 tau:    0.02  0.05  0.10  0.15  0.30  0.50
 A(S):      4     2     2     1     1     1
 ```
-
-The measurement describes the concentration of a particular next-token distribution. It does not establish correctness, safety, attack intent, or multi-step behavior.
 
 ## Contents
 
@@ -35,6 +72,11 @@ The measurement describes the concentration of a particular next-token distribut
 - `prediction-accessible-volume.py` — masked-token and causal-token measurement harness
 - `run-model-comparison.py` — sequential, pinned-model reproduction runner
 - `verify-model-comparison.py` — independent raw-artifact verifier and summary generator
+- `prepare-biobert-cases.py` — frozen biomedical source and target selection
+- `biobert-accessible-volume.py` — 120-case original-equation baseline
+- `optimize-biobert.py` — development/validation parameter selection and held-out evaluation
+- `verify-biobert-optimization.py` — independent AUROC and AUPRC recomputation
+- `biobert-attachments.tex` — declarations for all 240 per-case BioBERT attachments
 - `evidence/` — original research documents, all model reports, complete input IDs and probability vectors, and aggregate JSON and CSV summaries
 
 ## Verify
@@ -56,9 +98,9 @@ pdfdetach -list accessible-volume-significance-signed.pdf
 Verify source integrity by hashing the LaTeX payload before `\section{Source signature}` and comparing it with `accessible-volume-significance.signature.json`. The record identifies:
 
 - Signer: `Nicholas Michael Kloster [1505393089]`
-- Timestamp: `2026-11-03T21:37:18Z`
-- Payload SHA-256: `013aa710cc52bf1ef7168e9e9fcac906d2420d7d0969ddde426cea5b6eb27467`
-- Signed source SHA-256: `c0d20666142db000197b7bf44f5172a9ca3f148ac2a906bf096741daa3e4b347`
+- Timestamp: `2026-11-03T22:58:38Z`
+- Payload SHA-256: `d8fe3401f6fcf1a710451d07a893ab61243cdf7a0f85de6e1743df051b21eaf3`
+- Signed source SHA-256: `1f6fa4d8cfc34b3b102c2a3c62ecf109d85b206aa3fcaf4240e55a8549a94a8b`
 
 ## Implementation and reproducibility
 
@@ -110,6 +152,18 @@ python verify-model-comparison.py
 ```
 
 The runner downloads public models sequentially and cleans only its own temporary model caches. Use `--model` with an exact model ID from the manifest to run one case. The verifier checks the included raw artifacts without downloading weights.
+
+## Reproduce the BioBERT finding
+
+The frozen inputs are in `evidence/biobert-optimization/cases.json`. The 30 source documents remain together in their assigned development, validation, or test split. Use the same Python and model-runtime versions listed above, then run:
+
+```bash
+python biobert-accessible-volume.py
+python optimize-biobert.py
+python verify-biobert-optimization.py
+```
+
+The first command reproduces all 120 original-equation distributions and reports. The second selects the adaptive parameters using only development and validation data, then evaluates the frozen choice on the test documents. The third independently verifies every AUROC and AUPRC value. The included `baseline-summary.json`, `optimization.json`, and `optimization-scores.csv` contain the complete findings; all 120 raw distributions and reports are also included.
 
 The two Foundation-Sec-8B variants were not run: each repository contains approximately 16.06 GB of weights, exceeding the available test-system storage. No experimental claim is made about those models.
 
