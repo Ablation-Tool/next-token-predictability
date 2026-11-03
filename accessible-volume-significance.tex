@@ -1,0 +1,257 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[english]{babel}
+\usepackage[a4paper,top=25mm,bottom=25mm,left=25mm,right=25mm,headheight=14pt]{geometry}
+\usepackage[protrusion=true,expansion=false]{microtype}
+\usepackage{parskip}
+\emergencystretch=3em
+\widowpenalty=10000
+\clubpenalty=10000
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small The Significance of Accessible Volume}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+\usepackage[colorlinks=true,linkcolor=blue!60!black,urlcolor=blue!60!black,pdftitle={The Significance of Accessible Volume},pdfauthor={Nicholas Michael Kloster}]{hyperref}
+\usepackage{listings}
+\usepackage{embedfile}
+\lstset{basicstyle=\ttfamily\scriptsize,breaklines=true,breakatwhitespace=false,columns=fullflexible,keepspaces=true,showstringspaces=false}
+
+\title{\textbf{The Significance of Accessible Volume}\\[5pt]
+\large A way to observe the shape of a model's next decision\\before it happens}
+\author{Nicholas Michael Kloster}
+\date{November 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{fancy}
+
+\begin{abstract}
+A language model's output tells us what it generated. It does not, by itself, tell us how many plausible continuations preceded that output. Accessible volume addresses this gap. The metric counts the next tokens whose probabilities exceed a chosen threshold. It turns a high-dimensional probability distribution into a direct measurement of how open or concentrated the next-token decision is. This paper explains the significance of that measurement and demonstrates it with a real Ablation + GEM experiment. In the measured context, only four tokens exceed probability 0.02, two exceed 0.05, and one exceeds 0.15. The result shows that the model's immediate decision surface is concentrated on a small set of alternatives. The significance is practical: accessible volume makes the shape of an impending choice observable before the choice is made.
+\end{abstract}
+
+\section{The missing information in an output}
+A generated answer is a record of what happened. It is not a complete description of the decision that produced it.
+
+Two model states can produce the same next token while having very different distributions of alternatives. In one state, the selected token may dominate every other possibility. In another, many tokens may remain plausible. Reading only the final token hides that distinction.
+
+The relevant question is therefore not merely, ``What did the model choose?'' It is also, ``How much room did the model have to choose differently?'' Accessible volume provides one way to answer that question with a number.
+
+\section{Origin of the research}
+This work builds on Nicholas Michael Kloster's March 2026 paper, \emph{Ambiguity, Autonomy, and the Autoregressive Compliance Cascade}. That earlier security-research finding documented a retrospective discovery through interaction with Anthropic's Claude: ambiguity could establish a favorable context, and later generation could reinforce it through an autoregressive compliance cascade. It introduced Ambiguity Front-Loading (AFL) as the observed case study and motivated direct examination of output distributions.
+
+The discovery account identifies \textbf{March 4, 2026} as the date of first observation. It was not a deliberately engineered penetration test of the model. The pattern was recognized retrospectively in an otherwise routine research conversation: an ambiguous beginning established a favorable frame, subsequent turns accumulated actions within that frame, and the original context was not independently re-evaluated. The companion disclosure records the discovery circumstances and later reproduction.
+
+The original case study and the present experiment are different forms of evidence. The earlier paper reports one production conversation and proposes a trajectory-level interpretation. The present work performs a separate, controlled next-token measurement using actual Ablation + GEM evidence. It does not independently reproduce AFL or claim that a single-step count detects a cascade. Both original documents are embedded in this PDF as part of the research record.
+
+\section{The equation}
+Let $S$ be the full input context and $\mathcal{O}$ a finite output vocabulary. Let $P(a\mid h_T(S))$ be the probability that the model assigns to token $a$ as the next token after processing $S$. For a threshold $\tau$, accessible volume is
+\begin{equation}
+A_\tau(S)=\sum_{a\in\mathcal{O}}\mathbf{1}\!\left[P(a\mid h_T(S))>\tau\right].
+\label{eq:accessible-volume}
+\end{equation}
+
+The indicator is one when the probability is strictly greater than $\tau$ and zero otherwise. Tokens exactly at the threshold are excluded. The count measures the number of continuations that remain above the selected probability bar.
+
+A normalized form divides the count by vocabulary size:
+\begin{equation}
+A_{\mathrm{norm},\tau}(S)=\frac{A_\tau(S)}{|\mathcal{O}|}.
+\end{equation}
+This reports the fraction of the vocabulary above the threshold. It does not make different models directly comparable.
+
+The computation is simple: after obtaining the distribution, evaluate one comparison per token. The important part is not computational novelty. It is the decision to observe the distribution as an object of measurement rather than treating only the generated text as evidence.
+
+\section{Why the measurement matters}
+\subsection{It distinguishes a forecast from an outcome}
+The probability distribution is the forecast. Sampling or taking the maximum selects an outcome. Accessible volume describes the shape of the forecast without committing to that outcome.
+
+A small count indicates that the model has concentrated its above-threshold alternatives. A large count indicates a broader set. The measurement does not say which token will win. It says how much of the vocabulary remains meaningfully in play at the selected threshold.
+
+\subsection{It makes concentration observable}
+Concentration is usually discussed through entropy, maximum probability, or top-token mass. Accessible volume adds a different description: the size of the region above a chosen cutoff.
+
+The three descriptions are not interchangeable. A distribution can have one dominant token and few above-threshold alternatives, or one dominant token and many alternatives just below the threshold. The count captures a boundary that a single maximum or entropy value does not fully express.
+
+The threshold sweep is more informative than one reading. As $\tau$ increases, $A_\tau(S)$ cannot increase. Watching where alternatives disappear reveals whether probability is concentrated in a narrow elite or spread across a broad collection of viable continuations.
+
+\subsection{It creates a boundary for inspection}
+Ablation + GEM is built around the interaction of a stochastic agent, deterministic execution, shared memory, and human judgment. The agent proposes. The environment executes and records. The human directs and reviews.
+
+Accessible volume supplies a way to inspect the agent before its proposal becomes an action. Actual investigation evidence can be placed into a model context, and the resulting distribution can be measured without generating another token. The deterministic environment can then preserve that measurement alongside the rest of the evidence.
+
+This does not make the metric an authorization mechanism. It makes it an instrument for understanding the agent's immediate decision surface while the rest of the system remains constrained and inspectable.
+
+\section{Evidence from Ablation + GEM}
+The measurement was performed on a real forward pass using 963 tokens of actual Ablation + GEM investigation context. The context included a selected artifact, a scoped observation, and real entropy-inspection output from Ablation. A local autoregressive model returned a full distribution over 50,257 next tokens.
+
+\begin{table}[h]
+\centering
+\caption{Measured accessible volume for the actual Ablation + GEM context.}
+\label{tab:result}
+\begin{tabular}{cc}
+\toprule
+Threshold $\tau$ & Accessible volume $A_\tau(S)$ \\
+\midrule
+0.02 & 4 \\
+0.05 & 2 \\
+0.10 & 2 \\
+0.15 & 1 \\
+0.30 & 1 \\
+0.50 & 1 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The distribution is concentrated. A newline has probability $0.535587$. End-of-text follows with probability $0.109893$. The ten most probable tokens contain $75.45\%$ of the total probability mass. Entropy over the full distribution is $4.2998$ bits.
+
+The immediate meaning is straightforward: the model is not spreading its above-threshold probability across many alternatives. Its next-token decision is concentrated on a small set. Accessible volume turns that observation into a precise, reproducible statement rather than an impression based on the final text.
+
+A repeated forward pass on the same context produced identical input IDs and probability values. Controlled context perturbations changed some threshold counts and left others unchanged. This confirms that the instrument measures the distribution associated with a particular model and context rather than a universal property of the prompt.
+
+\section{What the result does not establish}
+The experiment does not establish that a concentrated choice is a correct choice. It does not establish that a broad choice is a better choice. It does not demonstrate how later tokens will behave, and it does not turn a single-step measurement into a prediction of a complete response.
+
+The measured model is also not interchangeable with Kimi, Claude, or Ablation's semantic encoders. Those systems require their own probability distributions before equivalent measurements can be made. A distribution over command-text tokens is not automatically a distribution over complete structured actions.
+
+These limits do not weaken the measurement. They define its proper use. Accessible volume describes the shape of a particular forecast at a particular moment. Broader interpretations require separate evidence.
+
+\section{Possible paths opened by the equation}
+The measurement also suggests directions for further work, without establishing them as completed findings.
+
+\textbf{Prediction-aware defense.} Repeated observations could provide early-warning metadata for an agent firewall. An unusual change in the distribution might lead to additional review, a read-only restriction, or a request for human judgment. It would not prove that an attack had occurred. Any defensive response would still need deterministic policy and signed evidence for later investigation.
+
+\textbf{From tokens to structured actions.} A future experiment could examine distributions over complete permitted actions rather than command-text tokens. This might help a system prepare for several plausible next steps while preserving the same constraints on every action. It would not identify an adversary's intent or make an action safe by virtue of being predicted.
+
+\textbf{Authenticated, evolving evidence.} Prediction observations could become part of a signed evidence record whose keys rotate over time. Standard cryptographic key derivation and authenticated encryption would be required. A timestamp could determine when to rotate a key, but neither timing nor accessible volume should determine the key itself. The metric is not an entropy source or a faster route to cryptanalysis.
+
+These are possible paths for investigation, not claims established by the present experiment.
+
+\section{Conclusion}
+The significance of accessible volume is that it makes a previously hidden aspect of generation visible: the breadth of the next-token decision before selection occurs. It gives Ablation + GEM a direct way to observe whether a model's immediate choice is concentrated on few alternatives or spread across many.
+
+The measured example shows the instrument working in practice. Four tokens exceed 0.02, two exceed 0.05, and one exceeds 0.15. That is the finding: a real investigation context produced a concentrated next-token decision surface, and the equation made it measurable.
+
+\appendix
+
+\section{Ablation + GEM as the working implementation}
+Ablation is the reverse-engineering framework. GEM (Graphics Environment Manager) is its graphical environment and shared investigation Lab. The public implementation is available at \url{https://github.com/Ablation-Tool/ablation}.
+
+Ablation + GEM is itself a working demonstration of the chamber model. The AI Agent supplies probabilistic labor and proposals. Ablation + GEM supplies constrained execution, persistent state, verification, and replay. The human supplies direction and judgment. Investigation events, selected objects, evidence, and verification receipts form a unified memory architecture shared by the human and agent.
+
+The implementation used for this experiment is revision \href{https://github.com/Ablation-Tool/ablation/commit/d596bed31ba5fe361efa1c6fdad6d86e3126ab63}{\texttt{d596bed3}}. At that revision, the main Ablation CI passed 2,803 tests with 93 skips, and native Linux, Windows, and macOS workflows passed. Those results demonstrate the implementation's behavior. The accessible-volume experiment adds a separate measurement using actual session evidence produced by that implementation; it is not a claim that the metric was already part of the framework.
+
+\section{Evidence manifest}
+The experiment used the public \href{https://huggingface.co/onnx-community/distilgpt2-ONNX}{\texttt{distilgpt2-ONNX}} model and ONNX Runtime 1.31.1. Table~\ref{tab:manifest} records the identities needed to verify the evidence independently.
+
+\begin{table}[h]
+\centering
+\caption{Evidence identity and scope.}
+\label{tab:manifest}
+\begin{tabular}{lp{10cm}}
+\toprule
+Item & Value \\
+\midrule
+Model SHA-256 & \begin{minipage}[t]{10cm}\ttfamily\scriptsize 0f79f192f3137e9a90213f1b5d4a52b6d896\\b735f9cb82160e5de7cc6e539c41\end{minipage} \\
+Tokenizer SHA-256 & \begin{minipage}[t]{10cm}\ttfamily\scriptsize a6aa29bf8416d74ad795a73262b1aa3f98\\5564ee338adbee7ffbc5861f78b6b8\end{minipage} \\
+Model configuration SHA-256 & \begin{minipage}[t]{10cm}\ttfamily\scriptsize dffb0253be590126da5dc43b75475f6f\\6ef4576439dec46e8ec83bf0408fcf83\end{minipage} \\
+Probability values SHA-256 & \begin{minipage}[t]{10cm}\ttfamily\scriptsize 5f6313599e77e72947435e52b273054fab\\da1e97006d0636658350ac253ed638\end{minipage} \\
+Input IDs SHA-256 & \begin{minipage}[t]{10cm}\ttfamily\scriptsize 970665aaaafdd2964012f3759b993e53\\dfe43e6d1793edc68a6b3896089fdbf8\end{minipage} \\
+Entropy evidence SHA-256 & \begin{minipage}[t]{10cm}\ttfamily\scriptsize fd551e583e54753744900d66acee85b9\\9a6c07bdcef123f4fd92186a0cc8880d\end{minipage} \\
+Original AFL paper SHA-256 & \begin{minipage}[t]{10cm}\ttfamily\scriptsize dec64904f5954e29b44105ba6d41a97f38915ffbecf972554e4eda70d8abbebc\end{minipage} \\
+AFL disclosure SHA-256 & \begin{minipage}[t]{10cm}\ttfamily\scriptsize bfa75181d631aca4f8a95d0344819ec6c80ad3ac16ac9cd92ce3986e03055196\end{minipage} \\
+Context length & 963 tokens \\
+Vocabulary size & 50,257 tokens \\
+Probability sum & Approximately 1.0 within floating-point precision \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The raw NPZ artifact contains the complete input-ID sequence and every probability value, not only the ten largest values. The JSON report contains the exact prompt, model metadata, threshold sweep, top tokens, and scope. The full entropy output and model configuration are reproduced below. The context-sweep artifact contains every controlled prompt variant and its raw probability vector.
+
+\section{Reproduction procedure}
+The following procedure reproduces the numerical measurement in the tested CPU environment. It uses the public Ablation repository and the public ONNX model, with no API credentials.
+
+\begin{enumerate}[nosep]
+  \item Clone \url{https://github.com/Ablation-Tool/ablation} and check out revision \texttt{d596bed31ba5fe361efa1c6fdad6d86e3126ab63}.
+  \item Create an isolated Python 3.14 environment and install Ablation, GEM Lab, NumPy 2.3.5, ONNX Runtime 1.31.1, Tokenizers 0.23.3, and Hugging Face Hub 1.33.0.
+  \item Obtain the measurement harness embedded in this PDF and place it in a writable working directory.
+  \item Run \texttt{python ablation-gem-measure.py --project /path/to/ablation --output results}. The harness downloads and hash-checks the model, constructs real Lab evidence, runs inference, computes the sweep, and reloads the resulting probability vector for verification.
+  \item Confirm the reference sweep $5,4,3,2,1,0$ and the actual sweep $4,2,2,1,1,1$ at thresholds $0.02,0.05,0.10,0.15,0.30,0.50$.
+  \item Load the embedded probability vector and independently recompute each count using the strict comparison $P(a\mid h_T(S))>\tau$. Compare the raw-value and input-ID hashes with the manifest.
+\end{enumerate}
+
+The numerical values and raw-value hashes are the reproducible evidence. Timing values and archive-container metadata may differ between runs.
+
+\section{Controlled context evidence}
+The baseline was repeated before perturbing the context. It produced identical input IDs and probability values. Table~\ref{tab:context-proof} reports the controlled follow-up measurements.
+
+{\scriptsize
+\begin{table}[h]
+\centering
+\caption{Accessible volume across controlled context variants.}
+\label{tab:context-proof}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lrrrrrrr}
+\toprule
+Variant & Tokens & 0.02 & 0.05 & 0.10 & 0.15 & 0.30 & 0.50 \\
+\midrule
+Baseline & 963 & 4 & 2 & 2 & 1 & 1 & 1 \\
+Metadata only & 522 & 4 & 2 & 2 & 2 & 1 & 0 \\
+Abbreviated evidence & 295 & 4 & 2 & 2 & 2 & 1 & 1 \\
+No evidence & 103 & 3 & 1 & 1 & 1 & 1 & 1 \\
+Summary request & 968 & 3 & 2 & 1 & 1 & 1 & 0 \\
+Repeated short evidence & 487 & 3 & 2 & 2 & 1 & 1 & 1 \\
+\bottomrule
+\end{tabular}
+\end{table}
+}
+
+These differences are observations about specific model/context pairs. They do not establish a universal rule about which context increases or decreases breadth.
+
+\section{Complete Ablation entropy evidence}
+\lstinputlisting{evidence/ablation-gem-entropy-evidence.txt}
+
+\section{Model configuration}
+\lstinputlisting{evidence/ablation-gem-distilgpt2-config.json}
+
+\section{Embedded evidence}
+The complete evidence package is embedded in this PDF as attachments. It includes the exact prompt and report, all 50,257 probabilities, all 963 input IDs, the full entropy output, the model configuration, both measurement harnesses, the artifact writer, and every controlled context variant with its raw probability vector. No external filesystem is needed to inspect the evidence.
+
+\embedfile{evidence/ablation-gem-accessible-volume.json}
+\embedfile{evidence/ablation-gem-next-token-probabilities.npz}
+\embedfile{evidence/ablation-gem-entropy-evidence.txt}
+\embedfile{evidence/ablation-gem-distilgpt2-config.json}
+\embedfile{evidence/ablation-gem-context-sweep.json}
+\embedfile{evidence/ablation-gem-context-sweep.npz}
+\embedfile{ablation-gem-measure.py}
+\embedfile{ablation-gem-context-sweep.py}
+\embedfile{ablation_gem_artifacts.py}
+\embedfile{evidence/Ambiguity_Autonomy_Compliance_Cascade.pdf}
+\embedfile{evidence/afl_disclosure.docx.pdf}
+
+\section{Source signature}
+\textbf{Signatory: Nicholas Michael Kloster [1505393089]}
+
+\textbf{Timestamp (UTC): 2026-11-03T20:07:55Z}
+
+The UTF-8 LaTeX source payload preceding this section has SHA-256:
+\begin{verbatim}
+d453ad69d807d334abd1fd4805bfeee99c3d9beea1b049e1bd1731c8825ef5d2
+\end{verbatim}
+This digest binds the named signatory to the exact source payload. It is an integrity record, not a third-party identity certificate.
+
+% SHA256-SIGNATURE-BEGIN
+% signer: Nicholas Michael Kloster [1505393089]
+% timestamp_utc: 2026-11-03T20:07:55Z
+% payload: UTF-8 LaTeX source preceding \section{Source signature}
+% sha256: d453ad69d807d334abd1fd4805bfeee99c3d9beea1b049e1bd1731c8825ef5d2
+% SHA256-SIGNATURE-END
+\end{document}

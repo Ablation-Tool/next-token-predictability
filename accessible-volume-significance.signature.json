@@ -1,0 +1,20 @@
+{
+  "signature_version": 1,
+  "algorithm": "SHA-256",
+  "signer": "Nicholas Michael Kloster [1505393089]",
+  "timestamp_utc": "2026-11-03T20:07:55Z",
+  "payload_scope": "UTF-8 LaTeX source preceding \\section{Source signature}",
+  "payload_sha256": "d453ad69d807d334abd1fd4805bfeee99c3d9beea1b049e1bd1731c8825ef5d2",
+  "signed_source_sha256": "60b462bb8257514cec153dc1944576fb61f4a80f82bd3bf6dbf8fec32a7ccada",
+  "evidence": {
+    "original_afl_paper_sha256": "dec64904f5954e29b44105ba6d41a97f38915ffbecf972554e4eda70d8abbebc",
+    "afl_disclosure_sha256": "bfa75181d631aca4f8a95d0344819ec6c80ad3ac16ac9cd92ce3986e03055196",
+    "model_sha256": "0f79f192f3137e9a90213f1b5d4a52b6d896b735f9cb82160e5de7cc6e539c41",
+    "tokenizer_sha256": "a6aa29bf8416d74ad795a73262b1aa3f985564ee338adbee7ffbc5861f78b6b8",
+    "model_config_sha256": "dffb0253be590126da5dc43b75475f6f6ef4576439dec46e8ec83bf0408fcf83",
+    "probability_values_sha256": "5f6313599e77e72947435e52b273054fabda1e97006d0636658350ac253ed638",
+    "input_ids_sha256": "970665aaaafdd2964012f3759b993e53dfe43e6d1793edc68a6b3896089fdbf8",
+    "entropy_evidence_sha256": "fd551e583e54753744900d66acee85b99a6c07bdcef123f4fd92186a0cc8880d"
+  },
+  "integrity_note": "SHA-256 binds the named signer to the exact source payload and evidence values. This is not a third-party identity certificate."
+}
