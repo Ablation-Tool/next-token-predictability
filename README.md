@@ -132,3 +132,7 @@ Verify the source against [accessible-volume-significance.signature.json](./acce
 ## Contributor
 
 - **[Nicholas Michael Kloster (Ablation-Tool)](https://github.com/Ablation-Tool)** — Research, accessible-volume equation, experiments, paper, evidence, and project maintenance. Signatory ID: 1505393089.
+
+## License
+
+This project is available under the [MIT License](./LICENSE). Third-party source documents retain their original licenses; see the [source metadata](./evidence/biobert-optimization/sources.json).
