@@ -1,6 +1,6 @@
 # Next-Token Predictability: Accessible Volume
 
-A self-contained research paper and reproducible evidence package by Nicholas Michael Kloster.
+A research paper by Nicholas Michael Kloster.
 
 **[The Significance of Accessible Volume](./accessible-volume-significance-signed.pdf)**
 
