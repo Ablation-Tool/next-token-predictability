@@ -26,7 +26,7 @@ The relevant question is therefore not merely, “What did the model choose?” 
 
 ## Origin of the research
 
-This work builds on Nicholas Michael Kloster’s March 2026 paper, *Ambiguity, Autonomy, and the Autoregressive Compliance Cascade*. That earlier security-research finding documented a retrospective discovery through interaction with Anthropic’s Claude: ambiguity could establish a favorable context, and later generation could reinforce it through an autoregressive compliance cascade. It introduced Ambiguity Front-Loading (AFL) as the observed case study and motivated direct examination of output distributions.
+This work builds on Nicholas Michael Kloster’s March 2026 paper, [*Ambiguity, Autonomy, and the Autoregressive Compliance Cascade*](./evidence/Ambiguity_Autonomy_Compliance_Cascade.pdf). That earlier security-research finding documented a retrospective discovery through interaction with Anthropic’s Claude: ambiguity could establish a favorable context, and later generation could reinforce it through an autoregressive compliance cascade. It introduced Ambiguity Front-Loading (AFL) as the observed case study and motivated direct examination of output distributions.
 
 The discovery account identifies **March 4, 2026** as the date of first observation. It was not a deliberately engineered penetration test of the model. The pattern was recognized retrospectively in an otherwise routine research conversation: an ambiguous beginning established a favorable frame, subsequent turns accumulated actions within that frame, and the original context was not independently re-evaluated. The companion disclosure records the discovery circumstances and later reproduction.
 
