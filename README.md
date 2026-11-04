@@ -198,6 +198,44 @@ BioBERT original and adaptive equations for top-1 error detection.
 
 The significance is direct: making the threshold responsive to the maximum probability did not improve the instrument on this dataset. The original fixed-threshold equation was simpler and stronger where it mattered, on data excluded from parameter selection. All 120 raw distributions, reports, source manifests, candidate searches, and per-case scores are included. An independent implementation recomputed every reported AUROC and AUPRC value from the raw artifacts.
 
+## Wider experiments: rhythm, reversal, and multiple horizons
+
+Exploratory extensions have now tested accessible volume on musical onsets, temporal reflection, geometric extrapolation, and multi-token continuations. Together, they support a precise conclusion: accessible volume is a reproducible measurement of **forecast breadth under a model, context, and threshold**. It is not a standalone measurement of correctness or a guarantee of future prediction.
+
+**Forecast breadth is not correctness.** The [Magenta Groove experiment](./evidence/rhythm-midi/README.md) used 514 human-performed drum performances with disjoint recording-session splits. Accuracy and log-loss changed across conditions while mean accessible volume remained effectively unchanged:
+
+| Condition | Top-1 accuracy | Log-loss | Mean $A_\tau$ over threshold sweep |
+|:---|---:|---:|---:|
+| Forward | 17.33% | 3.194 | 1.886 |
+| Reversal transfer | 16.01% | 3.333 | 1.885 |
+| Backward matched | 17.06% | 3.183 | 1.886 |
+
+A model can therefore have a narrow forecast and still be confidently wrong. Accessible volume should be reported alongside accuracy, log-loss, and calibration rather than substituted for them.
+
+**Reversed sequences are not inherently unpredictable.** The backward-matched model, trained on reversed performances, nearly matched forward accuracy. Applying the forward-trained model directly to reversed input performed worse. Much of the observed reversal penalty was therefore a model-transfer effect, not evidence of a fundamental property of time reversal.
+
+**Different material can produce different forecast breadth.** In the [Nightingale experiment](./evidence/rhythm-lab/README.md), classical music had 68.3% forward top-1 accuracy and $A_{0.1}=1.91$; jazz had 49.5% and $A_{0.1}=2.69$; folk had 61.9% and $A_{0.1}=2.21$. Under this categorical model and quantization, jazz was the least predictable and had the broadest forecasts. Retrograde accuracies were similar at 67.9%, 47.1%, and 61.4%, respectively. These are measurements of particular model–data combinations, not universal properties of genres or listeners.
+
+**Geometry helps comparison, but the geometric predictor was rejected.** Procrustes alignment provides a reproducible way to compare rhythms or landmarks after removing differences such as tempo, starting position, rotation, or scale. It does not supply a probability distribution. The composed-rotation Harmonic Osculating Predictor (HOP) achieved only 11.3% top-1 accuracy, compared with 41.3% for linear extrapolation and 46.6% for the model. HOP is retained as a [rejected experimental baseline](./evidence/rhythm-hop/README.md), not as evidence that transformer hidden states follow musical circles. A deterministic geometric forecast cannot supply accessible volume without probabilistic calibration.
+
+**Multiple horizons extend the measurement, not the guarantee.** The [multi-horizon formulation](./evidence/research-context/temporal-predictability.md#multi-horizon-accessible-volume) counts complete candidate continuations whose learned conditional joint probabilities exceed a threshold. It can describe how many multi-token futures remain open, but it cannot guarantee correct prediction of every future token. Exact enumeration considers $|O|^h$ continuations for vocabulary size $|O|$ and horizon $h$, so computational cost grows exponentially. Practical experiments require bounded candidate sets or explicitly identified approximations; an approximate count must not be presented as the exact sum.
+
+**Implementation is not outcome validation.** The [Ablation + GEM integration records](./evidence/README.md#exploratory-experiment-results) show that measurement, geometry, evidence preservation, and volume-band steering can be implemented. They do not yet demonstrate that steering improves creativity, musical quality, reasoning, or safety. Likewise, the [native GEM Procrustes integration](https://github.com/Ablation-Tool/graphics-environment-manager/tree/main/examples/landmark-alignment) demonstrates working geometric alignment and scoped evidence, not probabilistic prediction.
+
+These experiments do not yet establish that accessible volume predicts human surprise—the listening study awaits real ratings—that volume-band steering produces useful creative output, that narrow forecasts are semantically correct, or that these equations model human expectation or guarantee future behavior.
+
+### Strongest next experiment
+
+The strongest next step is to validate multi-horizon accessible volume on real language-model outputs and test whether steering it produces useful results. The central tradeoff is exactness versus computational cost:
+
+1. Measure horizons $h=1,2,3$ on real model outputs.
+2. Compare exact enumeration on tiny candidate sets with bounded top-$k$, beam, or sampled approximations.
+3. Report accessible-volume threshold sweeps alongside accuracy, joint log-loss, calibration, approximation error, and computational cost.
+4. Run low, medium, and high volume-band steering experiments, measuring diversity and output quality independently.
+5. Preserve negative results and approximation errors as evidence.
+
+This is proposed future work, not a completed result.
+
 ## What the result does not establish
 
 The experiment does not establish that a concentrated choice is a correct choice. It does not establish that a broad choice is a better choice. It does not demonstrate how later tokens will behave, and it does not turn a single-step measurement into a prediction of a complete response.
