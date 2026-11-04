@@ -94,6 +94,30 @@ Predict the next event and its breadth
 
 Accessible volume does not supply a direction or reward by itself. A separate policy and candidate semantics are still required.
 
+## Multi-horizon accessible volume
+
+The same measurement can be extended from the next token to a sequence of \(h\) future tokens. Let \(O\) be a finite token vocabulary, \(C_t\) the context at time \(t\), and \(a_{1:h}=(a_1,\ldots,a_h)\) a candidate continuation. A learned autoregressive model defines its conditional joint probability as:
+
+\[
+P_h(a_{1:h}\mid C_t)=\prod_{j=1}^{h}p(a_j\mid C_{t+j-1},a_{<j})
+\]
+
+The multi-horizon accessible volume counts complete candidate continuations whose joint probabilities strictly exceed the threshold:
+
+\[
+A^{(h)}_\tau(C_t)=\sum_{a_{1:h}\in O^h}\mathbf 1[P_h(a_{1:h}\mid C_t)>\tau]
+\]
+
+Its complement counts all remaining continuations:
+
+\[
+A^{c,(h)}_\tau(C_t)=|O|^h-A^{(h)}_\tau(C_t)
+\]
+
+At \(h=1\), this reduces to the original next-token accessible volume. At larger horizons, it measures the breadth of plausible multi-token futures under the model, context, and threshold. It is not a guarantee that the model will predict every future token correctly, nor does a narrow forecast establish that the selected continuation is correct.
+
+Exact enumeration considers \(|O|^h\) continuations, so its cost grows exponentially with the horizon. Practical experiments need bounded candidate sets or explicitly identified approximations; an approximate count must not be presented as the exact sum over \(O^h\).
+
 ## Procrustes alignment of rhythmic landmarks
 
 Before comparing two rhythms, align their onset times with a tempo scale and a starting-time shift:

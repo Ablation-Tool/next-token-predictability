@@ -20,7 +20,7 @@ Two development records are retained in [`research-context/`](./research-context
 |:---|:---|:---|
 | [Origin prompt](./research-context/origin-prompt.txt) | A short early request for word-level vector scores, an interpretable equation, and token-level intent evaluation. It supplies direct context for the measurement's development. | Development record, not a model result. |
 | [Early equations](./research-context/early-equations.txt) | An early compact statement of the strict thresholded accessible set, hidden-state composition, and related sensitivity ideas. | Historical draft. The canonical equation is Equation (1) in the current paper. |
-| [Temporal predictability bridge](./research-context/temporal-predictability.md) | Extends the strict threshold measurement to next-onset delays, timing error, momentum, Procrustes alignment, retrograde evaluation, and the unvalidated HOP baseline. | Exploratory model, not a validated musical, geometric, or timing experiment. |
+| [Temporal predictability bridge](./research-context/temporal-predictability.md) | Extends the strict threshold measurement to multi-horizon continuations, next-onset delays, timing error, momentum, Procrustes alignment, retrograde evaluation, and the unvalidated HOP baseline. | Exploratory model, not a validated musical, geometric, timing, or universal future-token predictor. |
 
 Archive timestamps are preserved as provenance metadata, not as proof of first invention or creation. The author's stated creation date for the accessible-volume equation remains **March 6, 2026**. Other supplied material was omitted when it contained operational instructions, live-system details, unsafe examples, duplication, or unrelated content.
 
@@ -30,6 +30,7 @@ Archive timestamps are preserved as provenance metadata, not as proof of first i
 - [Magenta Groove MIDI experiment](./rhythm-midi/README.md) — Real human drumming with a disjoint recording-session split, forward/reversal-transfer/backward-matched conditions, raw predictions, and verified hashes.
 - [Nightingale real-MIDI experiment and listening test](./rhythm-lab/README.md) — Classical, jazz, and folk results with calibration and an optional human-surprise correlation workflow.
 - [Native GEM Procrustes integration](https://github.com/Ablation-Tool/graphics-environment-manager/tree/main/examples/landmark-alignment) — Native landmark alignment with VDI replay, correspondence geometry, scoped evidence, and affine-rank limitations.
+- [Ablation accessible-volume integration](https://github.com/Ablation-Tool/ablation/commit/a1fdea008d2ae2969e0eafd7fa7d8abe9a9b37b9) — Merges the multi-horizon and rhythm workflows with independent NPZ keys, target-volume-band steering, no-overwrite evidence, and `executed=False`. A [follow-up commit](https://github.com/Ablation-Tool/ablation/commit/b56f91e4c54cfd996bceea63a38d8136dc1e689f) fixes the obsolete Linux installer icon discovered during CI. These are upstream implementation records, not evidence of guaranteed future-token prediction.
 
 ## Tested-model sources
 
