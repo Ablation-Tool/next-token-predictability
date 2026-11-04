@@ -14,6 +14,8 @@
 
 [Evidence guide: verified artifacts, historical research context, and links to all 19 tested models](./evidence/README.md)
 
+**TL;DR — This solves:** the inability to see how open or concentrated a language model’s next-token decision was before selection, by counting the alternatives whose predicted probabilities exceed a chosen threshold.
+
 ## Abstract
 
 Before a language model produces a token, it assigns probabilities to the alternatives. Accessible volume turns that forecast into a direct measurement of next-token predictability. It counts how many alternatives have probabilities above a chosen threshold. A small count means the next-token choice is concentrated on a few alternatives; a large count means many alternatives remain in play. The final text records which token was selected, while accessible volume shows how open or settled the decision was before selection. This makes the model’s hidden decision surface measurable, comparable, and reproducible. Experiments with Ablation + GEM, XLNet, and sixteen additional models demonstrate the measurement on real probability distributions. In a subsequent 120-case BioBERT experiment, the original fixed rule at $\tau=0.05$ outperformed an optimized adaptive equation on held-out biomedical documents, achieving AUROC $0.7737$ and AUPRC $0.7978$ compared with $0.7008$ and $0.6599$ for distinguishing incorrect and correct top predictions. The adaptive rule improved validation measurements, but the simpler original equation transferred better to unseen cases.
@@ -441,6 +443,15 @@ These differences are observations about specific model/context pairs. They do n
 The complete evidence package is embedded in this PDF as 303 attachments. It includes the baseline experiment, XLNet Base and Large results, all sixteen additional model comparisons, and the focused BioBERT optimization study. Exact model inputs, complete probability vectors, JSON reports, immutable revisions, and raw-artifact hashes are preserved. The BioBERT package contains all 120 raw distributions and reports, frozen cases and document splits, source metadata and licenses, the complete parameter search, per-case scores, and an independent metric verifier. No external filesystem is needed to inspect the evidence; public model downloads are needed only to repeat inference.
 
 ## Screenshots
+
+<details>
+<summary>GEM integration status</summary>
+
+![The accessible-volume equation and the missing numerical integration](./assets/accessible-volume-missing-integration.png)
+
+![GEM integration status: conceptually connected, but not numerically integrated today](./assets/gem-accessible-volume-integration-status.png)
+
+</details>
 
 <details>
 <summary>Research session screenshot</summary>
