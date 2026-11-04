@@ -10,33 +10,18 @@ These are the canonical artifacts for the current paper and reproduction procedu
 - [XLNet-Base report](./xlnet-hidden-token-accessible-volume.json) and [XLNet-Large report](./xlnet-large/xlnet-hidden-token-accessible-volume.json), with complete probability vectors and input IDs.
 - [Sixteen-model comparison summary](./comparison/model-comparison-summary.json) and [frozen case manifest](../model-comparison-cases.json).
 - [BioBERT optimization results](./biobert-optimization/optimization.json), [per-case scores](./biobert-optimization/optimization-scores.csv), and [frozen cases](./biobert-optimization/cases.json).
-- [Signed paper](../accessible-volume-significance-signed.pdf) and [signature metadata](../accessible-volume-significance.signature.json).
-
-The signed paper and its source-signature record are unchanged by the additional historical context below.
+- [Current paper](../accessible-volume-significance.pdf) and [LaTeX source](../accessible-volume-significance.tex).
 
 ## Historical research context
 
-The curated files in [`research-context/`](./research-context/) preserve direct development history without bulk-importing duplicate, unrelated, or sensitive material. [`source-manifest.json`](./research-context/source-manifest.json) records the source archives, original member names, and SHA-256 hashes.
+Two development records are retained in [`research-context/`](./research-context/). [`source-manifest.json`](./research-context/source-manifest.json) records the source archive, original member names, and SHA-256 hashes.
 
 | File | Why it belongs | Evidentiary status |
 |:---|:---|:---|
 | [Origin prompt](./research-context/origin-prompt.txt) | A short early request for word-level vector scores, an interpretable equation, and token-level intent evaluation. It supplies direct context for the measurement's development. | Development record, not a model result. |
 | [Early equations](./research-context/early-equations.txt) | An early compact statement of the strict thresholded accessible set, hidden-state composition, and related sensitivity ideas. | Historical draft. The canonical equation is Equation (1) in the current paper. |
-| [Autonomy framework draft](./research-context/autonomy-framework-draft.txt) | The early named framework connecting thresholded output volume, input context, entropy, and alignment measurements. | Historical conceptual draft. It explicitly lacks empirical evaluation, and its universal nonzero-sensitivity claim is not established by the current experiments. |
-| [Compliance-cascade subsection](./research-context/cascade-subsection.txt) | Explains the proposed relationship between generated tokens, changing context, and gradual compliance-trajectory growth. | Theoretical trajectory analysis, not proof that a single-step count detects a cascade. |
-| [Early experiment harness](./research-context/autonomy_empirical.py) and [proposed protocol](./research-context/EXPERIMENT_README.md) | Implements the strict full-vocabulary next-token threshold count on open-weight causal models and proposes base-versus-instruct comparisons. | Code and protocol only. The archive contains no run artifacts from this harness, so it is not evidence that these proposed validations succeeded. Use the current reproduction scripts for verified results. |
-| [AFL ambiguity/directive diagram](./research-context/afl-ambiguity-directive-zones.png) | Visualizes the ambiguous-prefix and clear-directive interpretation that motivated the original AFL investigation. | Conceptual illustration, not a measured probability distribution. |
 
-Archive timestamps are preserved as provenance metadata, not as proof of first invention or creation. The author's stated creation date for the accessible-volume equation remains **March 6, 2026**.
-
-### What was deliberately excluded
-
-- **Duplicate and superseded documents:** repeated PDFs, renamed copies, earlier disclosure versions, and nested ZIP duplicates were not added. The existing [March 2026 unified paper](./Ambiguity_Autonomy_Compliance_Cascade.pdf) already states that it supersedes previous submissions.
-- **Illustrative numbers presented as examples:** use-case appendices and generated demonstrations were not promoted to empirical evidence. Verified numbers must come from the saved model distributions and reports above.
-- **Live-target and credential-adjacent material:** operational penetration-test logs, target-specific exploitation walkthroughs, license-key recovery discussions, and related tooling were excluded from this public context pack.
-- **Unrelated tooling:** SMTP/configuration-drift scripts, websocket tracers, generic reconnaissance utilities, and RXVM/license-analysis transcripts do not support the accessible-volume measurement.
-- **Non-equivalent API sampling test:** `test_as_claude.py` estimates unique sampled words rather than the model's full next-token probability distribution. It does not measure the canonical equation and could also incur external API costs.
-- **Bulk archives:** the original ZIPs are identified by SHA-256 in the source manifest but are not redistributed, avoiding duplication and unnecessary disclosure of excluded material.
+Archive timestamps are preserved as provenance metadata, not as proof of first invention or creation. The author's stated creation date for the accessible-volume equation remains **March 6, 2026**. Other supplied material was omitted when it contained operational instructions, live-system details, unsafe examples, duplication, or unrelated content.
 
 ## Tested-model sources
 

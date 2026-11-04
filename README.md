@@ -10,7 +10,7 @@
 
 **Sole authorship and research credit:** All research, the accessible-volume equation and its development, the experiments, and this paper are solely the work of **Nicholas Michael Kloster**. No other person is a creator, contributor, or coauthor. The equation was created on **March 6, 2026**.
 
-[Read the signed paper](./accessible-volume-significance-signed.pdf)
+[Read the paper](./accessible-volume-significance.pdf)
 
 [Evidence guide: verified artifacts, historical research context, and links to all 19 tested models](./evidence/README.md)
 
@@ -28,11 +28,11 @@ The relevant question is therefore not merely, “What did the model choose?” 
 
 ## Origin of the research
 
-This work builds on Nicholas Michael Kloster’s March 2026 paper, [*Ambiguity, Autonomy, and the Autoregressive Compliance Cascade*](./evidence/Ambiguity_Autonomy_Compliance_Cascade.pdf). That earlier security-research finding documented a retrospective discovery through interaction with Anthropic’s Claude: ambiguity could establish a favorable context, and later generation could reinforce it through an autoregressive compliance cascade. It introduced Ambiguity Front-Loading (AFL) as the observed case study and motivated direct examination of output distributions.
+This work grew from Nicholas Michael Kloster’s March 2026 research into how a language model’s input context shapes the alternatives available at the next prediction step. The central question was simple: can the distribution before selection tell us something that the selected token alone cannot?
 
-The discovery account identifies **March 4, 2026** as the date of first observation. It was not a deliberately engineered penetration test of the model. The pattern was recognized retrospectively in an otherwise routine research conversation: an ambiguous beginning established a favorable frame, subsequent turns accumulated actions within that frame, and the original context was not independently re-evaluated. The companion disclosure records the discovery circumstances and later reproduction.
+The first observation was recorded on **March 4, 2026**, and the accessible-volume equation was created on **March 6, 2026**. That work motivated direct examination of full next-token probability distributions.
 
-The original case study and the present experiment are different forms of evidence. The earlier paper reports one production conversation and proposes a trajectory-level interpretation. The present work performs a separate, controlled next-token measurement using actual Ablation + GEM evidence. It does not independently reproduce AFL or claim that a single-step count detects a cascade. Both original documents are embedded in this PDF as part of the research record.
+The present experiment tests that question with controlled measurements using actual Ablation + GEM evidence. It focuses on reproducible token-level measurements and does not make claims about complete responses or later behavior.
 
 ## The equation
 
@@ -210,11 +210,11 @@ These limits do not weaken the measurement. They define its proper use. Accessib
 
 The measurement also suggests directions for further work, without establishing them as completed findings.
 
-**Prediction-aware defense.** Repeated observations could provide early-warning metadata for an agent firewall. An unusual change in the distribution might lead to additional review, a read-only restriction, or a request for human judgment. It would not prove that an attack had occurred. Any defensive response would still need deterministic policy and signed evidence for later investigation.
+**Prediction-aware review.** Repeated observations could provide early-warning metadata for an agent review system. An unusual change in the distribution might lead to additional review, a read-only restriction, or a request for human judgment. It would not establish why the change occurred. Any response would still need deterministic policy and signed evidence for later investigation.
 
-**From tokens to structured actions.** A future experiment could examine distributions over complete permitted actions rather than command-text tokens. This might help a system prepare for several plausible next steps while preserving the same constraints on every action. It would not identify an adversary’s intent or make an action safe by virtue of being predicted.
+**From tokens to structured actions.** A future experiment could examine distributions over complete permitted actions rather than command-text tokens. This might help a system prepare for several plausible next steps while preserving the same constraints on every action. It would not establish a user’s intent or make an action safe by virtue of being predicted.
 
-**Authenticated, evolving evidence.** Prediction observations could become part of a signed evidence record whose keys rotate over time. Standard cryptographic key derivation and authenticated encryption would be required. A timestamp could determine when to rotate a key, but neither timing nor accessible volume should determine the key itself. The metric is not an entropy source or a faster route to cryptanalysis.
+**Authenticated, evolving evidence.** Prediction observations could become part of a signed evidence record whose keys rotate over time. Standard cryptographic key derivation and authenticated encryption would be required. A timestamp could determine when to rotate a key, but neither timing nor accessible volume should determine the key itself. The metric is not an entropy source or a source of cryptographic key material.
 
 These are possible paths for investigation, not claims established by the present experiment.
 
@@ -271,7 +271,7 @@ The raw NPZ artifact contains the complete input-ID sequence and every probabili
 
 ## Reproduction procedure
 
-The following procedure reproduces the numerical measurement in the tested CPU environment. It uses the public Ablation repository and the public ONNX model, with no API credentials.
+The following procedure reproduces the numerical measurement in the tested CPU environment. It uses the public Ablation repository and the public ONNX model, with no API accounts.
 
 1.  Clone <https://github.com/Ablation-Tool/ablation> and check out revision `d596bed31ba5fe361efa1c6fdad6d86e3126ab63`.
 
@@ -438,23 +438,11 @@ These differences are observations about specific model/context pairs. They do n
 
 ## Embedded evidence
 
-The complete evidence package is embedded in this PDF as 305 attachments. It includes the baseline experiment, original research documents, XLNet Base and Large results, all sixteen additional model comparisons, and the focused BioBERT optimization study. Exact model inputs, complete probability vectors, JSON reports, immutable revisions, and raw-artifact hashes are preserved. The BioBERT package contains all 120 raw distributions and reports, frozen cases and document splits, source metadata and licenses, the complete parameter search, per-case scores, and an independent metric verifier. No external filesystem is needed to inspect the evidence; public model downloads are needed only to repeat inference.
-
-## Source signature
-
-**Signatory: Nicholas Michael Kloster \[1505393089\]**
-
-**Timestamp (UTC): 2026-11-03T22:58:38Z**
-
-The UTF-8 LaTeX source payload preceding this section has SHA-256:
-
-    d8fe3401f6fcf1a710451d07a893ab61243cdf7a0f85de6e1743df051b21eaf3
-
-This digest binds the named signatory to the exact source payload. It is an integrity record, not a third-party identity certificate.
+The complete evidence package is embedded in this PDF as 303 attachments. It includes the baseline experiment, XLNet Base and Large results, all sixteen additional model comparisons, and the focused BioBERT optimization study. Exact model inputs, complete probability vectors, JSON reports, immutable revisions, and raw-artifact hashes are preserved. The BioBERT package contains all 120 raw distributions and reports, frozen cases and document splits, source metadata and licenses, the complete parameter search, per-case scores, and an independent metric verifier. No external filesystem is needed to inspect the evidence; public model downloads are needed only to repeat inference.
 
 ## Research session screenshot
 
-![The accessible-volume equation research session beside the signed paper](./assets/accessible-volume-research-session.png)
+![The accessible-volume equation research session beside the paper](./assets/accessible-volume-research-session.png)
 
 ## Original paper page images
 

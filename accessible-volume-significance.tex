@@ -47,11 +47,11 @@ Two model states can produce the same next token while having very different dis
 The relevant question is therefore not merely, ``What did the model choose?'' It is also, ``How much room did the model have to choose differently?'' Accessible volume provides one way to answer that question with a number.
 
 \section{Origin of the research}
-This work builds on Nicholas Michael Kloster's March 2026 paper, \emph{Ambiguity, Autonomy, and the Autoregressive Compliance Cascade}. That earlier security-research finding documented a retrospective discovery through interaction with Anthropic's Claude: ambiguity could establish a favorable context, and later generation could reinforce it through an autoregressive compliance cascade. It introduced Ambiguity Front-Loading (AFL) as the observed case study and motivated direct examination of output distributions.
+This work grew from Nicholas Michael Kloster's March 2026 research into how a language model's input context shapes the alternatives available at the next prediction step. The central question was simple: can the distribution before selection tell us something that the selected token alone cannot?
 
-The discovery account identifies \textbf{March 4, 2026} as the date of first observation. It was not a deliberately engineered penetration test of the model. The pattern was recognized retrospectively in an otherwise routine research conversation: an ambiguous beginning established a favorable frame, subsequent turns accumulated actions within that frame, and the original context was not independently re-evaluated. The companion disclosure records the discovery circumstances and later reproduction.
+The first observation was recorded on \textbf{March 4, 2026}, and the accessible-volume equation was created on \textbf{March 6, 2026}. That work motivated direct examination of full next-token probability distributions.
 
-The original case study and the present experiment are different forms of evidence. The earlier paper reports one production conversation and proposes a trajectory-level interpretation. The present work performs a separate, controlled next-token measurement using actual Ablation + GEM evidence. It does not independently reproduce AFL or claim that a single-step count detects a cascade. Both original documents are embedded in this PDF as part of the research record.
+The present experiment tests that question with controlled measurements using actual Ablation + GEM evidence. It focuses on reproducible token-level measurements and does not make claims about complete responses or later behavior.
 
 \section{The equation}
 Let $S$ be the full input context and $\mathcal{O}$ a finite output vocabulary. Let $P(a\mid h_T(S))$ be the probability that the model assigns to token $a$ as the next token after processing $S$. For a threshold $\tau$, accessible volume is
@@ -248,11 +248,11 @@ These limits do not weaken the measurement. They define its proper use. Accessib
 \section{Possible paths opened by the equation}
 The measurement also suggests directions for further work, without establishing them as completed findings.
 
-\textbf{Prediction-aware defense.} Repeated observations could provide early-warning metadata for an agent firewall. An unusual change in the distribution might lead to additional review, a read-only restriction, or a request for human judgment. It would not prove that an attack had occurred. Any defensive response would still need deterministic policy and signed evidence for later investigation.
+\textbf{Prediction-aware review.} Repeated observations could provide early-warning metadata for an agent review system. An unusual change in the distribution might lead to additional review, a read-only restriction, or a request for human judgment. It would not establish why the change occurred. Any response would still need deterministic policy and signed evidence for later investigation.
 
-\textbf{From tokens to structured actions.} A future experiment could examine distributions over complete permitted actions rather than command-text tokens. This might help a system prepare for several plausible next steps while preserving the same constraints on every action. It would not identify an adversary's intent or make an action safe by virtue of being predicted.
+\textbf{From tokens to structured actions.} A future experiment could examine distributions over complete permitted actions rather than command-text tokens. This might help a system prepare for several plausible next steps while preserving the same constraints on every action. It would not establish a user's intent or make an action safe by virtue of being predicted.
 
-\textbf{Authenticated, evolving evidence.} Prediction observations could become part of a signed evidence record whose keys rotate over time. Standard cryptographic key derivation and authenticated encryption would be required. A timestamp could determine when to rotate a key, but neither timing nor accessible volume should determine the key itself. The metric is not an entropy source or a faster route to cryptanalysis.
+\textbf{Authenticated, evolving evidence.} Prediction observations could become part of a signed evidence record whose keys rotate over time. Standard cryptographic key derivation and authenticated encryption would be required. A timestamp could determine when to rotate a key, but neither timing nor accessible volume should determine the key itself. The metric is not an entropy source or a source of cryptographic key material.
 
 These are possible paths for investigation, not claims established by the present experiment.
 
@@ -314,7 +314,7 @@ Probability sum & Approximately 1.0 within floating-point precision \\
 The raw NPZ artifact contains the complete input-ID sequence and every probability value, not only the ten largest values. The JSON report contains the exact prompt, model metadata, threshold sweep, top tokens, and scope. The full entropy output and model configuration are reproduced below. The context-sweep artifact contains every controlled prompt variant and its raw probability vector.
 
 \section{Reproduction procedure}
-The following procedure reproduces the numerical measurement in the tested CPU environment. It uses the public Ablation repository and the public ONNX model, with no API credentials.
+The following procedure reproduces the numerical measurement in the tested CPU environment. It uses the public Ablation repository and the public ONNX model, with no API accounts.
 
 \begin{enumerate}[nosep]
   \item Clone \url{https://github.com/Ablation-Tool/ablation} and check out revision \texttt{d596bed31ba5fe361efa1c6fdad6d86e3126ab63}.
@@ -386,7 +386,7 @@ These differences are observations about specific model/context pairs. They do n
 \lstinputlisting{evidence/ablation-gem-distilgpt2-config.json}
 
 \section{Embedded evidence}
-The complete evidence package is embedded in this PDF as 305 attachments. It includes the baseline experiment, original research documents, XLNet Base and Large results, all sixteen additional model comparisons, and the focused BioBERT optimization study. Exact model inputs, complete probability vectors, JSON reports, immutable revisions, and raw-artifact hashes are preserved. The BioBERT package contains all 120 raw distributions and reports, frozen cases and document splits, source metadata and licenses, the complete parameter search, per-case scores, and an independent metric verifier. No external filesystem is needed to inspect the evidence; public model downloads are needed only to repeat inference.
+The complete evidence package is embedded in this PDF as 303 attachments. It includes the baseline experiment, XLNet Base and Large results, all sixteen additional model comparisons, and the focused BioBERT optimization study. Exact model inputs, complete probability vectors, JSON reports, immutable revisions, and raw-artifact hashes are preserved. The BioBERT package contains all 120 raw distributions and reports, frozen cases and document splits, source metadata and licenses, the complete parameter search, per-case scores, and an independent metric verifier. No external filesystem is needed to inspect the evidence; public model downloads are needed only to repeat inference.
 
 \embedfile{evidence/ablation-gem-accessible-volume.json}
 \embedfile{evidence/ablation-gem-next-token-probabilities.npz}
@@ -397,8 +397,6 @@ The complete evidence package is embedded in this PDF as 305 attachments. It inc
 \embedfile{ablation-gem-measure.py}
 \embedfile{ablation-gem-context-sweep.py}
 \embedfile{ablation_gem_artifacts.py}
-\embedfile{evidence/Ambiguity_Autonomy_Compliance_Cascade.pdf}
-\embedfile{evidence/afl_disclosure.docx.pdf}
 \embedfile{xlnet-accessible-volume.py}
 \embedfile{evidence/xlnet-hidden-token-accessible-volume.json}
 \embedfile{evidence/xlnet-hidden-token-probabilities.npz}
@@ -455,21 +453,4 @@ The complete evidence package is embedded in this PDF as 305 attachments. It inc
 \embedfile{evidence/biobert-optimization/optimization-scores.csv}
 \input{biobert-attachments}
 
-\section{Source signature}
-\textbf{Signatory: Nicholas Michael Kloster [1505393089]}
-
-\textbf{Timestamp (UTC): 2026-11-03T22:58:38Z}
-
-The UTF-8 LaTeX source payload preceding this section has SHA-256:
-\begin{verbatim}
-d8fe3401f6fcf1a710451d07a893ab61243cdf7a0f85de6e1743df051b21eaf3
-\end{verbatim}
-This digest binds the named signatory to the exact source payload. It is an integrity record, not a third-party identity certificate.
-
-% SHA256-SIGNATURE-BEGIN
-% signer: Nicholas Michael Kloster [1505393089]
-% timestamp_utc: 2026-11-03T22:58:38Z
-% payload: UTF-8 LaTeX source preceding \section{Source signature}
-% sha256: d8fe3401f6fcf1a710451d07a893ab61243cdf7a0f85de6e1743df051b21eaf3
-% SHA256-SIGNATURE-END
 \end{document}

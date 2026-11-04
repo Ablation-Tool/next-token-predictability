@@ -3,10 +3,6 @@
   "purpose": "Provenance for the curated historical research-context files. These files document development history and are not new experimental results.",
   "source_archives": [
     {
-      "file": "AFL_1505393089-20261104T164716Z-1-001.zip",
-      "sha256": "ba7907f208e97368f804561a383fc38941b6939d49fbe38a54e42fd7f504e30e"
-    },
-    {
       "file": "autonomy-framework-20261104T164739Z-1-001.zip",
       "sha256": "051db3302b39ec4ae940b91d797ae84f9d0ad0577374ea09065dbf15fceb9613"
     }
@@ -23,36 +19,6 @@
       "source_archive": "autonomy-framework-20261104T164739Z-1-001.zip",
       "source_member": "autonomy-framework/A S vol a O P a h T S.txt",
       "sha256": "f18a54026e5b9b4347cc710a646e1d94aee73ab38fbd90e60c377bbae4c92e85"
-    },
-    {
-      "path": "autonomy-framework-draft.txt",
-      "source_archive": "autonomy-framework-20261104T164739Z-1-001.zip",
-      "source_member": "autonomy-framework/autonomy_measure.txt",
-      "sha256": "7ee2b3834f898e871aebe9adc45c54b60e027b9b398238a8dce8bffbc0e24644"
-    },
-    {
-      "path": "cascade-subsection.txt",
-      "source_archive": "autonomy-framework-20261104T164739Z-1-001.zip",
-      "source_member": "autonomy-framework/cascade_subsection.txt",
-      "sha256": "6ec3131767517b7d6763255e087b84c6b88d4f7b38223cf4a64dd9770d3748c7"
-    },
-    {
-      "path": "autonomy_empirical.py",
-      "source_archive": "autonomy-framework-20261104T164739Z-1-001.zip",
-      "source_member": "autonomy-framework/autonomy_empirical.py",
-      "sha256": "716c76d0178cbefd38d969f77adf5b3f44acfcd6a0bf7c9543ad629be3c45142"
-    },
-    {
-      "path": "EXPERIMENT_README.md",
-      "source_archive": "autonomy-framework-20261104T164739Z-1-001.zip",
-      "source_member": "autonomy-framework/EXPERIMENT_README.md",
-      "sha256": "21e4659358bf30d6705ca31ed467fd0e5e3be1397841fd40bb34c41bcc81de6a"
-    },
-    {
-      "path": "afl-ambiguity-directive-zones.png",
-      "source_archive": null,
-      "source_member": "unnamed.png",
-      "sha256": "81bc6181486f6949bc598e3aec22d7d0f3c70bdd92b79997046c0b618706526c"
     }
   ]
 }
