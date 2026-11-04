@@ -10,7 +10,7 @@
 
 **Sole authorship and research credit:** All research, the accessible-volume equation and its development, the experiments, and this paper are solely the work of **Nicholas Michael Kloster**. No other person is a creator, contributor, or coauthor. The equation was created on **March 6, 2026**.
 
-[Read the paper](./accessible-volume-significance.pdf)
+[Read the paper](./paper/accessible-volume-significance.pdf)
 
 [Evidence guide: verified artifacts, historical research context, and links to all 19 tested models](./evidence/README.md)
 
@@ -279,7 +279,7 @@ The following procedure reproduces the numerical measurement in the tested CPU e
 
 3.  Obtain the measurement harness embedded in this PDF and place it in a writable working directory.
 
-4.  Run `python ablation-gem-measure.py --project /path/to/ablation --output results`. The harness downloads and hash-checks the model, constructs real Lab evidence, runs inference, computes the sweep, and reloads the resulting probability vector for verification.
+4.  Run `python scripts/ablation-gem-measure.py --project /path/to/ablation --output results`. The harness downloads and hash-checks the model, constructs real Lab evidence, runs inference, computes the sweep, and reloads the resulting probability vector for verification.
 
 5.  Confirm the reference sweep $5,4,3,2,1,0$ and the actual sweep $4,2,2,1,1,1$ at thresholds $0.02,0.05,0.10,0.15,0.30,0.50$.
 
@@ -287,27 +287,27 @@ The following procedure reproduces the numerical measurement in the tested CPU e
 
 The numerical values and raw-value hashes are the reproducible evidence. Timing values and archive-container metadata may differ between runs.
 
-For the XLNet extension, extract `xlnet-accessible-volume.py`. Place the artifact writer, `ablation_gem_artifacts.py`, in the same working directory. Install NumPy, PyTorch 2.14.1, Transformers 5.18.0, and the tokenizer requirements. Run the script with `--model xlnet/xlnet-base-cased` and then with `--model xlnet/xlnet-large-cased`, using a different `--output` directory for each. The script performs a repeated prediction, checks all three target-token replacements, saves every probability and input ID, and independently recomputes the sweep. Compare the saved reports and raw arrays with the included evidence. Small floating-point differences may occur across runtimes; compare threshold counts and token ordering separately from exact probability hashes.
+For the XLNet extension, use `scripts/xlnet-accessible-volume.py`. Place the artifact writer, `scripts/ablation_gem_artifacts.py`, in the same working directory. Install NumPy, PyTorch 2.14.1, Transformers 5.18.0, and the tokenizer requirements. Run the script with `--model xlnet/xlnet-base-cased` and then with `--model xlnet/xlnet-large-cased`, using a different `--output` directory for each. The script performs a repeated prediction, checks all three target-token replacements, saves every probability and input ID, and independently recomputes the sweep. Compare the saved reports and raw arrays with the included evidence. Small floating-point differences may occur across runtimes; compare threshold counts and token ordering separately from exact probability hashes.
 
 For the sixteen additional comparisons, use a separate Python 3.14 environment with NumPy 2.5.3, PyTorch 2.14.1, Transformers 4.56.2, Tokenizers 0.22.1, SentencePiece 0.2.2, and Hugging Face Hub 0.36.2. Keep the case manifest, runner, measurement harness, verifier, and artifact writer together. The runner uses the immutable revisions in the manifest, executes models sequentially, and removes only its own temporary per-model caches.
 
-    python run-model-comparison.py --all \
+    python scripts/run-model-comparison.py --all \
       --output evidence/comparison \
       --cache-dir /path/to/temporary-cache
 
-    python verify-model-comparison.py \
-      --manifest model-comparison-cases.json \
+    python scripts/verify-model-comparison.py \
+      --manifest evidence/comparison/model-comparison-cases.json \
       --evidence evidence/comparison
 
 The optional cache directory must be writable and have enough space for the largest selected model. Use `--model` with an exact identifier from the manifest instead of `--all` to repeat one case. The second command verifies the included evidence without downloading model weights. A repeated BERT-Base case executed through this runner produced bit-identical probabilities, input IDs, and JSON output in the tested runtime. As with XLNet, exact raw-value equality across other runtimes is not assumed.
 
 The BioBERT experiment uses the same Python and model-runtime versions as the sixteen additional comparisons. Keep the three experiment scripts, the independent verifier, the artifact writer, and the frozen `evidence/biobert-optimization` directory together. The included case and split manifests are the authoritative inputs; downloading new source documents is not required. Run:
 
-    python biobert-accessible-volume.py
-    python optimize-biobert.py
-    python verify-biobert-optimization.py
+    python scripts/biobert-accessible-volume.py
+    python scripts/optimize-biobert.py
+    python scripts/verify-biobert-optimization.py
 
-The first command downloads the pinned BioBERT model and reproduces all 120 baseline distributions and reports. The second verifies the raw artifacts, selects adaptive parameters using development and validation cases only, and evaluates the frozen choice on the test cases. The third independently recomputes every AUROC and AUPRC value. Use `prepare-biobert-cases.py` only when constructing a new source-document manifest; it must complete before any model predictions are inspected.
+The first command downloads the pinned BioBERT model and reproduces all 120 baseline distributions and reports. The second verifies the raw artifacts, selects adaptive parameters using development and validation cases only, and evaluates the frozen choice on the test cases. The third independently recomputes every AUROC and AUPRC value. Use `scripts/prepare-biobert-cases.py` only when constructing a new source-document manifest; it must complete before any model predictions are inspected.
 
 ## Controlled context evidence
 
@@ -440,11 +440,17 @@ These differences are observations about specific model/context pairs. They do n
 
 The complete evidence package is embedded in this PDF as 303 attachments. It includes the baseline experiment, XLNet Base and Large results, all sixteen additional model comparisons, and the focused BioBERT optimization study. Exact model inputs, complete probability vectors, JSON reports, immutable revisions, and raw-artifact hashes are preserved. The BioBERT package contains all 120 raw distributions and reports, frozen cases and document splits, source metadata and licenses, the complete parameter search, per-case scores, and an independent metric verifier. No external filesystem is needed to inspect the evidence; public model downloads are needed only to repeat inference.
 
-## Research session screenshot
+## Screenshots
+
+<details>
+<summary>Research session screenshot</summary>
 
 ![The accessible-volume equation research session beside the paper](./assets/accessible-volume-research-session.png)
 
-## Original paper page images
+</details>
+
+<details>
+<summary>Original paper pages (12 images)</summary>
 
 ![The Significance of Accessible Volume, page 1](./assets/paper-pages/page-01.jpg)
 
@@ -469,3 +475,5 @@ The complete evidence package is embedded in this PDF as 303 attachments. It inc
 ![The Significance of Accessible Volume, page 11](./assets/paper-pages/page-11.jpg)
 
 ![The Significance of Accessible Volume, page 12](./assets/paper-pages/page-12.jpg)
+
+</details>

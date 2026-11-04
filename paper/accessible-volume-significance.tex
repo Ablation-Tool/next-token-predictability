@@ -320,24 +320,24 @@ The following procedure reproduces the numerical measurement in the tested CPU e
   \item Clone \url{https://github.com/Ablation-Tool/ablation} and check out revision \texttt{d596bed31ba5fe361efa1c6fdad6d86e3126ab63}.
   \item Create an isolated Python 3.14 environment and install Ablation, GEM Lab, NumPy 2.3.5, ONNX Runtime 1.31.1, Tokenizers 0.23.3, and Hugging Face Hub 1.33.0.
   \item Obtain the measurement harness embedded in this PDF and place it in a writable working directory.
-  \item Run \texttt{python ablation-gem-measure.py --project /path/to/ablation --output results}. The harness downloads and hash-checks the model, constructs real Lab evidence, runs inference, computes the sweep, and reloads the resulting probability vector for verification.
+  \item Run \texttt{python scripts/ablation-gem-measure.py --project /path/to/ablation --output results}. The harness downloads and hash-checks the model, constructs real Lab evidence, runs inference, computes the sweep, and reloads the resulting probability vector for verification.
   \item Confirm the reference sweep $5,4,3,2,1,0$ and the actual sweep $4,2,2,1,1,1$ at thresholds $0.02,0.05,0.10,0.15,0.30,0.50$.
   \item Load the embedded probability vector and independently recompute each count using the strict comparison $P(a\mid h_T(S))>\tau$. Compare the raw-value and input-ID hashes with the manifest.
 \end{enumerate}
 
 The numerical values and raw-value hashes are the reproducible evidence. Timing values and archive-container metadata may differ between runs.
 
-For the XLNet extension, extract \texttt{xlnet-accessible-volume.py}. Place the artifact writer, \texttt{ablation\_gem\_artifacts.py}, in the same working directory. Install NumPy, PyTorch 2.14.1, Transformers 5.18.0, and the tokenizer requirements. Run the script with \texttt{--model xlnet/xlnet-base-cased} and then with \texttt{--model xlnet/xlnet-large-cased}, using a different \texttt{--output} directory for each. The script performs a repeated prediction, checks all three target-token replacements, saves every probability and input ID, and independently recomputes the sweep. Compare the saved reports and raw arrays with the included evidence. Small floating-point differences may occur across runtimes; compare threshold counts and token ordering separately from exact probability hashes.
+For the XLNet extension, extract \texttt{scripts/xlnet-accessible-volume.py}. Place the artifact writer, \texttt{scripts/ablation\_gem\_artifacts.py}, in the same working directory. Install NumPy, PyTorch 2.14.1, Transformers 5.18.0, and the tokenizer requirements. Run the script with \texttt{--model xlnet/xlnet-base-cased} and then with \texttt{--model xlnet/xlnet-large-cased}, using a different \texttt{--output} directory for each. The script performs a repeated prediction, checks all three target-token replacements, saves every probability and input ID, and independently recomputes the sweep. Compare the saved reports and raw arrays with the included evidence. Small floating-point differences may occur across runtimes; compare threshold counts and token ordering separately from exact probability hashes.
 
 For the sixteen additional comparisons, use a separate Python 3.14 environment with NumPy 2.5.3, PyTorch 2.14.1, Transformers 4.56.2, Tokenizers 0.22.1, SentencePiece 0.2.2, and Hugging Face Hub 0.36.2. Keep the case manifest, runner, measurement harness, verifier, and artifact writer together. The runner uses the immutable revisions in the manifest, executes models sequentially, and removes only its own temporary per-model caches.
 
 \begin{lstlisting}
-python run-model-comparison.py --all \
+python scripts/run-model-comparison.py --all \
   --output evidence/comparison \
   --cache-dir /path/to/temporary-cache
 
-python verify-model-comparison.py \
-  --manifest model-comparison-cases.json \
+python scripts/verify-model-comparison.py \
+  --manifest evidence/comparison/model-comparison-cases.json \
   --evidence evidence/comparison
 \end{lstlisting}
 
@@ -346,12 +346,12 @@ The optional cache directory must be writable and have enough space for the larg
 The BioBERT experiment uses the same Python and model-runtime versions as the sixteen additional comparisons. Keep the three experiment scripts, the independent verifier, the artifact writer, and the frozen \texttt{evidence/biobert-optimization} directory together. The included case and split manifests are the authoritative inputs; downloading new source documents is not required. Run:
 
 \begin{lstlisting}
-python biobert-accessible-volume.py
-python optimize-biobert.py
-python verify-biobert-optimization.py
+python scripts/biobert-accessible-volume.py
+python scripts/optimize-biobert.py
+python scripts/verify-biobert-optimization.py
 \end{lstlisting}
 
-The first command downloads the pinned BioBERT model and reproduces all 120 baseline distributions and reports. The second verifies the raw artifacts, selects adaptive parameters using development and validation cases only, and evaluates the frozen choice on the test cases. The third independently recomputes every AUROC and AUPRC value. Use \texttt{prepare-biobert-cases.py} only when constructing a new source-document manifest; it must complete before any model predictions are inspected.
+The first command downloads the pinned BioBERT model and reproduces all 120 baseline distributions and reports. The second verifies the raw artifacts, selects adaptive parameters using development and validation cases only, and evaluates the frozen choice on the test cases. The third independently recomputes every AUROC and AUPRC value. Use \texttt{scripts/prepare-biobert-cases.py} only when constructing a new source-document manifest; it must complete before any model predictions are inspected.
 
 \section{Controlled context evidence}
 The baseline was repeated before perturbing the context. It produced identical input IDs and probability values. Table~\ref{tab:context-proof} reports the controlled follow-up measurements.
@@ -394,19 +394,19 @@ The complete evidence package is embedded in this PDF as 303 attachments. It inc
 \embedfile{evidence/ablation-gem-distilgpt2-config.json}
 \embedfile{evidence/ablation-gem-context-sweep.json}
 \embedfile{evidence/ablation-gem-context-sweep.npz}
-\embedfile{ablation-gem-measure.py}
-\embedfile{ablation-gem-context-sweep.py}
-\embedfile{ablation_gem_artifacts.py}
-\embedfile{xlnet-accessible-volume.py}
+\embedfile{scripts/ablation-gem-measure.py}
+\embedfile{scripts/ablation-gem-context-sweep.py}
+\embedfile{scripts/ablation_gem_artifacts.py}
+\embedfile{scripts/xlnet-accessible-volume.py}
 \embedfile{evidence/xlnet-hidden-token-accessible-volume.json}
 \embedfile{evidence/xlnet-hidden-token-probabilities.npz}
 \embedfile{evidence/xlnet-large/xlnet-hidden-token-accessible-volume.json}
 \embedfile{evidence/xlnet-large/xlnet-hidden-token-probabilities.npz}
 \embedfile{evidence/xlnet-offline-reproduction.json}
-\embedfile{model-comparison-cases.json}
-\embedfile{prediction-accessible-volume.py}
-\embedfile{run-model-comparison.py}
-\embedfile{verify-model-comparison.py}
+\embedfile{evidence/comparison/model-comparison-cases.json}
+\embedfile{scripts/prediction-accessible-volume.py}
+\embedfile{scripts/run-model-comparison.py}
+\embedfile{scripts/verify-model-comparison.py}
 \embedfile{evidence/comparison/model-comparison-summary.json}
 \embedfile{evidence/comparison/model-comparison-summary.csv}
 \embedfile{evidence/comparison/bert-base-cased-accessible-volume.json}
@@ -441,16 +441,16 @@ The complete evidence package is embedded in this PDF as 303 attachments. It inc
 \embedfile{evidence/comparison/prot_bert-probabilities.npz}
 \embedfile{evidence/comparison/qwen2.5-math-1.5b-accessible-volume.json}
 \embedfile{evidence/comparison/qwen2.5-math-1.5b-probabilities.npz}
-\embedfile{prepare-biobert-cases.py}
-\embedfile{biobert-accessible-volume.py}
-\embedfile{optimize-biobert.py}
-\embedfile{verify-biobert-optimization.py}
+\embedfile{scripts/prepare-biobert-cases.py}
+\embedfile{scripts/biobert-accessible-volume.py}
+\embedfile{scripts/optimize-biobert.py}
+\embedfile{scripts/verify-biobert-optimization.py}
 \embedfile{evidence/biobert-optimization/cases.json}
 \embedfile{evidence/biobert-optimization/splits.json}
 \embedfile{evidence/biobert-optimization/sources.json}
 \embedfile{evidence/biobert-optimization/baseline-summary.json}
 \embedfile{evidence/biobert-optimization/optimization.json}
 \embedfile{evidence/biobert-optimization/optimization-scores.csv}
-\input{biobert-attachments}
+\input{paper/biobert-attachments}
 
 \end{document}

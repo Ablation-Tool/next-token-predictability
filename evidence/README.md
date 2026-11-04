@@ -8,9 +8,9 @@ These are the canonical artifacts for the current paper and reproduction procedu
 
 - [Ablation + GEM measurement](./ablation-gem-accessible-volume.json) and [complete next-token probabilities](./ablation-gem-next-token-probabilities.npz).
 - [XLNet-Base report](./xlnet-hidden-token-accessible-volume.json) and [XLNet-Large report](./xlnet-large/xlnet-hidden-token-accessible-volume.json), with complete probability vectors and input IDs.
-- [Sixteen-model comparison summary](./comparison/model-comparison-summary.json) and [frozen case manifest](../model-comparison-cases.json).
+- [Sixteen-model comparison summary](./comparison/model-comparison-summary.json) and [frozen case manifest](./comparison/model-comparison-cases.json).
 - [BioBERT optimization results](./biobert-optimization/optimization.json), [per-case scores](./biobert-optimization/optimization-scores.csv), and [frozen cases](./biobert-optimization/cases.json).
-- [Current paper](../accessible-volume-significance.pdf) and [LaTeX source](../accessible-volume-significance.tex).
+- [Current paper](../paper/accessible-volume-significance.pdf) and [LaTeX source](../paper/accessible-volume-significance.tex).
 
 ## Historical research context
 
@@ -51,4 +51,4 @@ Nineteen unique public models were used across the Ablation + GEM measurement, t
 | Protein | `Rostlab/prot_bert` | [Revision `7a89448`](https://huggingface.co/Rostlab/prot_bert/tree/7a894481acdc12202f0a415dd567f6cfdb698908) | [Report](./comparison/prot_bert-accessible-volume.json) |
 | Mathematics, causal | `Qwen/Qwen2.5-Math-1.5B` | [Revision `4a83ca6`](https://huggingface.co/Qwen/Qwen2.5-Math-1.5B/tree/4a83ca6e4526a4f2da3aa259ec36c259f66b2ab2) | [Report](./comparison/qwen2.5-math-1.5b-accessible-volume.json) |
 
-For reproduction, use the pinned IDs and revisions in [`model-comparison-cases.json`](../model-comparison-cases.json) and the commands in the main README. The two Foundation-Sec-8B variants mentioned in the paper were **not run** and therefore are not listed as tested models.
+For reproduction, use the pinned IDs and revisions in [`model-comparison-cases.json`](./comparison/model-comparison-cases.json) and the commands in the main README. The two Foundation-Sec-8B variants mentioned in the paper were **not run** and therefore are not listed as tested models.

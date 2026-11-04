@@ -19,7 +19,7 @@ def sha256_bytes(data):
 
 def main():
     parser = argparse.ArgumentParser(description="Verify raw comparison artifacts and generate the paper summary")
-    parser.add_argument("--manifest", type=Path, default=Path("model-comparison-cases.json"))
+    parser.add_argument("--manifest", type=Path, default=Path(__file__).parent.parent / "evidence" / "comparison" / "model-comparison-cases.json")
     parser.add_argument("--evidence", type=Path, default=Path("evidence/comparison"))
     args = parser.parse_args()
     manifest_bytes = args.manifest.read_bytes()

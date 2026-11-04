@@ -10,7 +10,7 @@ import tempfile
 
 def main():
     parser = argparse.ArgumentParser(description="Run the frozen accessible-volume model comparisons sequentially")
-    parser.add_argument("--manifest", type=Path, default=Path(__file__).with_name("model-comparison-cases.json"))
+    parser.add_argument("--manifest", type=Path, default=Path(__file__).parent.parent / "evidence" / "comparison" / "model-comparison-cases.json")
     parser.add_argument("--output", type=Path, default=Path("evidence/comparison"))
     parser.add_argument("--cache-dir", type=Path, help="Parent directory for temporary per-model caches")
     selection = parser.add_mutually_exclusive_group(required=True)
