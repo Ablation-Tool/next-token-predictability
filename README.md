@@ -1,5 +1,7 @@
 # The Significance of Accessible Volume
 
+![Next-token probability and the accessible-volume equation](./assets/next-token-probability-equation.png)
+
 *A way to observe the shape of a model’s next decision before it happens*
 
 **Nicholas Michael Kloster**
@@ -447,6 +449,10 @@ The UTF-8 LaTeX source payload preceding this section has SHA-256:
     d8fe3401f6fcf1a710451d07a893ab61243cdf7a0f85de6e1743df051b21eaf3
 
 This digest binds the named signatory to the exact source payload. It is an integrity record, not a third-party identity certificate.
+
+## Research session screenshot
+
+![The accessible-volume equation research session beside the signed paper](./assets/accessible-volume-research-session.png)
 
 ## Original paper page images
 
