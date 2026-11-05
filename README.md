@@ -12,6 +12,8 @@
 
 [Read the paper](./paper/accessible-volume-significance.pdf)
 
+[Read the companion paper: Accessible Volume Beyond the Next Token](./paper/accessible-volume-beyond-next-token.pdf)
+
 [Evidence guide: verified artifacts, historical research context, and links to all 19 tested models](./evidence/README.md)
 
 **TL;DR — This solves:** the inability to see how open or concentrated a language model’s next-token decision was before selection, by counting the alternatives whose predicted probabilities exceed a chosen threshold.
