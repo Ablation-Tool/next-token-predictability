@@ -238,6 +238,16 @@ The strongest next step is to validate multi-horizon accessible volume on real l
 
 This is proposed future work, not a completed result.
 
+## Zoe concept visualization
+
+[Open the interactive concept map](./assets/master-gem-interactive.html) · [Static SVG](./assets/master-gem-architecture.svg) · [ASCII source](./assets/master-gem-architecture.txt) · [Colored terminal version](./assets/master-gem-architecture.ansi)
+
+![Zoe concept architecture](./assets/master-gem-architecture.svg)
+
+**Zoe unifies GEM HELEN + MASTER GEM + BRAIN GEM.** HELEN supplies the creative native workspace, this repository supplies research and numerical verification, and Ablation supplies the native host, Lab, VDI replay, and evidence kernel. The native implementation is being integrated separately in Ablation; this concept map is not a claim that integration is complete. The [Zoe conformance pack](./evidence/master-gem/conformance.json) pins the strict threshold rule, HELEN's exact synthetic metrics, real Groove and Nightingale evidence, Procrustes alignment, and exact toy multi-horizon counts.
+
+The interactive version runs entirely locally with no server or external requests; its particles illustrate data flow rather than live inference or probability mass. Feedback remains human-controlled, forecast breadth remains distinct from correctness, and `executed=False` remains the boundary between measurement and action.
+
 ## What the result does not establish
 
 The experiment does not establish that a concentrated choice is a correct choice. It does not establish that a broad choice is a better choice. It does not demonstrate how later tokens will behave, and it does not turn a single-step measurement into a prediction of a complete response.
