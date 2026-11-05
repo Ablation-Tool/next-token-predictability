@@ -61,6 +61,17 @@
     "translation": [320.40759733563726, -148.33337978317212],
     "rmse_per_landmark_tolerance": 1e-12
   },
+  "bayesian_field": {
+    "equation_sections": 13,
+    "worked_update": {"prior": 0.5, "likelihood_true": 0.8, "likelihood_false": 0.2, "posterior": 0.8},
+    "required_properties": [
+      "Belief diffs preserve prior, posterior, likelihood ratio, log likelihood ratio, log-odds, and source",
+      "Repeated evidence families require explicit dependence acknowledgment and adjusted likelihoods",
+      "Chamber measurements and sampled outcomes never update posteriors automatically",
+      "Quarantined chambers are inspectable but cannot run",
+      "Append-only canonical-JSON SHA-256 chains provide tamper evidence, not authentication"
+    ]
+  },
   "toy_markov_chain": {
     "initial": {"A": 0.6, "B": 0.4},
     "transitions": {"A": {"A": 0.7, "B": 0.3}, "B": {"A": 0.4, "B": 0.6}},

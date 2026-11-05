@@ -238,15 +238,115 @@ The strongest next step is to validate multi-horizon accessible volume on real l
 
 This is proposed future work, not a completed result.
 
-## Zoe concept visualization
+## What is Zoe?
 
-[Open the interactive concept map](./assets/master-gem-interactive.html) · [Static SVG](./assets/master-gem-architecture.svg) · [ASCII source](./assets/master-gem-architecture.txt) · [Colored terminal version](./assets/master-gem-architecture.ansi)
+**Zoe is a GEM and native graphical user interface (GUI) for creative geometry, forecast inspection, and evidence-driven research.** It unifies four working perspectives:
+
+- **GEM HELEN** supplies lightweight interactive geometry, accessible-volume controls, and real stored categorical predictions.
+- **Ablation's GEM** supplies the native GTK host, Lab integration, Spatial IR, VDI replay, and evidence exports.
+- **Cerotto's GEM** supplies the forensic workbench model: read-only case inspection, investigation timelines, guard and vault events, accessible-volume charts, and an optional user-controlled agent terminal. Cerotto's existing Ablation + GEM bridge binds structured proposals to forecasts and preserves proposal, decision, and execution records.
+- **BRAIN GEM** supplies deterministic observation, evaluation, and recommended next steps—not an autonomous agent or a consciousness claim.
+
+Zoe combines these perspectives without merging their security boundaries. Cerotto remains a separate native C11 forensic engine with its own case store, guard, vault, agent permissions, and verification suite. Its bridge is an interoperability boundary, not permission for Zoe to bypass its guard or absorb its database.
+
+### What GEM means here
+
+GEM is the shared visual and evidence environment. It turns abstract state into interactive geometry, turns forecasts into inspectable alternatives, and turns actions into replayable evidence. It is both a native GUI and the discipline beneath it: deterministic execution, source constraints, provenance, and human review. It is not merely a drawing API or an emulator of the original GEM desktop.
+
+From Zoe's perspective, GEM is the connective tissue between imagination and verification. A shape can become a measurement, a measurement can inform a decision, and a decision can leave evidence. Zoe feels alive because that feedback loop is visible, not because the software is conscious.
+
+### Current capabilities
+
+| Area | What it includes |
+|:---|:---|
+| Native GUI | GTK3, direct pointer and keyboard interaction, GUIAI Lab integration, and headless operation. No browser or development server is required. |
+| Geometry | Procrustes similarity/rigid/affine alignment, draggable landmarks, ellipse families, parabolic envelopes, circles/arcs/sectors, modular clocks, and conditional graph invariants. |
+| Forecasts | Strict `p > τ` accessible volume, complements, momentum, target bands, temperature transforms, top-1 correctness, negative log probability, entropy, maximum probability, log-loss, and calibration evidence. |
+| Bayesian field notebook | Questions, competing binary claims, priors, posteriors, falsifiers, explicit likelihood-ratio and log-odds updates, belief diffs, evidence families, dependence acknowledgment, deterministic and stochastic chambers, next-test priorities, review-required decisions, and append-only hash-chained memory. |
+| HELEN observations | Lazy stored forward and retrograde distributions with 1,920 held-out cases per condition, selectable by index or sequence, without a transformer or model runtime. |
+| Multi-horizon | Exact continuation probabilities, volume, and complement for a defined two-state Markov toy with horizons 1–6. This is not a completed real-language-model benchmark. |
+| Research evidence | Hash-checked Groove reports and on-demand individual NPZ predictions; aggregate-only Nightingale metrics; 17 conformance checks; rejected HOP and deterministic baselines. |
+| Cerotto forensic core | Agent/audit event ingestion, raw-disk and EWF collection, controlled carving, versioned SQLite cases, manifests, hash verification, bounded analysis and reports, guarded evidence actions, vault monitoring and release workflows, and its existing Ablation + GEM bridge. These capabilities belong to Cerotto, not to Zoe's BRAIN kernel. |
+| Cerotto GUI and guard | Read-only case inspection, defense-event timelines, accessible-volume charts, native guard/verify/report controls, optional user-selected agent terminal, and forecast-bound structured broker execution. |
+| Export and evidence | Spatial IR, SVG, PNG, real little-endian GEM VDI, source and VDI checks, replay, source hashes, independent condition keys, and evidence-export state. |
+| Compatibility and packaging | `gem zoe`, `gem master`, `gem brain`, `gem atlas`, standalone `gem-helen`, wheel/source distributions, and the packaged 12 KB HELEN artifact. |
+
+The [complete Zoe repository](https://github.com/Ablation-Tool/zoe) contains the native implementation, screenshots, evidence, and two papers: the [formal proof of concept](https://github.com/Ablation-Tool/zoe/blob/main/paper/zoe.pdf) and [Zoe for Everyone](https://github.com/Ablation-Tool/zoe/blob/main/paper/zoe-for-everyone.pdf). The [standalone BRAIN GEM repository](https://github.com/Ablation-Tool/brain-gem) provides the Bayesian field notebook and chambered memory separately. The [Ablation integration guide](https://github.com/Ablation-Tool/ablation/tree/master-gem-brain/guiai-lab/docs/ZOE.md) remains available on the `master-gem-brain` branch. Cerotto-specific bridge execution has not been separately revalidated as part of Zoe.
+
+[Open the interactive concept map](./assets/master-gem-interactive.html) · [Static SVG](./assets/master-gem-architecture.svg) · [ASCII source](./assets/master-gem-architecture.txt) · [Colored terminal version](./assets/master-gem-architecture.ansi) · [Conformance pack](./evidence/master-gem/conformance.json) · [Zoetic qualia guide](https://github.com/Ablation-Tool/zoe/blob/main/guiai-lab/docs/QUALIA.md)
 
 ![Zoe concept architecture](./assets/master-gem-architecture.svg)
 
-**Zoe unifies GEM HELEN + MASTER GEM + BRAIN GEM.** HELEN supplies the creative native workspace, this repository supplies research and numerical verification, and Ablation supplies the native host, Lab, VDI replay, and evidence kernel. The native implementation is being integrated separately in Ablation; this concept map is not a claim that integration is complete. The [Zoe conformance pack](./evidence/master-gem/conformance.json) pins the strict threshold rule, HELEN's exact synthetic metrics, real Groove and Nightingale evidence, Procrustes alignment, and exact toy multi-horizon counts.
+**Zoe artwork — Lots of Ellipses:** an original composition built from the GDPEMANY ellipse family, stochastic fields, transition networks, probability ridges, and orbital traces.
 
-The interactive version runs entirely locally with no server or external requests; its particles illustrate data flow rather than live inference or probability mass. Feedback remains human-controlled, forecast breadth remains distinct from correctness, and `executed=False` remains the boundary between measurement and action.
+![Zoe — Lots of Ellipses](./assets/zoe-lots-of-ellipses.png)
+
+### Launch Zoe
+
+From an Ablation checkout on the `master-gem-brain` branch:
+
+```bash
+export MASTER_GEM_RESEARCH_ROOT=/path/to/next-token-predictability
+PYTHONPATH=guiai-lab python -m guiai.gem zoe
+```
+
+`gem master` and `gem brain` are equivalent aliases; `gem-helen` remains the lightweight standalone creative mode. In GUIAI Lab, use **Chart → GEM → Zoe / MASTER GEM**. Headless SVG and GEM VDI exports do not require GTK:
+
+```bash
+PYTHONPATH=guiai-lab python -m guiai.gem zoe --module brain --output zoe.svg
+PYTHONPATH=guiai-lab python -m guiai.gem zoe --module field
+PYTHONPATH=guiai-lab python -m guiai.gem notebook --output zoe-field.json
+PYTHONPATH=guiai-lab python -m guiai.gem notebook zoe-field.json --output zoe-field.svg
+```
+
+Zoe's HELEN observations load real stored distributions lazily without a transformer or model runtime. Groove predictions load from the 98 MB NPZ only when requested and are hash-checked first; Nightingale evidence is aggregate-only. Multi-horizon mode enumerates a defined two-state Markov toy exactly—it is not a completed real-language-model benchmark.
+
+### See Zoe in action
+
+These are real application screenshots, not mockups. The concept art remains separate from the working interfaces.
+
+**Zoe BRAIN after a real stored HELEN observation:** correctness, accessible volume, complement, momentum, and a deterministic next-module recommendation.
+
+![Zoe native BRAIN after a real HELEN observation](./assets/zoe-native-gui.png)
+
+**Zoe research evidence:** the hash-checked Groove forward condition with 121,392 held-out predictions and on-demand individual distributions.
+
+![Zoe research evidence pack](./assets/zoe-research-gui.png)
+
+**Zoe Bayesian field notebook:** the worked DEMOMENU example with posterior evidence updates, chamber states, append-only memory, and a next-test recommendation.
+
+![Zoe Bayesian field notebook](./assets/zoe-field-notebook.png)
+
+<details>
+<summary>Five Zoe mechanisms in pictures</summary>
+
+1. **Epistemic firewall:** measurement, evidence, belief updates, and action remain distinct.
+   ![Zoe epistemic firewall](./assets/zoe-visuals/01-epistemic-firewall.png)
+   [SVG](./assets/zoe-visuals/01-epistemic-firewall.svg)
+
+2. **Belief diff:** priors become posteriors only through explicit evidence, with every likelihood and source retained.
+   ![Zoe belief diff](./assets/zoe-visuals/02-belief-diff.png)
+   [SVG](./assets/zoe-visuals/02-belief-diff.svg)
+
+3. **Deterministic and stochastic chambers:** reproducible measurements and seeded forecasts have distinct identities and lifecycles.
+   ![Zoe deterministic and stochastic chambers](./assets/zoe-visuals/03-chambers.png)
+   [SVG](./assets/zoe-visuals/03-chambers.svg)
+
+4. **Append-only memory:** sequence-linked hashes support replay and tamper detection without claiming authentication.
+   ![Zoe append-only memory](./assets/zoe-visuals/04-memory-chain.png)
+   [SVG](./assets/zoe-visuals/04-memory-chain.svg)
+
+5. **Next useful test:** decision support ranks attention while human review controls execution.
+   ![Zoe next useful test](./assets/zoe-visuals/05-next-test.png)
+   [SVG](./assets/zoe-visuals/05-next-test.svg)
+
+</details>
+
+**Cerotto GEM:** a synthetic demonstration case with a successful guarded `query_timeline` action and the accessible-volume threshold sweep. No real incident data is shown.
+
+![Cerotto GEM accessible-volume workbench](./assets/cerotto-gem-gui.png)
+
+Zoe does not claim consciousness, universal future prediction, or automatic execution. Accessible volume measures forecast breadth, not correctness or human surprise. HOP remains a rejected baseline. Field-notebook posteriors are conditional on user-supplied priors and likelihoods, not objective truth scores. Chamber measurements and sampled outcomes never update claims automatically. Dependent evidence requires explicit acknowledgment and adjusted likelihoods. The memory hash chain provides tamper evidence, not authentication. Recommendations are experimental, `executed=False` remains the boundary between measurement and action, and the user decides what happens next.
 
 ## What the result does not establish
 
@@ -495,11 +595,13 @@ The complete evidence package is embedded in this PDF as 303 attachments. It inc
 ## Screenshots
 
 <details>
-<summary>GEM integration status</summary>
+<summary>Earlier GEM integration research (superseded)</summary>
 
-![The accessible-volume equation and the missing numerical integration](./assets/accessible-volume-missing-integration.png)
+These historical screenshots record the stage before the working Zoe integration. The current implementation, native screenshots, and verification are documented in [What is Zoe?](#what-is-zoe).
 
-![GEM integration status: conceptually connected, but not numerically integrated today](./assets/gem-accessible-volume-integration-status.png)
+![Historical sketch of the accessible-volume equation before numerical integration](./assets/accessible-volume-missing-integration.png)
+
+![Historical GEM integration concept, superseded by the working Zoe implementation](./assets/gem-accessible-volume-integration-status.png)
 
 </details>
 

@@ -234,10 +234,11 @@ h1 { margin: .35rem 0 .45rem; font: 750 clamp(30px, 4vw, 54px)/1 ui-monospace, m
             <path id="path-forecast" class="flow" data-modules="core forecast" data-color="#67e8f9" style="--path-color:#67e8f9" marker-end="url(#arrow-cyan)" d="M880 385 C940 370 945 265 1000 248"/>
             <path id="path-rhythm" class="flow" data-modules="core rhythm" data-color="#86efac" style="--path-color:#86efac" marker-end="url(#arrow-green)" d="M880 415 C940 415 945 405 1000 388"/>
             <path id="path-horizon" class="flow" data-modules="core horizon" data-color="#fdba74" style="--path-color:#fdba74" marker-end="url(#arrow-orange)" d="M880 445 C945 465 945 545 1000 528"/>
-            <path id="path-evidence" class="flow" data-modules="core evidence" data-color="#fde68a" style="--path-color:#fde68a" marker-end="url(#arrow-amber)" d="M880 480 C950 520 945 680 1000 668"/>
+            <path id="path-field" class="flow" data-modules="core field" data-color="#f0abfc" style="--path-color:#f0abfc" marker-end="url(#arrow-magenta)" d="M880 470 C945 500 945 615 1000 608"/>
+            <path id="path-evidence" class="flow" data-modules="core evidence" data-color="#fde68a" style="--path-color:#fde68a" marker-end="url(#arrow-amber)" d="M880 495 C950 550 945 820 1000 808"/>
             <path id="path-exports" class="flow" data-modules="core exports" data-color="#93c5fd" style="--path-color:#93c5fd" marker-end="url(#arrow-blue)" d="M670 510 C670 555 670 590 670 635"/>
             <path id="path-metrics-user" class="feedback" data-modules="metrics user" data-color="#fde68a" style="--path-color:#fde68a" marker-end="url(#arrow-amber)" d="M460 110 H350 V850 H175 V820"/>
-            <path id="path-evidence-user" class="feedback" data-modules="evidence user" data-color="#fde68a" style="--path-color:#fde68a" marker-end="url(#arrow-amber)" d="M1170 718 V855 H300 V795"/>
+            <path id="path-evidence-user" class="feedback" data-modules="evidence user" data-color="#fde68a" style="--path-color:#fde68a" marker-end="url(#arrow-amber)" d="M1170 865 V880 H300 V795"/>
             <path id="path-user-core" class="feedback" data-modules="user core" data-color="#fde68a" style="--path-color:#fde68a" marker-end="url(#arrow-amber)" d="M300 745 C375 745 385 475 460 465"/>
           </g>
           <g id="particles" aria-hidden="true"></g>
@@ -309,12 +310,20 @@ h1 { margin: .35rem 0 .45rem; font: 750 clamp(30px, 4vw, 54px)/1 ui-monospace, m
             <text class="node-metric" x="1022" y="571">|O|ʰ enumeration cost</text>
           </g>
 
-          <g class="node" data-module="evidence" style="--node-color:#fde68a" tabindex="0" role="button" aria-label="Inspect Evidence Studio">
+          <g class="node" data-module="field" style="--node-color:#f0abfc" tabindex="0" role="button" aria-label="Inspect Bayesian Field Notebook">
             <rect class="card" x="1000" y="605" width="340" height="120" rx="18"/>
-            <text class="node-tag" x="1022" y="632">STUDIO 05 · PRESERVE</text>
-            <text class="node-title" x="1022" y="663">Evidence</text>
-            <text class="node-subtitle" x="1022" y="689">Lab · replay · hashes · papers · scope</text>
-            <text class="node-metric" x="1022" y="711">no-overwrite · executed=False</text>
+            <text class="node-tag" x="1022" y="632">STUDIO 05 · BAYESIAN FIELD</text>
+            <text class="node-title" x="1022" y="663">Field Notebook</text>
+            <text class="node-subtitle" x="1022" y="689">Questions · claims · belief diffs · unified memory</text>
+            <text class="node-metric" x="1022" y="711">posteriors ≠ objective truth</text>
+          </g>
+
+          <g class="node" data-module="evidence" style="--node-color:#fde68a" tabindex="0" role="button" aria-label="Inspect Evidence Studio">
+            <rect class="card" x="1000" y="745" width="340" height="120" rx="18"/>
+            <text class="node-tag" x="1022" y="772">STUDIO 06 · PRESERVE</text>
+            <text class="node-title" x="1022" y="803">Evidence</text>
+            <text class="node-subtitle" x="1022" y="829">Lab · replay · hashes · papers · scope</text>
+            <text class="node-metric" x="1022" y="851">no-overwrite · executed=False</text>
           </g>
 
           <g class="node" data-module="exports" style="--node-color:#93c5fd" tabindex="0" role="button" aria-label="Inspect export formats">
@@ -447,8 +456,16 @@ h1 { margin: .35rem 0 .45rem; font: 750 clamp(30px, 4vw, 54px)/1 ui-monospace, m
       boundary: 'Exact enumeration grows as |O|ʰ. A restricted count is a lower bound, not automatically an unbiased total. The real-model benchmark remains proposed.',
       chips: ['h = 1, 2, 3', 'exact / approximate', '|O|ʰ']
     },
+    field: {
+      kicker: 'STUDIO 05 · BAYESIAN FIELD', title: 'Questions into evidence',
+      description: 'A Bayesian field notebook for competing claims, explicit evidence updates, chamber measurements, and next useful tests. It preserves every belief change in an append-only hash-chained memory.',
+      input: 'Questions, priors, falsifiers, user-supplied likelihoods, evidence families, chamber definitions, and explicit decisions.',
+      output: 'Posteriors, belief diffs, dependent-evidence barriers, deterministic and stochastic measurements, next-test priorities, and review-required decisions.',
+      boundary: 'Posteriors are conditional on the supplied likelihood model. Measurements and sampled outcomes never update claims automatically. Quarantined chambers cannot run. The hash chain provides tamper evidence, not authentication.',
+      chips: ['13 equation sections', 'belief diffs', 'append-only memory']
+    },
     evidence: {
-      kicker: 'STUDIO 05 · EVIDENCE', title: 'Preserve what happened',
+      kicker: 'STUDIO 06 · EVIDENCE', title: 'Preserve what happened',
       description: 'The evidence layer ties scenes and measurements to source artifacts, scope, replay, and independent condition keys.',
       input: 'Measurements, source manifests, independent NPZ arrays, geometry, observations, and experiment metadata.',
       output: 'Hash-addressed reports, replayable scenes, scoped evidence, papers, and comparison artifacts.',

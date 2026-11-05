@@ -28,6 +28,9 @@
   │ Similarity/rigid  │       │ Threshold sweeps  │       │ Real MIDI onsets  │       │ Exact / bounded   │       │ Hashes + scope     │
   │ Affine + scenes   │       │ Temperature       │       │ Forward / reverse │       │ Approximation     │       │ Papers + reports   │
   └───────────────────┘       └───────────────────┘       └───────────────────┘       └────────────────────┘       └────────────────────┘
+  ┌─ BAYESIAN FIELD NOTEBOOK ──────────────────────────────────────────────────────────────────────────────┐
+  │ Questions · claims · belief diffs · evidence families · chambers · next tests · unified memory         │
+  └────────────────────────────────────────────────────────────────────────────────────────────────────────┘
             │                            │                            │                             │                            │
             └────────────────────────────┴────────────────────────────┴─────────────────────────────┴────────────────────────────┘
                                                                       │
