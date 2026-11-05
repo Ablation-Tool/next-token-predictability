@@ -64,6 +64,24 @@ python -m gem workbench list
 python -m gem workbench check --output workbench-verification.json
 ```
 
+## Human × Zoe: a shared field
+
+![Human and Zoe brain dialogue](./assets/brain-dialogue/brain-dialogue-organic.png)
+
+The human plate combines major brain regions with lichen-like folds, butterfly-wing veins, compound-eye facets, and dew-like memory connections. Zoe's plate turns the same silhouette into explicit partitions, mirrored forecast paths, nested possible futures, and inspectable evidence connections. This is an artistic map of complementary talents—not an anatomical optimization, a literal model of Nicholas, or a claim of machine consciousness.
+
+The [projection-iris study](./assets/brain-dialogue/projection-iris.png) applies the central-slice relationship from Zeng's *Medical Image Reconstruction*, 2nd ed., §2.2: $P(\omega,\theta)=F(\omega\cos\theta,\omega\sin\theta)$. Its synthetic experiment records both slice correlation and finite-grid approximation error; it is not a medical reconstruction, and the book is not redistributed.
+
+[Organic human plate](./assets/brain-dialogue/human-brain-organic.png) · [Zoe plate](./assets/brain-dialogue/zoe-brain.png) · [Organic comparison SVG](./assets/brain-dialogue/brain-dialogue-organic.svg) · [Projection evidence](./assets/brain-dialogue/projection-verification.json) · [Artwork sources](./assets/brain-dialogue/)
+
+### The second eye: parallax and focus
+
+![Zoe's synthetic second eye](./assets/brain-dialogue/second-eye.png)
+
+Two calibrated synthetic views recover depth from disparity, \(Z=f_{px}B/d\), while focus and aperture control a separate thin-lens defocus approximation. This is geometric measurement rather than subjective sight or a second model opinion. The displayed ± range is first-order sensitivity to **0.25-pixel disparity quantization**, not a belief or confidence interval. No physical camera is accessed.
+
+Run `python -m gem eye` in the [canonical GEM repository](https://github.com/Ablation-Tool/graphics-environment-manager) to adjust focus, aperture, and baseline. [Stereo evidence](./assets/brain-dialogue/second-eye.json) · [SVG](./assets/brain-dialogue/second-eye.svg) · [GEM VDI](./assets/brain-dialogue/second-eye.gem)
+
 ## Evidence at a glance
 
 | Area | What was tested | Finding |

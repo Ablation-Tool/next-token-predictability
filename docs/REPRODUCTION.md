@@ -73,10 +73,10 @@ From the GEM checkout, with its documented research dependencies configured:
 python stress/run_stress.py
 python stress/native_stress.py
 python stress/gem_stress.py
-python -m unittest tools.test_workbench tools.test_library tools.test_unlock_guard
+python -m unittest tools.test_workbench tools.test_library tools.test_unlock_guard tools.test_eye
 
 stress/nested_x11.sh env PYTHONPATH=. \
-  /usr/bin/python3 -m unittest tools.test_workbench tools.test_library tools.test_unlock_guard
+  /usr/bin/python3 -m unittest tools.test_workbench tools.test_library tools.test_unlock_guard tools.test_eye
 ```
 
 The nested launcher creates an isolated X11 display for native GTK, pointer, keyboard, and export checks. It does not certify every graphics driver, display server, or external VDI consumer.
