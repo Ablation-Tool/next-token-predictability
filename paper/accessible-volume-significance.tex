@@ -274,6 +274,27 @@ Ablation + GEM is itself a working demonstration of the chamber model. The AI Ag
 
 The implementation used for this experiment is revision \href{https://github.com/Ablation-Tool/ablation/commit/d596bed31ba5fe361efa1c6fdad6d86e3126ab63}{\texttt{d596bed3}}. At that revision, the main Ablation CI passed 2,803 tests with 93 skips, and native Linux, Windows, and macOS workflows passed. Those results demonstrate the implementation's behavior. The accessible-volume experiment adds a separate measurement using actual session evidence produced by that implementation; it is not a claim that the metric was already part of the framework.
 
+\section{Accessible Q-Volume and the mirrored workbench}
+This appendix is a later engineering and editorial update. It does not change the original research question, experimental results, or sole authorship of Nicholas Michael Kloster's original accessible-volume equation and paper. The later Zoe and Q-volume developments are identified separately.
+
+The strict threshold operator can also annotate an explicitly modeled causal repertoire $\rho_m(x_0\mid x_1)$. For submechanism $m$ and current state $x_1$,
+\begin{equation}
+QA_\tau(m;x_1)=\sum_{x_0\in\mathcal X_0}\mathbf 1[\rho_m(x_0\mid x_1)>\tau].
+\end{equation}
+The corresponding accessible set is $QB_\tau(m;x_1)=\{x_0:\rho_m(x_0\mid x_1)>\tau\}$. A complete labeled threshold filtration preserves the repertoire through
+\begin{equation}
+\rho_m(x_0\mid x_1)=\sup\{\tau:x_0\in QB_\tau(m;x_1)\},
+\end{equation}
+with $\sup\varnothing=0$. Scalar counts without membership lose state labels; finite threshold grids are approximations rather than guaranteed exact reconstructions.
+
+For the silent AND gate, the empty mechanism assigns probability $1/4$ to each previous input, while the complete mechanism assigns $(1/3,1/3,1/3,0)$. Effective information is $\log_2(4/3)=0.4150374993\ldots$ bits. At $\tau=0.20$, accessible Q-volume falls from four to three and input $11$ leaves. At $\tau=0.30$, it rises from zero to three and inputs $00,01,10$ enter. The threshold annotation therefore does not replace $\Phi$ or $\gamma$, does not infer a causal repertoire from a forecast, and does not measure consciousness.
+
+The mirrored workbench pairs forward and retrograde observations at the same held-out index. Both distributions remain separate. It records correctness and accessible volume independently, whether the selected category agrees, and the volume difference $A_{\tau,i}^{\mathrm{forward}}-A_{\tau,i}^{\mathrm{retrograde}}$. This is paired evaluation, not a time-reversed model or a combined forecast. The shared field notebook preserves observations without changing a posterior or executing an action.
+
+The unified workbench contains 17 operations: the 13 original equation sections, causal-repertoire normalization, q-arrow annotation, two-way accessible records, and mirrored observation. Independent expected-result checks passed for all 17. The full mirrored test covered 1,920 aligned pairs and preserved accessible-set invariants and a bounded shared history of 128 pairs. The canonical mirror, library, and authorization suite passed all seven X11 tests; its headless run passed five tests with two native-only skips. Redundant child-history copying is avoided so the bounded history does not duplicate a second growing observation log.
+
+The implementation and reproduction commands are available at \url{https://github.com/Ablation-Tool/graphics-environment-manager}. Run \texttt{python -m gem workbench check} for the unified checks, or \texttt{python -m gem os} to inspect the mirrored brain. The separate Zoe research implementation remains at \url{https://github.com/Ablation-Tool/zoe}. The Q-volume and workbench verification records are embedded below. They establish toy arithmetic and software behavior, not an empirically validated implementation of integrated information theory.
+
 \section{Evidence manifest}
 The experiment used the public \href{https://huggingface.co/onnx-community/distilgpt2-ONNX}{\texttt{distilgpt2-ONNX}} model and ONNX Runtime 1.31.1. Table~\ref{tab:manifest} records the identities needed to verify the evidence independently.
 
@@ -386,7 +407,7 @@ These differences are observations about specific model/context pairs. They do n
 \lstinputlisting{evidence/ablation-gem-distilgpt2-config.json}
 
 \section{Embedded evidence}
-The complete evidence package is embedded in this PDF as 303 attachments. It includes the baseline experiment, XLNet Base and Large results, all sixteen additional model comparisons, and the focused BioBERT optimization study. Exact model inputs, complete probability vectors, JSON reports, immutable revisions, and raw-artifact hashes are preserved. The BioBERT package contains all 120 raw distributions and reports, frozen cases and document splits, source metadata and licenses, the complete parameter search, per-case scores, and an independent metric verifier. No external filesystem is needed to inspect the evidence; public model downloads are needed only to repeat inference.
+The complete evidence package is embedded in this PDF as 305 attachments. It includes the baseline experiment, XLNet Base and Large results, all sixteen additional model comparisons, and the focused BioBERT optimization study. Exact model inputs, complete probability vectors, JSON reports, immutable revisions, and raw-artifact hashes are preserved. The BioBERT package contains all 120 raw distributions and reports, frozen cases and document splits, source metadata and licenses, the complete parameter search, per-case scores, and an independent metric verifier. No external filesystem is needed to inspect the evidence; public model downloads are needed only to repeat inference.
 
 \embedfile{evidence/ablation-gem-accessible-volume.json}
 \embedfile{evidence/ablation-gem-next-token-probabilities.npz}
@@ -452,5 +473,7 @@ The complete evidence package is embedded in this PDF as 303 attachments. It inc
 \embedfile{evidence/biobert-optimization/optimization.json}
 \embedfile{evidence/biobert-optimization/optimization-scores.csv}
 \input{paper/biobert-attachments}
+\embedfile{evidence/qualia/accessible-q-volume.json}
+\embedfile{evidence/workbench/verification.json}
 
 \end{document}

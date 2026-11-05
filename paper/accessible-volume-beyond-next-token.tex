@@ -425,6 +425,62 @@ The supplied implementation report records 20/20 GEM stress tests, a focused GUI
 
 These systems demonstrate implementability, interactive inspection, and evidence provenance. They do not demonstrate that targeting a low, medium, or high volume band improves creativity, musical quality, reasoning, or safety. Recommendations are not automatic actions: the user decides what to do, and every volume target remains an experimental control whose effects must be measured independently.
 
+\section{Accessible Q-Volume and the mirrored brain}
+This section is a later engineering and mathematical extension. It does not alter the original accessible-volume equation or Nicholas Michael Kloster's sole authorship of the original research and papers.
+
+\subsection{Threshold tomography of causal repertoires}
+For a probability distribution $p$ on a finite labeled space $Z$, define the accessible set and count:
+\begin{equation}
+\mathcal B_\tau[p;Z]=\{z\in Z:p(z)>\tau\},\qquad
+\mathcal A_\tau[p;Z]=|\mathcal B_\tau[p;Z]|.
+\end{equation}
+For submechanism $m$, current state $x_1$, transition kernel $K_m$, and maximum-entropy intervention distribution $\mu$, an explicit causal repertoire is
+\begin{equation}
+\rho_m(x_0\mid x_1)=\frac{K_m(x_1\mid x_0)\mu(x_0)}{\sum_{x_0'}K_m(x_1\mid x_0')\mu(x_0')}.
+\end{equation}
+Accessible Q-Volume applies the same strict threshold to that repertoire:
+\begin{equation}
+QA_\tau(m;x_1)=|\{x_0\in\mathcal X_0:\rho_m(x_0\mid x_1)>\tau\}|.
+\end{equation}
+This is a proposed annotation of the 2009 IIT geometry \cite{iit2009}, not a replacement for its information measures. A next-token distribution alone cannot supply the causal model or intervention semantics.
+
+For every repertoire, the complete labeled filtration $(QB_\tau(m;x_1))_{0\leq\tau<1}$ satisfies
+\begin{equation}
+\rho_m(x_0\mid x_1)=\sup\{\tau:x_0\in QB_\tau(m;x_1)\},
+\end{equation}
+with $\sup\varnothing=0$. The complete labeled family is lossless. A count-only sweep recovers probabilities only up to permutation of labels, and a finite threshold grid is approximate.
+
+When adding mechanism $r$ in context $m$, the original information measurement remains $ei(m,r)=D_{\mathrm{KL}}(\rho_{m\cup r}\|\rho_m)$. The annotation adds
+\begin{equation}
+\Delta QA_\tau=QA_\tau(m\cup r)-QA_\tau(m),
+\end{equation}
+together with the states entering and leaving the accessible set. A zero count change does not imply unchanged membership.
+
+The silent AND demonstration assigns $(1/4,1/4,1/4,1/4)$ before the complete mechanism and $(1/3,1/3,1/3,0)$ afterward. Its effective information is $\log_2(4/3)=0.4150374993\ldots$ bits. At $\tau=0.20$, the volume changes from four to three and $11$ exits; at $\tau=0.30$, it changes from zero to three and $00,01,10$ enter. The same positive information accompanies opposite volume changes, so accessible Q-volume is not $\Phi$ or $\gamma$.
+
+\subsection{Mirrored observation}
+The mirrored brain pairs forward and retrograde forecasts at the same held-out index $i$ and records, separately for each direction, the categorical distribution, top-1 correctness, entropy, negative log probability, and accessible volume. It adds
+\begin{equation}
+D_{\tau,i}=A_{\tau,i}^{\mathrm{forward}}-A_{\tau,i}^{\mathrm{retrograde}},\qquad
+G_i=\mathbf 1[\arg\max_a P^{\mathrm{forward}}_i(a)=\arg\max_a P^{\mathrm{retrograde}}_i(a)].
+\end{equation}
+There is no implicit mixture of the two distributions. Agreement and disagreement guide inspection only. Mirrored observation is not causal reconstruction, a backward-trained model, a consciousness measurement, or an automatic action.
+
+The shared field notebook preserves the paired observation without treating it as evidence for a claim or changing a posterior. A single lazy HELEN artifact supplies both directions. Redundant child histories are removed; the mirrored brain retains the most recent 128 pairs. The complete 1,920-pair evaluation is deterministic and does not require a model download.
+
+\subsection{Unified workbench and verification}
+The workbench exposes 17 operations through one catalog: the 13 original sections covering Bayesian updates, strict/adaptive/joint volume, forecast measurement, momentum, temperature, categorical sampling, Markov transitions, timing RMSE, Procrustes alignment, and inspection priority; causal-repertoire normalization; q-arrow annotation; two-way records; and mirrored observation. Independent expected-result checks passed for all 17.
+
+The canonical mirror, library, and authorization suite passed all seven native X11 tests and five headless tests with two native-only skips. The mirrored test verified all 1,920 index-aligned pairs, accessible-set complements, agreement calculations, and bounded shared history. The SVG, PNG, and GEM VDI exports preserve the distinction between the two directions. The implementation is available at \url{https://github.com/Ablation-Tool/graphics-environment-manager}.
+
+\begin{lstlisting}
+python -m gem workbench check \
+  --output workbench-verification.json
+python -m gem os
+\end{lstlisting}
+
+The Q-volume and unified-workbench verification records are embedded as attachments. They verify toy arithmetic and software behavior, not an empirically validated implementation of IIT, a general model of consciousness, or a causal model inferred from an LLM.
+
 \section{Strongest next experiments}
 \subsection{Multi-horizon benchmark}
 The strongest next language-model experiment is a bounded, reproducible multi-horizon study:
@@ -530,7 +586,7 @@ The source archive hash for the Groove MIDI-only dataset is:
 The complete per-performance source and split assignments are in \texttt{sources.json}. The full condition reports, calibration bins, threshold counts, and artifact hashes are in \texttt{report.json}.
 
 \section{Embedded evidence}
-This PDF embeds 21 attachments: this \LaTeX\ source, four experiment scripts, the temporal research formulation, experiment READMEs, JSON reports and stimuli, listening-test tools, and five generated figures. The large probability NPZ and parsed-onset cache are deliberately referenced by repository path and hash rather than embedded. No external filesystem is needed to inspect the embedded text and figures; public source data and model downloads are needed only to repeat inference or parsing.
+This PDF embeds 23 attachments: this \LaTeX\ source, four experiment scripts, the temporal research formulation, experiment READMEs, JSON reports and stimuli, listening-test tools, five generated figures, and the Q-volume and mirrored-workbench verification records. The large probability NPZ and parsed-onset cache are deliberately referenced by repository path and hash rather than embedded. No external filesystem is needed to inspect the embedded text and figures; public source data and model downloads are needed only to repeat inference or parsing.
 
 \embedfile{paper/accessible-volume-beyond-next-token.tex}
 \embedfile{scripts/rhythm-accessible-volume.py}
@@ -553,6 +609,8 @@ This PDF embeds 21 attachments: this \LaTeX\ source, four experiment scripts, th
 \embedfile{evidence/rhythm-midi/predictability-map.png}
 \embedfile{evidence/rhythm-lab/real_midi_accessible_volume.png}
 \embedfile{evidence/rhythm-lab/real_midi_calibration.png}
+\embedfile{evidence/qualia/accessible-q-volume.json}
+\embedfile{evidence/workbench/verification.json}
 
 \clearpage
 \begin{thebibliography}{9}
@@ -591,6 +649,11 @@ Nicholas Michael Kloster.
 \newblock \emph{Native GEM Procrustes landmark-alignment example}.
 \newblock Revision \texttt{6f95f4f}.
 \newblock \url{https://github.com/Ablation-Tool/graphics-environment-manager/tree/main/examples/landmark-alignment}.
+\bibitem{iit2009}
+David Balduzzi and Giulio Tononi.
+\newblock \emph{Qualia: The Geometry of Integrated Information}.
+\newblock PLOS Computational Biology, 2009.
+\newblock \url{https://doi.org/10.1371/journal.pcbi.1000462}.
 \end{thebibliography}
 
 \end{document}

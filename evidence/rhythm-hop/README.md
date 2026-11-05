@@ -81,7 +81,7 @@ python scripts/rhythm-accessible-volume.py
 python scripts/hop-experiment.py
 ```
 
-Requirements include NumPy, PyTorch, Transformers, scikit-learn, and Matplotlib. HOP downloads `distilbert/distilgpt2` and expects the extracted books under `~/Documents/folio_output/`. The rhythm experiment is fully synthetic and regenerates [`rhythm-accessible-volume.png`](./rhythm-accessible-volume.png).
+Requirements include NumPy, PyTorch, Transformers, scikit-learn, and Matplotlib. HOP downloads `distilbert/distilgpt2` and expects the extracted books under `FOLIO_OUTPUT`, defaulting to `~/Documents/folio_output/`. Those original corpus files are not present on this host, so its full inference was not rerun; the saved negative baseline remains the evidence. The rhythm experiment is fully synthetic and regenerates [`rhythm-accessible-volume.png`](./rhythm-accessible-volume.png).
 
 ## Real-MIDI follow-ups
 

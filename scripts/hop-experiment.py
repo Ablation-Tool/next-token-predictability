@@ -2,6 +2,7 @@
 """HOP: Harmonic Osculating Predictor — a tiny hidden-state extrapolation experiment."""
 import html
 import math
+import os
 import re
 from pathlib import Path
 
@@ -10,10 +11,12 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 
 torch.set_grad_enabled(False)
 MODEL = "distilbert/distilgpt2"
-OUT = Path.home() / "Documents/folio_output"
+OUT = Path(os.environ.get("FOLIO_OUTPUT", str(Path.home() / "Documents/folio_output")))
 
 
 def book_text(path, limit=9000):
+    if not path.is_file():
+        raise FileNotFoundError(f"required HOP source text is missing: {path}; set FOLIO_OUTPUT to the extracted source corpus")
     raw = path.read_text(errors="ignore")
     raw = re.sub(r"<(script|style)\b[^>]*>.*?</\1>", " ", raw, flags=re.S | re.I)
     text = html.unescape(re.sub(r"<[^>]+>", " ", raw))
