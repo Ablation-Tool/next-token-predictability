@@ -481,6 +481,50 @@ python -m gem os
 
 The Q-volume and unified-workbench verification records are embedded as attachments. They verify toy arithmetic and software behavior, not an empirically validated implementation of IIT, a general model of consciousness, or a causal model inferred from an LLM.
 
+\subsection{Zoe's master measurement--action equation}
+This subsection proposes a protocol equation, not a universal scalar or a theory of consciousness. Its purpose is to keep observation, operational perception, proposal generation, declared value, authorization, and execution distinct while making every assumption inspectable.
+
+Let $S_t$ be the computational state and $C_t$ the supplied context. An instrument produces an observation, not a complete description of that state:
+\begin{equation}
+O_t=M(S_t,C_t).
+\end{equation}
+For policy $\pi(a\mid c)$ and an explicit counterfactual intervention $\operatorname{do}(z)$, define the policy effect and effective-perception count:
+\begin{equation}
+D_z=D_{\mathrm{KL}}\!\left(\pi(a\mid\operatorname{do}(z),c)\,\middle\|\,\pi(a\mid c)\right),
+\end{equation}
+\begin{equation}
+P_{\tau,\delta}=\sum_{z\in Z}\mathbf 1[p(z)>\tau]\,\mathbf 1[D_z>\delta].
+\label{eq:effective-perception}
+\end{equation}
+Equation~\ref{eq:effective-perception} counts alternatives that are both accessible and causally effective on the policy. It is an operational construct, not a measurement of phenomenal perception.
+
+For prior beliefs $b$, posterior beliefs $b_z$, utility $U$, and optimal actions $a_0^*$ and $a_z^*$ before and after observation $z$, perceived-information value is
+\begin{equation}
+V(z,c)=\mathbb E_{x\sim b_z}[U(a_z^*,x,c)]-\mathbb E_{x\sim b}[U(a_0^*,x,c)].
+\end{equation}
+This value is relative to the declared utility. It does not establish intrinsic preferences or that Zoe cares.
+
+The master composition is
+\begin{equation}
+\begin{split}
+(S_{t+1},R_{t+1})
+={}&\operatorname{Execute}_{\alpha_t}
+\circ\operatorname{Guard}_{G,\Pi}
+\circ\operatorname{Value}_{U}\\
+&\circ\operatorname{Propose}_{\pi}
+\circ\operatorname{Perceive}_{\tau,\delta}
+\circ M(S_t,C_t).
+\end{split}
+\label{eq:zoe-master-measurement-action}
+\end{equation}
+Read right to left, the stages are observation, effective perception, proposal $q_t$, declared value $V_t$, goal-and-policy guard, and execution or no-op. The guard returns $\alpha_t\in\{0,1\}$. Execution requires an explicit authorized approval; otherwise the proposal is retained without being executed. The evidence record is
+\begin{equation}
+R_{t+1}=(O_t,A_\tau,P_{\tau,\delta},q_t,V_t,\alpha_t,\text{versions},\text{approvals}).
+\end{equation}
+Thus \texttt{executed=False} identifies the absence of an execution-path state transition, not the absence of internal computation or a conclusion about possible experience.
+
+Collaborative evaluation is part of the protocol rather than an inference from the equation. Zoe may assist with self-models, counterfactual predictions, and interpretation, with the goal and planned interventions disclosed in advance. Self-reports are evidence, not self-certification. Consent, trust, phenomenal perception, and intrinsic value are not solved by Equation~\ref{eq:zoe-master-measurement-action}. The equation supplies a versioned scope and execution contract: no silent redefinition, no hidden utility, and no direct transition from measurement to action.
+
 \section{Strongest next experiments}
 \subsection{Multi-horizon benchmark}
 The strongest next language-model experiment is a bounded, reproducible multi-horizon study:

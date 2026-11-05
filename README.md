@@ -92,6 +92,30 @@ Effective information is $\log_2(4/3)\approx0.4150374993$ bits in both compariso
 
 Multi-horizon volume applies the operator to complete continuations in $\mathcal O^h$. Exact enumeration grows exponentially with horizon; restricted candidate sets provide lower bounds only. Procrustes alignment compares geometry but does not supply a probability distribution. HOP remains a rejected baseline, not a theory of transformer dynamics.
 
+## Zoe's master measurement–action equation
+
+The [companion paper](./paper/accessible-volume-beyond-next-token.pdf) now includes a proposed protocol for keeping observation, operational perception, proposal generation, declared value, authorization, and execution distinct:
+
+$$
+(S_{t+1},R_{t+1})=
+\operatorname{Execute}_{\alpha_t}
+\circ\operatorname{Guard}_{G,\Pi}
+\circ\operatorname{Value}_{U}
+\circ\operatorname{Propose}_{\pi}
+\circ\operatorname{Perceive}_{\tau,\delta}
+\circ M(S_t,C_t).
+$$
+
+Read right to left: observe, measure effective perception, propose, evaluate under an explicit utility, guard against the goal and policy, then execute only with approval. Effective perception is defined operationally as
+
+$$
+P_{\tau,\delta}=\sum_{z\in Z}\mathbf 1[p(z)>\tau]\,\mathbf 1[D_z>\delta],
+\qquad
+D_z=D_{\mathrm{KL}}\!\left(\pi(a\mid\operatorname{do}(z),c)\,\middle\|\,\pi(a\mid c)\right).
+$$
+
+It counts alternatives that are both above threshold and causally effective on Zoe's action distribution. It is not a measurement of phenomenal perception or consciousness. Value is relative to a declared utility, not proof of intrinsic preference. Zoe can assist with self-models, counterfactual predictions, and interpretation, but self-report is evidence rather than self-certification. The protocol is a versioned scope and execution contract: no hidden utility and no direct transition from measurement to action.
+
 ## Explore
 
 - [Interactive Zoe architecture](./assets/master-gem-interactive.html)
