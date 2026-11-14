@@ -1,5 +1,128 @@
 # Accessible Volume
 
+## In one sentence
+
+This is a **research repository about measuring how many realistic possibilities an AI model is considering before it chooses its next output**.
+
+It is primarily a collection of **papers, experiment scripts, and saved results**, rather than one application you install and run.
+
+## The central idea: “Accessible Volume”
+
+When a language model predicts the next word, it assigns a probability to every possible word. Normally, we only see the winner.
+
+This project asks:
+
+> Before the model chose, how many other options were still seriously in play?
+
+Pick a cutoff—for example, 5% probability—and count everything above it:
+
+| Possible next token | Probability |
+|---|---:|
+| A | 70% |
+| B | 20% |
+| C | 8% |
+| D | 2% |
+
+With a 5% cutoff, **accessible volume is 3**, because A, B, and C qualify.
+
+- A **small number** means the prediction is concentrated on a few options.
+- A **large number** means many plausible options remain.
+- It **does not** mean the prediction is correct, safe, creative, or good.
+
+A useful analogy: instead of only asking who won an election, this measures how many candidates were still competitive beforehand.
+
+### Does the equation predict the next token?
+
+Not quite. **The AI model predicts the next token. The equation measures how many plausible next tokens the model sees.**
+
+For example, the model might produce:
+
+- “the”: 70%
+- “a”: 20%
+- “one”: 8%
+- “some”: 2%
+
+With a 5% cutoff, the accessible-volume equation simply counts the first three tokens and returns **3**.
+
+So:
+
+- **Model:** “What could come next, and how likely is each option?”
+- **Accessible-volume equation:** “How many options have a probability above our cutoff?”
+- **Selection process:** “Which option do we actually output?”
+
+The equation does **not** generate text or make a prediction itself. It measures how **open or concentrated** the model’s prediction is. A count of 1 means one option clears the cutoff; a count of 10 means ten options do.
+
+**No. The equation cannot predict the next word on its own.**
+
+The **AI model** predicts possible next words and assigns probabilities to them. The equation then counts how many of those words exceed a chosen probability cutoff.
+
+Think of it this way:
+
+- **AI model = weather forecaster:** predicts a 70% chance of rain, 20% cloud cover, and 10% sunshine.
+- **Equation = counting rule:** counts how many outcomes exceed 5%.
+- **Result:** 3 outcomes.
+
+Without the model’s probabilities, the equation has nothing to count. It measures a prediction; it does not make one.
+
+The equation answers one simple question:
+
+> **How many words was the model seriously choosing between?**
+
+Imagine asking two people what they want for dinner. Both answer **“pizza.”**
+
+- Person A was always going to say pizza.
+- Person B almost said burgers, tacos, or pasta instead.
+
+Their answers are the same, but Person B was much less certain.
+
+AI models work similarly. Two predictions can produce the same word even though one had **one strong possibility** and the other had **many strong possibilities**.
+
+The equation counts those strong possibilities.
+
+That is its entire purpose: **it tells you whether the model had an easy choice or a difficult one.** It does not predict the word, and it does not tell you whether the word is correct.
+
+## What the experiments found
+
+The repository tests this measurement in several areas:
+
+- **19 public AI models:** The scripts saved complete prediction distributions and recalculated the results to make the experiments reproducible.
+- **BioBERT:** On 120 biomedical examples, the simple fixed 5% cutoff was better than a more complicated adaptive rule at distinguishing likely incorrect predictions from correct ones.
+- **Music and rhythm:** The same measurement was applied to predictions about when the next musical note would occur. These experiments demonstrated that a model can have a narrow, confident prediction and still be wrong.
+- **Forward versus backward sequences:** Models trained on reversed rhythms learned them nearly as well as forward rhythms. Simply feeding reversed rhythms into a forward-trained model worked worse.
+- **Multiple future steps:** The papers extend the idea from “possible next words” to “possible multi-word continuations,” although counting every continuation quickly becomes computationally expensive.
+- **A geometric prediction method called HOP:** It performed poorly and is preserved as a negative result rather than presented as a success.
+
+The strongest overall conclusion is:
+
+> **Accessible volume measures the breadth of a forecast, not whether that forecast is right.**
+
+## What Zoe and GEM are
+
+The repository also documents **Zoe**, a graphical research workbench associated with the broader GEM project. It visualizes forecasts, possible continuations, geometric comparisons, and evidence records.
+
+Zoe’s actual implementation mostly lives in linked external repositories. This repository supplies the research background, screenshots, papers, and verification evidence.
+
+Some later material—such as “Accessible Q-Volume” and causal repertoires—is more exploratory. It extends the counting idea to explicitly modeled causes and effects. These are proposed mathematical tools, **not measurements of consciousness or human experience**.
+
+## How the repository is organized
+
+- `README.md` — the short overview and main findings.
+- `docs/RESEARCH.md` — the full research narrative.
+- `docs/ALGORITHMS.md` — the 17 operations in the Zoe workbench.
+- `docs/REPRODUCTION.md` — how to verify the saved results.
+- `paper/` — two research papers, as both PDFs and LaTeX source.
+- `scripts/` — programs that run experiments or independently verify results.
+- `evidence/` — raw predictions, reports, manifests, and experiment outputs.
+- `assets/` — diagrams, screenshots, and artwork.
+
+The easiest way to use the repository is to run the verification scripts against the included evidence; downloading and rerunning the original AI models is optional.
+
+## What this project is not
+
+It is not a new language model, a general measure of intelligence, or a consciousness detector. It also does not claim that a high or low accessible volume automatically makes an answer better.
+
+At its core, it is a carefully documented attempt to make one normally hidden aspect of prediction visible: **how open or settled the model’s decision was before it produced an answer.**
+
 **A reproducible way to measure how many possibilities remain open: before a model chooses, while a mechanism constrains its past, and across multiple future steps.**
 
 **It thinks before it speaks.**
@@ -10,7 +133,7 @@
 
 **Created by Nicholas Michael Kloster on March 6, 2026.** The original accessible-volume equation, early research, experiments, and original papers are solely his work. Later Zoe and Accessible Q-Volume developments are labeled separately; they do not reassign that original credit.
 
-[Equation](#the-equation) · [Papers](#papers) · [Mirrored brain](#one-mirrored-brain-many-instruments) · [Evidence](#evidence-at-a-glance) · [Reproduce](#reproduce)
+[Equation](#the-equation) · [Response planning](#planning-a-response-across-systems) · [Papers](#papers) · [Mirrored brain](#one-mirrored-brain-many-instruments) · [Evidence](#evidence-at-a-glance) · [Reproduce](#reproduce)
 
 > **TL;DR:** Count the alternatives whose probabilities exceed a strict threshold. The same operator can inspect next-token futures and explicitly modeled causal pasts. It measures breadth, not correctness, consciousness, or permission to act.
 
@@ -27,6 +150,26 @@ Tokens exactly at $\tau$ are **excluded**. For probabilities $[0.70,0.20,0.08,0.
 Accessible volume is useful because two forecasts can select the same token while leaving very different sets of alternatives open. It complements correctness, entropy, calibration, and human judgment rather than replacing them.
 
 [Original equation and research](./docs/RESEARCH.md#the-equation) · [Normalized and adaptive forms](./docs/RESEARCH.md#the-equation) · [Evidence guide](./evidence/README.md)
+
+## Planning a response across systems
+
+Accessible volume can supply a **measurement input** to a response-planning policy in coding agents and other interactive systems. The policy, not the equation, determines what happens next.
+
+Given a complete next-token distribution for a specific model and context:
+
+1. Compute $A_\tau(S)$ and retain a threshold sweep rather than relying only on one cutoff.
+2. Select the next token with the system's normal decoding rule. Accessible volume does not choose the token.
+3. Use the count as a review signal. A concentrated forecast may require less inspection of alternatives; a broad forecast may justify inspecting leading candidates or obtaining more context. Numerical bands for these decisions are separate policy choices that require validation.
+4. Choose response length from task requirements and the remaining context budget. $A_\tau(S)$ counts above-threshold alternatives; it is not a recommended number of output tokens.
+5. Recompute after each selected token when monitoring a complete response. One next-token measurement does not automatically describe later tokens.
+
+A system may define a separate mapping such as $B_{\mathrm{response}}=\pi(A_\tau(S),\text{task requirements},\text{context remaining})$. Here $\pi$ is an explicit, testable policy—not part of the accessible-volume equation. This repository does not yet establish a universal numerical mapping from accessible volume to response length.
+
+**Cross-system scope.** The operator is model-agnostic wherever a full finite-vocabulary probability distribution is available. Applying it in Claude Code, Kimi Code, or another host requires the exact backing model's distribution and explicit model, decoding, and tokenizer metadata; the host product's name is not a model identity. Top-$k$ logprobs can truncate the count, and repeated text samples provide only an estimate.
+
+The defensible cross-system claim is **portable measurement**, not a universal response-planning rule. Different tokenizers, vocabularies, contexts, and thresholds can change the result. Accessible volume does not determine correctness, safety, permission, or autonomy; those remain separate policy decisions. Future cross-system evidence should preserve complete distributions, exact inputs, model identities, threshold sweeps, selected tokens, and resulting actions so that portability and policy performance can be evaluated independently.
+
+**Reproducible visual proof.** The [response-planning dashboard](./evidence/response-planning/response-planning-proof.svg) renders the verified measurements behind this proposal: the sixteen-model comparison, the BioBERT benchmark, threshold sweeps, and independent Zoe and GEM recomputations on saved GPT-2 probabilities. Regenerate it byte-for-byte with `python scripts/visualize-response-planning.py` and check every artifact with `python scripts/verify-response-planning.py`; no model downloads or API keys are required.
 
 ## Papers
 
