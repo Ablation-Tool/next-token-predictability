@@ -2,7 +2,7 @@
 
 **A reproducible way to measure how many possibilities remain open: before a model chooses, while a mechanism constrains its past, and across multiple future steps.**
 
-**It thinks before it speaks. We count the possibilities.**
+**It thinks before it speaks.**
 
 ![Accessible Volume TL;DR: exploring the possibilities behind next-token predictions](./assets/accessible-volume-tldr.gif)
 
