@@ -2,6 +2,10 @@
 
 **A reproducible way to measure how many possibilities remain open: before a model chooses, while a mechanism constrains its past, and across multiple future steps.**
 
+**It thinks before it speaks. We count the possibilities.**
+
+![Accessible Volume TL;DR: exploring the possibilities behind next-token predictions](./assets/accessible-volume-tldr.gif)
+
 ![Accessible Volume: a shared threshold instrument for forecasts and causal repertoires](./assets/accessible-volume-hero.svg)
 
 **Created by Nicholas Michael Kloster on March 6, 2026.** The original accessible-volume equation, early research, experiments, and original papers are solely his work. Later Zoe and Accessible Q-Volume developments are labeled separately; they do not reassign that original credit.
