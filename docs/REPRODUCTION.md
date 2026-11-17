@@ -49,6 +49,14 @@ env -u DISPLAY GEM_COMPONENT_TESTS=1 PYTHONDONTWRITEBYTECODE=1 \
 ```
 
 The isolated native check used `guiai-lab/stress/nested_x11.sh` with `stress.unified_stress.UnifiedNativeCase`. It currently fails at `stress/unified_stress.py:220`: the implementation adds a declared source link while the assertion retains the old count. This is an open test-maintenance finding; the audit does not modify Zoe or weaken the assertion.
+## Verify the response-planning visual proof
+
+```bash
+python scripts/visualize-response-planning.py
+python scripts/verify-response-planning.py
+```
+
+The generator recomputes every measurement from the saved raw probability distributions and the frozen Zoe and GEM reports, then renders `evidence/response-planning/response-planning-proof.png` and `.svg`. Output is deterministic: repeated runs produce byte-for-byte identical artifacts. The verifier independently recomputes the statistics, checks semantic content inside the SVG, and confirms the SHA-256 hash of every generated artifact against its manifest. No model weights are downloaded. The dashboard documents measured accessible-volume behavior; it does not validate any response-length or autonomy policy.
 
 ## Verify the unified workbench
 
