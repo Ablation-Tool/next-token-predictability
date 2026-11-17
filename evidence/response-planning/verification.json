@@ -21,7 +21,7 @@
   "artifact_sha256": {
     "measurements.json": "897063b1a587209dbaa243743fb2a25be3032370028b4e7f5208d4d2be2e1b7d",
     "response-planning-proof.png": "202c1e2928b7147fc4059e138243846ae516dae654bc6711e941f2de7244e002",
-    "response-planning-proof.svg": "d36de0f2514f79b5b92a646daade484f7fb249b9a9605a02a5c792a9bf0b965d"
+    "response-planning-proof.svg": "4d25cc86f4c456e497016bc800443eac7931307e960e6fd6cb502e1aec52e4b6"
   },
   "scope": "Verified distribution measurements and visual integrity; not validation of response length, autonomy, or a universal policy."
 }
