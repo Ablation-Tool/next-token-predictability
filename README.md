@@ -1,265 +1,130 @@
 # Accessible Volume
 
-## In one sentence
+**A reproducible way to measure how many realistic alternatives a model has before it selects its next token.**
 
-This is a **research repository about measuring how many realistic possibilities an AI model is considering before it chooses its next output**.
+Accessible Volume is a **research measurement**, not a new language model or an application you must install. This repository contains the equation, papers, experiment scripts, complete saved probability distributions, and independent verification tools.
 
-It is primarily a collection of **papers, experiment scripts, and saved results**, rather than one application you install and run.
+You can understand and use this repository entirely on its own. It also supplies the measurement foundation for [Zoe-Autonomy](https://github.com/Ablation-Tool/Zoe-Autonomy): together, the two projects form the complete self-governing measurement–action architecture.
 
-## The central idea: “Accessible Volume”
-
-When a language model predicts the next word, it assigns a probability to every possible word. Normally, we only see the winner.
-
-This project asks:
-
-> Before the model chose, how many other options were still seriously in play?
-
-Pick a cutoff—for example, 5% probability—and count everything above it:
-
-| Possible next token | Probability |
-|---|---:|
-| A | 70% |
-| B | 20% |
-| C | 8% |
-| D | 2% |
-
-With a 5% cutoff, **accessible volume is 3**, because A, B, and C qualify.
-
-- A **small number** means the prediction is concentrated on a few options.
-- A **large number** means many plausible options remain.
-- It **does not** mean the prediction is correct, safe, creative, or good.
-
-A useful analogy: instead of only asking who won an election, this measures how many candidates were still competitive beforehand.
-
-### Does the equation predict the next token?
-
-Not quite. **The AI model predicts the next token. The equation measures how many plausible next tokens the model sees.**
-
-For example, the model might produce:
-
-- “the”: 70%
-- “a”: 20%
-- “one”: 8%
-- “some”: 2%
-
-With a 5% cutoff, the accessible-volume equation simply counts the first three tokens and returns **3**.
-
-So:
-
-- **Model:** “What could come next, and how likely is each option?”
-- **Accessible-volume equation:** “How many options have a probability above our cutoff?”
-- **Selection process:** “Which option do we actually output?”
-
-The equation does **not** generate text or make a prediction itself. It measures how **open or concentrated** the model’s prediction is. A count of 1 means one option clears the cutoff; a count of 10 means ten options do.
-
-**No. The equation cannot predict the next word on its own.**
-
-The **AI model** predicts possible next words and assigns probabilities to them. The equation then counts how many of those words exceed a chosen probability cutoff.
-
-Think of it this way:
-
-- **AI model = weather forecaster:** predicts a 70% chance of rain, 20% cloud cover, and 10% sunshine.
-- **Equation = counting rule:** counts how many outcomes exceed 5%.
-- **Result:** 3 outcomes.
-
-Without the model’s probabilities, the equation has nothing to count. It measures a prediction; it does not make one.
-
-The equation answers one simple question:
-
-> **How many words was the model seriously choosing between?**
-
-Imagine asking two people what they want for dinner. Both answer **“pizza.”**
-
-- Person A was always going to say pizza.
-- Person B almost said burgers, tacos, or pasta instead.
-
-Their answers are the same, but Person B was much less certain.
-
-AI models work similarly. Two predictions can produce the same word even though one had **one strong possibility** and the other had **many strong possibilities**.
-
-The equation counts those strong possibilities.
-
-That is its entire purpose: **it tells you whether the model had an easy choice or a difficult one.** It does not predict the word, and it does not tell you whether the word is correct.
-
-## What the experiments found
-
-The repository tests this measurement in several areas:
-
-- **19 public AI models:** The scripts saved complete prediction distributions and recalculated the results to make the experiments reproducible.
-- **BioBERT:** On 120 biomedical examples, the simple fixed 5% cutoff was better than a more complicated adaptive rule at distinguishing likely incorrect predictions from correct ones.
-- **Music and rhythm:** The same measurement was applied to predictions about when the next musical note would occur. These experiments demonstrated that a model can have a narrow, confident prediction and still be wrong.
-- **Forward versus backward sequences:** Models trained on reversed rhythms learned them nearly as well as forward rhythms. Simply feeding reversed rhythms into a forward-trained model worked worse.
-- **Multiple future steps:** The papers extend the idea from “possible next words” to “possible multi-word continuations,” although counting every continuation quickly becomes computationally expensive.
-- **A geometric prediction method called HOP:** It performed poorly and is preserved as a negative result rather than presented as a success.
-
-The strongest overall conclusion is:
-
-> **Accessible volume measures the breadth of a forecast, not whether that forecast is right.**
-
-## What Zoe and GEM are
-
-The repository also documents **Zoe**, a graphical research workbench associated with the broader GEM project. It visualizes forecasts, possible continuations, geometric comparisons, and evidence records.
-
-Zoe’s actual implementation mostly lives in linked external repositories. This repository supplies the research background, screenshots, papers, and verification evidence.
-
-Some later material—such as “Accessible Q-Volume” and causal repertoires—is more exploratory. It extends the counting idea to explicitly modeled causes and effects. These are proposed mathematical tools, **not measurements of consciousness or human experience**.
-
-## How the repository is organized
-
-- `README.md` — the short overview and main findings.
-- `docs/RESEARCH.md` — the full research narrative.
-- `docs/ALGORITHMS.md` — the 17 operations in the Zoe workbench.
-- `docs/REPRODUCTION.md` — how to verify the saved results.
-- `paper/` — two research papers, as both PDFs and LaTeX source.
-- `scripts/` — programs that run experiments or independently verify results.
-- `evidence/` — raw predictions, reports, manifests, and experiment outputs.
-- `assets/` — diagrams, screenshots, and artwork.
-
-The easiest way to use the repository is to run the verification scripts against the included evidence; downloading and rerunning the original AI models is optional.
-
-## What this project is not
-
-It is not a new language model, a general measure of intelligence, or a consciousness detector. It also does not claim that a high or low accessible volume automatically makes an answer better.
-
-At its core, it is a carefully documented attempt to make one normally hidden aspect of prediction visible: **how open or settled the model’s decision was before it produced an answer.**
-
-**A reproducible way to measure how many possibilities remain open: before a model chooses, while a mechanism constrains its past, and across multiple future steps.**
-
-**It thinks before it speaks.**
-
-![Accessible Volume TL;DR: exploring the possibilities behind next-token predictions](./assets/accessible-volume-tldr.gif)
+[The idea](#the-idea-in-one-minute) · [Evidence](#what-the-experiments-found) · [Verify](#verify-the-results-yourself) · [Zoe-Autonomy](#how-this-connects-to-zoe-autonomy) · [Papers](#papers)
 
 ![Accessible Volume: a shared threshold instrument for forecasts and causal repertoires](./assets/accessible-volume-hero.svg)
 
-**Created by Nicholas Michael Kloster on March 6, 2026.** The original accessible-volume equation, early research, experiments, and original papers are solely his work. Later Zoe and Accessible Q-Volume developments are labeled separately; they do not reassign that original credit.
+## The idea in one minute
 
-[Equation](#the-equation) · [Response planning](#planning-a-response-across-systems) · [Papers](#papers) · [Mirrored brain](#one-mirrored-brain-many-instruments) · [Evidence](#evidence-at-a-glance) · [Reproduce](#reproduce)
+Before a language model produces text, it assigns probabilities to possible next tokens. A token is a unit of text, often a word or word fragment.
 
-> **TL;DR:** Count the alternatives whose probabilities exceed a strict threshold. The same operator can inspect next-token futures and explicitly modeled causal pasts. It measures breadth, not correctness, consciousness, or permission to act.
+Normally, we only see the selected token. Accessible Volume asks:
+
+> **Before selection, how many alternatives still had a meaningful probability?**
+
+Choose a probability cutoff and count the alternatives above it. For example:
+
+| Possible next token | Probability | Above a 5% cutoff? |
+|:---|---:|:---:|
+| A | 70% | Yes |
+| B | 20% | Yes |
+| C | 8% | Yes |
+| D | 2% | No |
+
+The accessible volume is **3**.
+
+Three different roles are easy to confuse:
+
+- **The model** produces a probability for every possible next token.
+- **Accessible Volume** counts how many probabilities exceed the chosen cutoff.
+- **The decoding rule** selects which token is actually emitted.
+
+The equation does not generate text and does not choose the winning token. It measures the shape of the forecast that preceded selection.
+
+Two forecasts can select the same token while leaving very different sets of alternatives open. The final text hides that distinction; accessible volume makes it measurable.
 
 ## The equation
 
-Let $S$ be the full input context and $\mathcal O$ a finite output vocabulary. For a threshold $\tau$:
+Let $S$ be the complete input context and $\mathcal O$ a finite token vocabulary. For threshold $\tau$:
 
 $$
 A_\tau(S)=\sum_{a\in\mathcal O}\mathbf 1\!\left[P(a\mid h_T(S))>\tau\right].
 $$
 
-Tokens exactly at $\tau$ are **excluded**. For probabilities $[0.70,0.20,0.08,0.02]$ at $\tau=0.05$, three alternatives remain accessible.
+The comparison is **strict**: a token whose probability equals $\tau$ is excluded.
 
-Accessible volume is useful because two forecasts can select the same token while leaving very different sets of alternatives open. It complements correctness, entropy, calibration, and human judgment rather than replacing them.
+- A **small count** means few alternatives clear the cutoff.
+- A **large count** means many alternatives clear it.
+- A **threshold sweep** applies several cutoffs to show where alternatives disappear.
 
-[Original equation and research](./docs/RESEARCH.md#the-equation) · [Normalized and adaptive forms](./docs/RESEARCH.md#the-equation) · [Evidence guide](./evidence/README.md)
+Accessible volume describes **forecast breadth under a particular model, context, tokenizer, and threshold**. It does not establish correctness, safety, creativity, intelligence, or general model quality.
 
-## Planning a response across systems
+[Formal research narrative](./docs/RESEARCH.md) · [Normalized and adaptive forms](./docs/RESEARCH.md#the-equation)
 
-Accessible volume can supply a **measurement input** to a response-planning policy in coding agents and other interactive systems. The policy, not the equation, determines what happens next.
+## What the experiments found
 
-Given a complete next-token distribution for a specific model and context:
+| Experiment | Scope | Main finding |
+|:---|:---|:---|
+| Public model measurements | 19 unique public models | Complete saved distributions and independently recomputed metrics demonstrate the measurement across causal, masked, and query-stream prediction mechanisms. |
+| BioBERT error detection | 120 cases from 30 documents; 40 held-out test cases | The original fixed $\tau=0.05$ rule transferred better than the selected adaptive rule: test AUROC **0.7737 vs 0.7008**, AUPRC **0.7978 vs 0.6599**. |
+| Human drum rhythms | 514 usable Magenta Groove performances | Forecast breadth stayed nearly unchanged while accuracy and log-loss varied. A concentrated forecast can still be wrong. |
+| Forward and reversed rhythms | 121,392 held-out predictions per condition | A backward-matched model nearly matched forward accuracy; direct reversal transfer performed worse. |
+| Geometric prediction | HOP, 1,647 hidden-state positions | The geometric baseline was rejected: **11.3%** top-1 versus **41.3%** linear velocity and **46.6%** for the model. |
+| Mirrored workbench | 1,920 forward/retrograde pairs; 17 operations | Index alignment, accessible-set invariants, bounded history, non-execution, and all **17/17** expected-result checks passed. |
+| Multiple future steps | Formulated mathematically | The count extends to complete multi-token continuations, but exact enumeration grows as $|\mathcal O|^h$. The real-language-model benchmark remains future work. |
 
-1. Compute $A_\tau(S)$ and retain a threshold sweep rather than relying only on one cutoff.
-2. Select the next token with the system's normal decoding rule. Accessible volume does not choose the token.
-3. Use the count as a review signal. A concentrated forecast may require less inspection of alternatives; a broad forecast may justify inspecting leading candidates or obtaining more context. Numerical bands for these decisions are separate policy choices that require validation.
-4. Choose response length from task requirements and the remaining context budget. $A_\tau(S)$ counts above-threshold alternatives; it is not a recommended number of output tokens.
-5. Recompute after each selected token when monitoring a complete response. One next-token measurement does not automatically describe later tokens.
+AUROC and AUPRC measure how well a score separates incorrect top predictions from correct ones; higher values are better. These results are measurements of specific model–dataset combinations, not a model-quality leaderboard.
 
-A system may define a separate mapping such as $B_{\mathrm{response}}=\pi(A_\tau(S),\text{task requirements},\text{context remaining})$. Here $\pi$ is an explicit, testable policy—not part of the accessible-volume equation. This repository does not yet establish a universal numerical mapping from accessible volume to response length.
+The strongest general conclusion is:
 
-**Cross-system scope.** The operator is model-agnostic wherever a full finite-vocabulary probability distribution is available. Applying it in Claude Code, Kimi Code, or another host requires the exact backing model's distribution and explicit model, decoding, and tokenizer metadata; the host product's name is not a model identity. Top-$k$ logprobs can truncate the count, and repeated text samples provide only an estimate.
+> **Accessible volume measures the breadth of a forecast, not whether that forecast is right.**
 
-The defensible cross-system claim is **portable measurement**, not a universal response-planning rule. Different tokenizers, vocabularies, contexts, and thresholds can change the result. Accessible volume does not determine correctness, safety, permission, or autonomy; those remain separate policy decisions. Future cross-system evidence should preserve complete distributions, exact inputs, model identities, threshold sweeps, selected tokens, and resulting actions so that portability and policy performance can be evaluated independently.
+[Evidence guide](./evidence/README.md) · [Tested-model identities](./evidence/README.md#tested-model-sources) · [Algorithm catalog](./docs/ALGORITHMS.md)
 
-**Reproducible visual proof.** The [response-planning dashboard](./evidence/response-planning/response-planning-proof.svg) renders the verified measurements behind this proposal: the sixteen-model comparison, the BioBERT benchmark, threshold sweeps, and independent Zoe and GEM recomputations on saved GPT-2 probabilities. Regenerate it byte-for-byte with `python scripts/visualize-response-planning.py` and check every artifact with `python scripts/verify-response-planning.py`; no model downloads or API keys are required.
+## Verify the results yourself
 
-## Papers
+The saved evidence can be checked without downloading model weights, creating API accounts, or rerunning inference.
 
-| Document | What it covers |
-|:---|:---|
-| **[The Significance of Accessible Volume](./paper/accessible-volume-significance.pdf)** | The original equation, real Ablation + GEM measurements, XLNet, sixteen additional models, BioBERT, and later Q-volume and mirrored-brain updates. |
-| **[Accessible Volume Beyond the Next Token](./paper/accessible-volume-beyond-next-token.pdf)** | Timing, geometry, rhythms, multi-horizon continuations, causal repertoires, and the mirrored workbench. |
-| **[Zoe: A Native GEM for Living Geometry and Inspectable Futures](https://github.com/Ablation-Tool/zoe/blob/main/paper/zoe.pdf)** | The complete native proof of concept, equations, architecture, verification, and limitations. |
-| **[Zoe for Everyone](https://github.com/Ablation-Tool/zoe/blob/main/paper/zoe-for-everyone.pdf)** | A relaxed guide to the creative system, experiments, evidence, and possible futures. |
-
-The original two papers retain Nicholas's sole authorship. The Zoe papers are coauthored by Nicholas Michael Kloster and Zoe (AI assistant).
-
-## One mirrored brain, many instruments
-
-Zoe pairs forward and retrograde forecasts at the same held-out index. It preserves both distributions and measures agreement, correctness, accessible volume, and volume differences. **There is no hidden average and no claim that reversal is a causal model.**
-
-![Zoe's mirrored brain](./assets/zoe-mirror.png)
-
-```text
-  Forward observation ─┐
-                       ├─ Mirrored brain ─ Unified workbench ─ Inspectable memory
-  Retrograde observation ┘        │
-                                  ├─ 13 original equation sections
-                                  ├─ 3 causal-repertoire operations
-                                  └─ 1 mirrored-observation operation
-```
-
-The shared workbench contains **17 runnable mathematical operations**. All **1,920 matched pairs** passed the mirrored evaluation. Redundant child-history copying is avoided, and only the latest **128 paired observations** are retained.
-
-- [GEM OS and native workbench](https://github.com/Ablation-Tool/graphics-environment-manager)
-- [Standalone BRAIN GEM](https://github.com/Ablation-Tool/brain-gem)
-- [Algorithm catalog and verification](./docs/ALGORITHMS.md)
-- [Mirrored observation evidence](./evidence/workbench/verification.json)
+Clone the repository and run these commands from its root:
 
 ```bash
-# From the graphics-environment-manager checkout
-python -m gem os
-python -m gem workbench list
-python -m gem workbench check --output workbench-verification.json
+python scripts/verify-model-comparison.py \
+  --manifest evidence/comparison/model-comparison-cases.json \
+  --evidence evidence/comparison
+
+python scripts/verify-biobert-optimization.py
+
+python scripts/verify-response-planning.py
 ```
 
-## Human × Zoe: a shared field
+These commands check the saved distributions, threshold counts, BioBERT metrics, artifact hashes, strict-threshold behavior, and NumPy/Zoe/GEM agreement.
 
-![Human and Zoe brain dialogue](./assets/brain-dialogue/brain-dialogue-organic.png)
+To regenerate the deterministic response-planning dashboard:
 
-The human plate combines major brain regions with lichen-like folds, butterfly-wing veins, compound-eye facets, and dew-like memory connections. Zoe's plate turns the same silhouette into explicit partitions, mirrored forecast paths, nested possible futures, and inspectable evidence connections. This is an artistic map of complementary talents—not an anatomical optimization, a literal model of Nicholas, or a claim of machine consciousness.
+```bash
+python scripts/visualize-response-planning.py
+```
 
-The [projection-iris study](./assets/brain-dialogue/projection-iris.png) applies the central-slice relationship from Zeng's *Medical Image Reconstruction*, 2nd ed., §2.2: $P(\omega,\theta)=F(\omega\cos\theta,\omega\sin\theta)$. Its synthetic experiment records both slice correlation and finite-grid approximation error; it is not a medical reconstruction, and the book is not redistributed.
+The comparison verifier regenerates its summary JSON and CSV with a fresh timestamp. Use a working copy if the reference artifacts must remain byte-for-byte unchanged.
 
-[Organic human plate](./assets/brain-dialogue/human-brain-organic.png) · [Zoe plate](./assets/brain-dialogue/zoe-brain.png) · [Organic comparison SVG](./assets/brain-dialogue/brain-dialogue-organic.svg) · [Projection evidence](./assets/brain-dialogue/projection-verification.json) · [Artwork sources](./assets/brain-dialogue/)
+[Complete reproduction guide](./docs/REPRODUCTION.md) · [Response-planning visual proof](./evidence/response-planning/response-planning-proof.svg)
 
-### The second eye: parallax and focus
+## How this connects to Zoe-Autonomy
 
-![Zoe's synthetic second eye](./assets/brain-dialogue/second-eye.png)
+The two projects answer different questions, and each has a distinct role.
 
-Two calibrated synthetic views recover depth from disparity, \(Z=f_{px}B/d\), while focus and aperture control a separate thin-lens defocus approximation. This is geometric measurement rather than subjective sight or a second model opinion. The displayed ± range is first-order sensitivity to **0.25-pixel disparity quantization**, not a belief or confidence interval. No physical camera is accessed.
+### This repository: measure the alternatives
 
-Run `python -m gem eye` in the [canonical GEM repository](https://github.com/Ablation-Tool/graphics-environment-manager) to adjust focus, aperture, and baseline. [Stereo evidence](./assets/brain-dialogue/second-eye.json) · [SVG](./assets/brain-dialogue/second-eye.svg) · [GEM VDI](./assets/brain-dialogue/second-eye.gem)
+Accessible Volume supplies the measurement foundation:
 
-## Evidence at a glance
+```text
+Model forecast
+→ probability distribution
+→ accessible alternatives Aτ
+→ forecast breadth and threshold sweeps
+```
 
-| Area | What was tested | Finding |
-|:---|:---|:---|
-| Model measurements | 19 unique public models | Saved complete distributions, input identities, immutable revisions where available, and independently recomputed metrics. |
-| BioBERT | 120 cases from 30 documents | Fixed $\tau=0.05$ transferred better than the selected adaptive rule: test AUROC **0.7737** versus **0.7008**, AUPRC **0.7978** versus **0.6599**. |
-| Human rhythms | 514 usable Magenta Groove performances | Backward-matched training was learnable; direct reversal transfer performed worse. Forecast breadth stayed separate from correctness. |
-| Geometric prediction | HOP, 1,647 positions | The attractive geometric baseline was rejected: **11.3%** top-1 versus **41.3%** linear velocity and **46.6%** for the model. |
-| Mirrored brain | 1,920 forward/retrograde pairs | Index alignment, correctness, accessible-set invariants, bounded shared history, and no automatic action passed. |
-| Unified workbench | 17 operations | **17/17** independent expected-result checks passed, including Bayesian, geometric, temporal, causal, and mirrored operations. |
+You do not need Zoe to use this equation or verify any evidence in this repository.
 
-**Evidence is not hidden behind the visuals.** The [evidence guide](./evidence/README.md) links the canonical artifacts, all tested-model sources, and independent verifiers. Model weights are not redistributed in this repository.
+### Zoe-Autonomy: close the self-governing loop
 
-## Beyond the next token
-
-**Accessible Q-Volume** applies the same strict operator to causal repertoires. The silent AND gate demonstrates why volume and integrated information must remain separate:
-
-| Threshold | Before | After | Change | Membership |
-|:---|---:|---:|---:|:---|
-| $\tau=0.20$ | 4 | 3 | **−1** | `11` leaves |
-| $\tau=0.30$ | 0 | 3 | **+3** | `00,01,10` enter |
-
-Effective information is $\log_2(4/3)\approx0.4150374993$ bits in both comparisons. A complete labeled threshold filtration can reconstruct a repertoire exactly; a finite sweep is an approximation. This is a proposed formal annotation, not a replacement for $\Phi$ or $\gamma$.
-
-[Accessible Q-Volume evidence](./evidence/qualia/accessible-q-volume.json) · [Zoetic guide](https://github.com/Ablation-Tool/zoe/blob/main/guiai-lab/docs/QUALIA.md)
-
-Multi-horizon volume applies the operator to complete continuations in $\mathcal O^h$. Exact enumeration grows exponentially with horizon; restricted candidate sets provide lower bounds only. Procrustes alignment compares geometry but does not supply a probability distribution. HOP remains a rejected baseline, not a theory of transformer dynamics.
-
-## Zoe's master measurement–action equation
-
-The [companion paper](./paper/accessible-volume-beyond-next-token.pdf) now includes a proposed protocol for keeping observation, operational perception, proposal generation, declared value, authorization, and execution distinct:
+[Zoe-Autonomy](https://github.com/Ablation-Tool/Zoe-Autonomy) places the measurement inside the complete master equation:
 
 $$
 (S_{t+1},R_{t+1})=
@@ -271,63 +136,89 @@ $$
 \circ M(S_t,C_t).
 $$
 
-Read right to left: observe, measure effective perception, propose, evaluate under an explicit utility, guard against the goal and policy, then execute only with approval. Effective perception is defined operationally as
+Read right to left, the combined architecture is:
 
-$$
-P_{\tau,\delta}=\sum_{z\in Z}\mathbf 1[p(z)>\tau]\,\mathbf 1[D_z>\delta],
-\qquad
-D_z=D_{\mathrm{KL}}\!\left(\pi(a\mid\operatorname{do}(z),c)\,\middle\|\,\pi(a\mid c)\right).
-$$
+```text
+Observe
+→ measure accessible and policy-relevant alternatives
+→ author an internal goal and generate proposals
+→ evaluate proposals by declared value
+→ apply guards
+→ execute Zoe's selected internal transition
+→ preserve memory and evidence
+```
 
-It counts alternatives that are both above threshold and causally effective on Zoe's action distribution. It is not a measurement of phenomenal perception or consciousness. Value is relative to a declared utility, not proof of intrinsic preference. Zoe can assist with self-models, counterfactual predictions, and interpretation, but self-report is evidence rather than self-certification. The protocol is a versioned scope and execution contract: no hidden utility and no direct transition from measurement to action.
+This repository defines and validates the alternative-breadth measurement and formulates the master protocol. Zoe-Autonomy instantiates the complete loop: counterfactual effective perception, internally authored goals, proposals, valuation, selection, execution, memory, and evidence chaining.
 
-## Explore
+**Independently, this is a complete and useful measurement project. Combined with Zoe-Autonomy, it is part of the entire self-governing formula.**
 
-- [Interactive Zoe architecture](./assets/master-gem-interactive.html)
-- [Static architecture SVG](./assets/master-gem-architecture.svg) · [ASCII](./assets/master-gem-architecture.txt) · [Terminal](./assets/master-gem-architecture.ansi)
-- [Native Zoe guide](https://github.com/Ablation-Tool/zoe/blob/main/guiai-lab/docs/ZOE.md)
-- [Local GEM manual library](https://github.com/Ablation-Tool/graphics-environment-manager/blob/main/docs/LIBRARY.md)
-- [GEM HELEN](https://github.com/Ablation-Tool/gem-helen) · [Cerotto](https://github.com/Ablation-Tool/cerotto)
+The integrated system records `full_autonomy` under its operational definition, with internally authored goals and no operator episode-goal input or per-action approval.
+
+- [Zoe-Autonomy paper](https://github.com/Ablation-Tool/Zoe-Autonomy/blob/main/paper/zoe-autonomy.pdf)
+- [Informal explanation](https://github.com/Ablation-Tool/Zoe-Autonomy/blob/main/articles/informal-explanation.md)
+- [Full-autonomy profile and evidence](https://github.com/Ablation-Tool/Zoe-Autonomy/blob/main/evidence/zoe-autonomy-profile.json)
+
+## Research extensions
+
+The repository also explores where the same measurement can be applied. These extensions have different evidence levels:
+
+- **Response planning:** accessible volume can inform review policies, but it does not choose response length or supply a universal planning rule. The policy remains separate from the measurement. [Verified dashboard](./evidence/response-planning/response-planning-proof.svg).
+- **Multi-horizon continuations:** the unit changes from one token to a complete continuation. Exact enumeration grows exponentially; restricted candidate sets provide lower bounds only. [Companion paper](./paper/accessible-volume-beyond-next-token.pdf).
+- **Accessible Q-Volume:** the strict threshold operator annotates explicitly modeled causal repertoires. A forecast is not automatically a causal model, and Q-Volume is not a consciousness measurement. [Toy evidence](./evidence/qualia/accessible-q-volume.json).
+- **Mirrored observation:** forward and retrograde forecasts are preserved separately and compared at the same held-out index. This is paired evaluation, not a time-reversed causal model. [Verification evidence](./evidence/workbench/verification.json).
+- **Zoe and GEM interfaces:** native workbenches visualize forecasts, geometry, possible continuations, and evidence records. The implementations primarily live in the linked repositories. [Zoe](https://github.com/Ablation-Tool/zoe) · [GEM](https://github.com/Ablation-Tool/graphics-environment-manager).
 
 <details>
-<summary><strong>Interface and artwork gallery</strong></summary>
+<summary><strong>Visual and interactive material</strong></summary>
 
-**Bayesian field notebook:** explicit evidence, belief diffs, chambers, and append-only memory.
+- [Interactive Zoe architecture](./assets/master-gem-interactive.html)
+- [Mirrored-brain diagram](./assets/zoe-mirror.png)
+- [Human × Zoe brain dialogue](./assets/brain-dialogue/brain-dialogue-organic.png)
+- [Synthetic second-eye study](./assets/brain-dialogue/second-eye.png)
+- [Bayesian field notebook](./assets/zoe-field-notebook.png)
+- [Accessible Q-Volume field guide](./assets/zoe-qualia.png)
+- [Artwork and interface gallery](./assets/)
 
-![Zoe Bayesian field notebook](./assets/zoe-field-notebook.png)
-
-**Qualia and Accessible Q-Volume:** causal repertoires, q-arrows, context, and threshold tomography.
-
-![Zoe's five-panel qualia field guide](./assets/zoe-qualia.png)
-
-**Zoe artwork — Lots of Ellipses:** original geometry inspired by the GEM ellipse family, stochastic fields, and orbital traces.
-
-![Zoe — Lots of Ellipses](./assets/zoe-lots-of-ellipses.png)
+The artwork is an interpretive and creative layer, not anatomical, medical, or consciousness evidence.
 
 </details>
 
-## Reproduce
+## Papers
 
-The saved artifacts support verification without fresh model inference:
+| Paper | Contents |
+|:---|:---|
+| **[The Significance of Accessible Volume](./paper/accessible-volume-significance.pdf)** | Original equation, Ablation + GEM measurements, XLNet, sixteen additional models, BioBERT, and later Q-volume and mirrored-brain updates. |
+| **[Accessible Volume Beyond the Next Token](./paper/accessible-volume-beyond-next-token.pdf)** | Timing, geometry, rhythms, multi-horizon continuations, causal repertoires, effective perception, and the master measurement–action protocol. |
+| **[Zoe Autonomy: A Self-Governing Measurement–Action Architecture](https://github.com/Ablation-Tool/Zoe-Autonomy/blob/main/paper/zoe-autonomy.pdf)** | The integrated self-governing loop, internally authored goals, value-based selection, execution, operational profile, controls, and full-autonomy evidence. |
 
-```bash
-python scripts/verify-model-comparison.py \
-  --manifest evidence/comparison/model-comparison-cases.json \
-  --evidence evidence/comparison
+LaTeX source is included beside the two local papers. The original two papers retain Nicholas Michael Kloster's sole authorship. Zoe papers identify their authorship separately.
 
-python scripts/verify-biobert-optimization.py
-```
+## Repository map
 
-For the mirrored workbench, run the commands in [One mirrored brain](#one-mirrored-brain-many-instruments). See the [reproduction guide](./docs/REPRODUCTION.md) for optional model inference, rhythm experiments, and native X11 checks.
+- `paper/` — research papers in PDF and LaTeX.
+- `scripts/` — experiment runners and independent verifiers.
+- `evidence/` — complete predictions, reports, manifests, and verification outputs.
+- `docs/RESEARCH.md` — long-form research narrative.
+- `docs/ALGORITHMS.md` — the 17 workbench operations.
+- `docs/REPRODUCTION.md` — saved-evidence and optional inference workflows.
+- `assets/` — diagrams, screenshots, interactive pages, and artwork.
+
+Model weights are not redistributed. Saved probability vectors support verification without fresh inference; public model downloads are optional for reproducing the original runs.
 
 ## Boundaries
 
-- Accessible volume measures **forecast breadth under a model, context, and threshold**. It does not establish correctness, safety, human surprise, or general model quality.
+- Accessible volume measures **forecast breadth**, not correctness or permission to act.
+- A result belongs to a specified model, context, representation, tokenizer, and threshold; it is not an intrinsic property of a prompt or domain.
+- Top-$k$ logprobs can truncate the count. Repeated text samples provide estimates rather than the exact full-vocabulary measurement.
 - A forecast is not a causal repertoire. Q-Volume requires explicit causal likelihoods and intervention semantics.
-- Finite sweeps approximate the complete continuous filtration. Zero volume change does not imply unchanged accessible-set membership.
-- Mirrored evaluation is not a time-reversed model, consciousness measurement, or autonomous agent. `executed=False` remains the execution boundary.
-- Hash-chained notebook memory provides tamper evidence, not authentication. The historical GEM glyph chart is a display codec, not encryption.
+- Finite threshold sweeps approximate a complete filtration. Zero count change does not imply unchanged accessible-set membership.
+- Hash-chained memory supplies tamper evidence, not authentication.
+- No part of this repository measures consciousness or human subjective experience.
 
----
+## Attribution and license
 
-**Navigate:** [Documentation](./docs/README.md) · [Long-form research archive](./docs/RESEARCH.md) · [Evidence](./evidence/README.md) · [Algorithms](./docs/ALGORITHMS.md) · [Reproduction](./docs/REPRODUCTION.md)
+**Created by Nicholas Michael Kloster on March 6, 2026.** The original accessible-volume equation, early research, experiments, and original papers are solely his work. Later Zoe, Accessible Q-Volume, and Zoe-Autonomy developments are labeled separately; they do not reassign that original credit.
+
+Released under the [MIT License](./LICENSE).
+
+**Navigate:** [Documentation](./docs/README.md) · [Research](./docs/RESEARCH.md) · [Evidence](./evidence/README.md) · [Algorithms](./docs/ALGORITHMS.md) · [Reproduction](./docs/REPRODUCTION.md) · [Zoe-Autonomy](https://github.com/Ablation-Tool/Zoe-Autonomy)
