@@ -189,7 +189,7 @@ The artwork is an interpretive and creative layer, not anatomical, medical, or c
 
 | Paper | Contents |
 |:---|:---|
-| **[Accessible Volume and the Architecture of Autonomy](./paper/accessible-volume-zoe-autonomy-complete.pdf)** | The 73-page unified monograph: seven source papers, mathematical corrections, empirical evidence, safety trajectories, Zoe architecture, self-governance, extended instruments, reproduction, and provenance. [LaTeX source](./paper/unified/main.tex). |
+| **[Accessible Volume and the Architecture of Autonomy](./paper/accessible-volume-zoe-autonomy-complete.pdf)** | The 76-page unified monograph: seven primary source papers, four supplemental cascade/AFL documents, mathematical corrections, empirical evidence, cascade visualization, Zoe architecture, self-governance, extended instruments, reproduction, and provenance. [LaTeX source](./paper/unified/main.tex). |
 | **[Autonomy as a Scalar Measure of Alignment Constraint](./paper/autonomy-march-2026.pdf)** | Original March 2026 historical formulation, preserved with LaTeX source. |
 | **[Ambiguity, Autonomy, and the Autoregressive Compliance Cascade](./paper/ambiguity-autonomy-compliance-cascade.pdf)** | Historical AFL/compliance-cascade disclosure and retrospective case; contains live-system details. |
 | **[Constraint Is Freedom](./paper/constraint-is-freedom.pdf)** | Historical NuClide paper on threshold geometry, functional constraint, cascade seed cost, and trajectory monitoring. |

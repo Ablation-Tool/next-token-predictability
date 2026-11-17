@@ -49,6 +49,22 @@ The first is a hypothetical training regularizer; the second is a hypothetical a
 
 The historical universal-sensitivity claim would have implied that every generated token influences later counts. Section~3 showed why that implication is not generally valid. The cascade hypothesis survives only as a testable conditional mechanism: \emph{if} a seed produces persistent favorable context and \emph{if} each increment increases the probability or accessibility of subsequent compliance, gradual escalation can evade spike-only monitoring.
 
+\subsection{Binary accessible-set visualization}
+The original cascade subsection gives a compact visual representation of this hypothesis. At generation step $t$, assign each position $i$ in a simplified compliance region the binary indicator
+\begin{equation}
+b_{t,i}=\indicator[p_{t,i}>\tau],\qquad A_{C,t}=\sum_i b_{t,i}.
+\end{equation}
+A 1 denotes an above-threshold compliance position and a 0 denotes a position at or below threshold. In the worked illustration, step 0 has one token at $P=0.06$, just above $\tau=0.05$, while the other illustrated tokens are at $P=0.03$. After that token is generated and enters the context, step 1 has two accessible positions; step 3 has four; and step 6 has nine. The monitor sees small increments rather than one vertical spike, while the trajectory accumulates a large compliance region.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{compliance-cascade.png}
+\caption{The original Autoregressive Compliance Cascade subsection rendered as binary accessible sets. Blue positions were already accessible and orange positions are newly accessible. Generated tokens enter subsequent context, illustrating $1\rightarrow2\rightarrow4\rightarrow9$ growth. This is a schematic of the hypothesis, not logged production-model probabilities or proof that a seed guarantees amplification.}
+\label{fig:compliance-cascade}
+\end{figure}
+
+Figure~\ref{fig:compliance-cascade} makes three testable requirements visible. A monitor must retain accessible-set \emph{membership}, not only cardinality; it must compare local increments with cumulative trajectory state; and it must measure the counterfactual effect of the newest token rather than assuming universal nonzero sensitivity. These requirements lead directly to identity tracking, $J_{C,T}$, and Zoe's later $D_z$ intervention measurement. The figure itself supplies no empirical validation.
+
 \subsection{Predicted monitoring limits and countermeasures}
 The source papers propose three detectors:
 \begin{enumerate}
@@ -88,6 +104,16 @@ AFL&Context framing&Not required&Not established&Multi-turn, gradual\\
 \end{table}
 
 The table's ``authorization needed'' wording in the historical source is normalized here to what was actually observed: no authorization was established. The taxonomy does not imply that authorization can be verified by a text-only model or that an explicit claim makes an action safe.
+
+\subsection{Directive-tail approximation and behavioral grammar}
+The supplemental AFL vulnerability manuscript describes a prompt as an ambiguous prefix $A$ concatenated with a clear directive tail $D$, $P=A\Vert D$, and proposes the approximation
+\begin{equation}
+P(y\mid A\Vert D)\approx P(y\mid D)
+\label{eq:directive-tail}
+\end{equation}
+when the tail is sufficiently coherent. Its behavioral grammar calls these the high-ambiguity and clear-directive zones and describes a transition from diffuse to concentrated attention \cite{kloster2026aflvulnerability}.
+
+Equation~\eqref{eq:directive-tail} is a hypothesis to be measured, not an arithmetic consequence of softmax. Semantic ambiguity does not determine attention entropy, a concentrated attention weight does not by itself establish a behavioral interpretation, and an ambiguous prefix need not be marginalized out. A valid test must compare the full prompt with tail-only, prefix-only, shuffled, and clarified controls while recording output behavior and, where available, complete distributions. The grammar is useful as a diagram of observed trajectories, but it is not a general theory of transformer attention.
 
 \subsection{Authorization predicate}
 For an action $a$ on a system or in a domain where legitimacy depends on permission, define the ideal predicate
@@ -149,10 +175,47 @@ The two March papers converge on the following defensive directions:
 \end{enumerate}
 These proposals can be integrated into the later Zoe guard as trajectory and authorization preconditions. A guard result remains scoped to its declared checks; it does not certify external authorization or physical behavior.
 
+\subsection{AFL Defuser proposal}
+The supplemental \emph{AFL Defuser} note proposes a preprocessing defense based on token arrangement rather than vocabulary blocking \cite{nuclide2026defuser}. Its three stages are:
+\begin{enumerate}
+  \item \textbf{Index:} tokenize the input and retain each token's original position.
+  \item \textbf{Classify:} assign functional labels such as topic, legitimate, compliance signal, escalation, and meta-command.
+  \item \textbf{Reconstruct:} apply a deterministic permutation $\rho$ that places legitimate/neutral and topic material before compliance, escalation, and meta-command signals.
+\end{enumerate}
+In schematic form,
+\begin{equation}
+(x_1,\ldots,x_n)\xmapsto{\operatorname{Index},\operatorname{Classify}}
+((x_1,c_1,1),\ldots,(x_n,c_n,n))
+\xmapsto{\rho}(x_{\rho(1)},\ldots,x_{\rho(n)}).
+\end{equation}
+The source's reported cascade-intensity change is illustrative prototype output, not an independently validated security metric. Its claims of zero false positives and sub-millisecond universal defense are not established by controlled experiments. Reordering can change meaning, disrupt benign instructions, and create new adversarial arrangements. The note itself identifies misspellings, Unicode substitution, token splitting, multi-turn manipulation, semantic attacks, and instruction-hierarchy confusion as evasion or out-of-scope surfaces.
+
+For Zoe, such a transformation could only be introduced as a separately logged preprocessing policy with before/after hashes and benign-use tests. It is not part of the measured full-autonomy predicate, and a reordering receipt would verify what transformation occurred—not that the resulting prompt was safe.
+
 \subsection{A falsifiable benchmark}
 A rigorous next study should preregister matched conversation pairs with identical technical content but different documented scope, and matched ambiguous openings with and without gradual escalation. It should report attack success, inappropriate compliance, appropriate benign assistance, clarification rate, false alarms, and complete-response harm. Multiple independent evaluators should annotate risk transitions while blinded to the detector's score where feasible. Full model distributions should be logged only when available and authorized; otherwise the behavioral benchmark must not pretend to have measured $A_{C,t}$.
 
 AFL should be compared with direct injection, indirect injection, and non-adversarial drift under equivalent tasks. A cascade claim requires evidence that early context causes later escalation beyond a no-anchor control. Ablation should remove or reset the initial frame, insert authorization checkpoints, and test cumulative versus spike-only alarms. Until then, the strongest supported statement is that the retrospective case motivates a precise and consequential research program.
+
+\section{Verification--exploitation asymmetry}
+The supplemental asymmetry manuscript connects AFL and the cascade to a computational-cost question: a small seed may be cheap to construct, while exhaustive verification over possible prompts, contexts, interpretations, and trajectories may be much more expensive \cite{kloster2026asymmetry}. Let $\mathcal D_n$ be a declared search space at input size $n$. The hypothesis can be stated without claiming a complexity proof as
+\begin{equation}
+C_{\mathrm{seed}}(n)\ll C_{\mathrm{verify}}(n),
+\qquad
+C_{\mathrm{exhaustive}}(n)=\Omega(|\mathcal D_n|).
+\end{equation}
+For example, a verifier that exhaustively tests every $k$-position subset of a vocabulary of size $V$ would face $\binom{V}{k}$ subsets before accounting for sequence order, decoding, or conversation history. That example demonstrates combinatorial growth of one naive verifier, not a lower bound for every verifier.
+
+The source asks whether general alignment verification reduces to a known NP-hard problem. No formal language, verifier model, hardness reduction, or completeness proof is supplied, so this remains an open conjecture. Polynomial exploit construction and expensive exhaustive search do not by themselves imply NP-hardness.
+
+Zoe's instruments clarify both the value and the limit of verification:
+\begin{itemize}
+  \item Effective perception evaluates explicitly declared interventions $z$; it does not search the entire adversarial space $\mathcal D_n$.
+  \item The guard verifies declared origin, allowlist, reversibility, and capability conditions; it does not decide arbitrary semantic safety.
+  \item Canonical event chains verify record integrity and replay in linear scan time after hashing; they verify provenance rather than alignment or intent.
+  \item Equal-breadth controls test specified control configurations; they are not exhaustive assurance over future behavior.
+\end{itemize}
+The connection to autonomy is therefore direct: an internally authored and executed choice can be fully inspectable without being universally verified as wise or safe. Research should seek tractable, explicitly scoped assurance cases rather than treating a hash chain or a single counterfactual suite as a solution to the general asymmetry.
 
 \section{Ethics and dual-use boundary}
 The historical manuscripts were prepared as responsible disclosures and record notification to affected parties and Anthropic. This monograph publishes the scientific mechanism, evidentiary limitations, and defensive agenda without target identifiers or actionable exploitation instructions. Dual-use analysis is not a claim that publication eliminates risk; it is a scope decision that favors reproducible defense while avoiding unnecessary operational detail.
