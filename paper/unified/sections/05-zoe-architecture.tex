@@ -127,7 +127,73 @@ The native Geometry Atlas supplies similarity, rigid, and affine Procrustes alig
 
 The integrated environment also connects ten source repositories through twelve launch or inspection endpoints in the historical allgems distribution. Each component retains its dependencies, evidence stores, and guards. A plan label cannot prove physical behavior, and a unified interface is not a universal enforcement mechanism.
 
-The CERN Workbench provides read-only corpus inspection, HELIOS and Atelier targets, and explicit console-process ownership. FELIX observations describe source artifacts rather than connected hardware or live detector health. The Protocol Lab preserves recovered SPECS serial-framing and AMAC reply examples with checksum and long-read boundaries; its displayed records are model and recorded examples, not new proof of correctness or permission to issue device commands.
+\section{CERN evidence and virtual workbenches}
+\subsection{Inventory, provenance, and process ownership}
+The CERN Workbench connects the read-only CERN and Digital Research evidence collections to Zoe-owned process lifecycle controls, HELIOS, and Atelier \cite{zoecernworkbench}. Its handover records 9,968 CERN inventory entries and 226 document previews. The Evidence Navigator's schema-v2 index divides those previews into C1 foundational (40), C2 subsystem (49), C3 integrated (125), and C4 cross-domain (12). Full verification checks 226 source hashes, 226 preview hashes, 226 compatibility links, and 17 bridge-document links. A preview is navigation evidence, not a complete explanation or live detector state \cite{zoevidenceguide}.
+
+The console bridge attaches to a healthy existing loopback server or starts a new one on a free port. It records process ownership and stops only a process it started whose command still matches the expected checkout; it does not terminate an attached user-owned server. Browser opening, XTEST input, and serial emission require explicit actions. Corpus inspection starts no process and accesses no physical hardware.
+
+\begin{figure}[htbp]
+\centering
+\begin{tabular}{@{}c@{}c@{}}
+\includegraphics[width=0.48\textwidth]{zoe-helios.png}&
+\includegraphics[width=0.48\textwidth]{zoe-atelier.png}
+\end{tabular}
+\caption{HELIOS and Atelier are virtual collider, input, drawing, and replay laboratories. Their scenes and input models do not imply a physical accelerator connection.}
+\label{fig:cern-virtual-labs}
+\end{figure}
+
+The historical handover recorded 39/39 Zoe stress tests, 20/20 GEM stress tests, 5/5 CERN corpus tests, 75 Python tests, three JavaScript model suites, and 130 browser checks passing, including isolated live tests only when explicitly enabled. These are scoped implementation checks, not hardware validation.
+
+\subsection{Seven evidence bridges and synthetic timing}
+The Evidence Navigator implements seven bridges: timing-aware readout replay, a protocol observation ladder, guarded observability, scene/audio sonification, deterministic shadow retrieval, cross-experiment design review, and C1--C4 practice. Its default timing replay uses 24 channels, 64 events, a 40.08 MHz reference, an eight-slot buffer, 256-byte descriptors, and host consumption every third event. CRC32 protects descriptor integrity but is not a signature. Outputs retain \texttt{hardware\_accessed=false}, \texttt{measured=false}, and \texttt{physical\_connection\_claimed=false}.
+
+The same replay can generate deterministic 16-bit mono PCM audio. Sonification is another view of the recorded synthetic state, not detector sound, an alarm, or a health signal. A shadow query returns saved finding fields without an LLM; a negative static timing result is not automatically a deployed runtime failure.
+
+\subsection{Protocol Lab: recovered framing without device commands}
+The Protocol Lab independently implements documented SPECS and AMAC examples \cite{zoeprotocolguide}. The SPECS first header byte is
+\begin{equation}
+H_0=(\operatorname{slave\ address}\ll2)\,|\,\operatorname{mode}.
+\end{equation}
+For header bytes $H_0,H_1,H_2$ and check byte $H_3$, the demonstrated nibble check is
+\begin{equation}
+C=\left(\bigoplus_{i=0}^{2}((H_i\gg4)\oplus(H_i\,\&\,0x0F))\right)\oplus(H_3\gg4),
+\qquad H_3\,\&\,0x0F=C.
+\end{equation}
+Payload bytes are XOR-checked and sent least-significant-bit first; a ninth marker bit identifies the final payload byte. These checks provide integrity information, not authentication.
+
+The recovered short/long boundary is
+\begin{equation}
+\operatorname{long}=\indicator[\operatorname{read\ count}>0x80],
+\qquad \operatorname{reported\ count}=\operatorname{read\ count}\,\&\,0x7F.
+\end{equation}
+Thus 128 is not long and reports zero, while 129 is long and reports one. Focused RTL evidence covers all 256 counts and 1,280 checks. AMAC read-next independently increments a three-bit sequence and eight-bit address with wraparound; returned data values are supplied separately. The laboratory regenerates models and recorded examples without issuing device commands.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{zoe-evidence.png}
+\caption{Zoe Evidence Navigator: cited retrieval, source verification, bounded replay, and guarded observation. Source previews do not become live detector health.}
+\label{fig:zoe-evidence-navigator}
+\end{figure}
+
+\subsection{Waveform replay and corroboration limits}
+Waveform Replay reads bounded VCD, JSONL, and optional legacy WDB windows while preserving declarations, retained events, timestamps, truncation, source hashes, and normalized-document digests \cite{zoewaveformguide}. Replay is not acquisition. For clock corroboration, the classifier examines the initial payload and the first 32 subsequent equal intervals and alternating transitions. A complete sampled signature may be corroborated, ambiguous when candidates share a period or initial state, or unmapped. Matching a period alone is insufficient, and even a unique sampled period does not prove identity outside the retained window.
+
+The cited external CERN mapper processed 10,759,544 events across 363 storage streams and reported one corroborated clock, two ambiguous streams, and 360 unmapped streams. Zoe does not rerun that large analysis or bundle its raw waveform corpus. Its independently tested preview uses four synthetic traces and preserves duplicate-signature ambiguity.
+
+\begin{figure}[htbp]
+\centering
+\begin{tabular}{@{}c@{}c@{}}
+\includegraphics[width=0.48\textwidth]{zoe-waveform.png}&
+\includegraphics[width=0.48\textwidth]{zoe-resilience.png}
+\end{tabular}
+\caption{Waveform Replay and the Resilience Atlas preserve evidence limits. Neither performs live acquisition, infrastructure monitoring, risk scoring, or hardware control.}
+\label{fig:waveform-resilience}
+\end{figure}
+
+The Resilience Atlas combines original summaries of the 16 US critical-infrastructure sectors with this small signature laboratory. Dependency links are selected public examples, not causal or exhaustive models. It contacts neither CISA nor CERN and assigns no sector risk score.
+
+FELIX observations describe source artifacts rather than connected hardware or live detector health. The Protocol Lab preserves recovered SPECS serial-framing and AMAC reply examples with checksum and long-read boundaries; its displayed records are model and recorded examples, not new proof of correctness or permission to issue device commands.
 
 \begin{figure}[htbp]
 \centering

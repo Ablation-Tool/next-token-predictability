@@ -254,5 +254,64 @@ The native default example reproduces its declared matrix and near-zero landmark
 \label{fig:geometry-atlas}
 \end{figure}
 
+\section{Dorothy and Neurogarden}
+\subsection{Preclinical atlas geometry and memorial scope}
+Dorothy is Zoe's spatial scientific-research priority: an inspectable workbench supporting a long-term brain-cancer research mission rather than a diagnostic or treatment system. The atlas is named in memorial for Dorothy McEwen Kildall; that dedication is not a source of patient anatomy. Its default geometry is the Allen Mouse CCFv3 2017 whole-brain parcellation \cite{wang2020allen}: 12 selected structures, 158,326 vertices, and 315,932 triangles, with source meshes and the structure graph hash-checked on every load.
+
+The deterministic renderer supplies near-plane clipping, two-sided flat shading, painter-order display, and SVG/PNG/GEM VDI export. Dorothy Rings uses exact CCF subtree volumes for ontology drill-down; Jenga uses volume-scaled layers and exploded/pull-out layouts; Stack cuts actual meshes into exploded coronal slabs. These are alternative geometric views of the same preclinical reference data, not functional connectivity, patient registration, surgical planning, or a claim that mouse anatomy transfers to a person.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{dorothy-ccf2017.png}
+\caption{Dorothy's deterministic Allen Mouse CCFv3 atlas rendering. The twelve displayed structures are preclinical reference geometry, not patient imaging or diagnostic evidence.}
+\label{fig:dorothy-atlas}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\begin{tabular}{@{}c@{}c@{}}
+\includegraphics[width=0.48\textwidth]{dorothy-rings-isocortex.png}&
+\includegraphics[width=0.48\textwidth]{dorothy-jenga-exploded.png}
+\end{tabular}
+\caption{Dorothy Rings and Jenga expose ontology volume and spatial layout without asserting functional or clinical relationships.}
+\label{fig:dorothy-layouts}
+\end{figure}
+
+\subsection{Source-linked Neurogarden review}
+Neurogarden connects Dorothy, agent oversight, synthetic teaching models, and a cited research library. Its review state distinguishes \texttt{cataloged}, \texttt{extracted}, and \texttt{reviewed}; extraction and keyword indexing are not comprehension. A review requires source hashes, concepts, applications, limitations, and either a demonstrated bounded use or an explicit no-tool rationale. Duplicate JSON keys and conflicting use/no-tool states are rejected. Clinical references enter human review and do not authorize action.
+
+At the November 14 source state, the corpus contained 37 populated books, 1,751 indexed sections, 130 reviewed entries, and 1,621 pending entries. The current v62 evidence preserves source hashes and bounded snippets rather than republishing books. Sixty-two focused Neurogarden tests and three C99 legacy suites were recorded as passing; these verify the exercised software, not medical validity.
+
+Representative teaching instruments include bounded Needleman--Wunsch global alignment. For match/mismatch score $s(a_i,b_j)$ and gap penalty $g$,
+\begin{equation}
+D_{i,j}=\max\begin{cases}
+D_{i-1,j-1}+s(a_i,b_j),\\
+D_{i-1,j}+g,\\
+D_{i,j-1}+g,
+\end{cases}
+\end{equation}
+with first row and column initialized by cumulative gap penalties. The implementation reproduces the reviewed example's score four and seven optimal paths while bounding sequence length and retained paths. An alignment score is not a species, identity, or clinical conclusion.
+
+For imaging sampling, the educational ratio
+\begin{equation}
+N_{\mathrm{FWHM}}=\frac{\mathrm{FWHM}}{\Delta x}
+\end{equation}
+compares point-spread-function width with voxel spacing; finer sampling cannot create detail the imaging system did not capture. For a linear shift-invariant Gaussian teaching model, the modulation transfer function is
+\begin{equation}
+\operatorname{MTF}(k)=e^{-2\pi^2\sigma^2k^2},
+\end{equation}
+showing high-frequency suppression under blur without supplying scanner calibration. The spatial bench uses synthetic volumes up to $16^3$ voxels, separable Gaussian convolution, projections, pooling, and recovery coefficients. It does not register Dorothy to a patient.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{neurogarden-spatial.png}
+\caption{Neurogarden's synthetic point-spread and projection bench. The image is an educational numerical scene, not anatomical or clinical data.}
+\label{fig:neurogarden-spatial}
+\end{figure}
+
+The research record also preserves negative and contradictory source findings: incorrect specificity denominators, inconsistent MRI figure/table counts, swapped retinal plots, undefined SSIM scales, incomplete optimizer equations, missing patient-level splits, and unavailable raw predictions. Bounded arithmetic audits check printed values without training a model or converting secondary claims into clinical evidence. The complete current corpus index, reviews, and focused audits are included in the research collection.
+
+Dorothy therefore extends Zoe's autonomy theme in a deliberately limited direction: a system can inspect geometry, preserve provenance, and propose research without acquiring diagnostic authority. Measurement remains distinct from evidence, belief, and action.
+
 \section{Why the extended instruments matter}
 These modules demonstrate a reusable research discipline: define the probability or state space, expose the equation, bound enumeration, preserve negative results, separate observation from authorization, and replay state transitions. Tetris supplies a nontrivial exact multi-horizon distribution; Pentacube supplies reversible transition arithmetic; the Internal Clock supplies state-responsive but non-autonomous timing; Halo preserves a failed spectral baseline; stereo and projection expose approximation error; EKF makes dynamics an external assumption. They are therefore methodological context for Zoe Autonomy, not additional dimensions in its full-autonomy predicate.
