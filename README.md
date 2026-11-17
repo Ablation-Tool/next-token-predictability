@@ -22,18 +22,22 @@ Tokens exactly at $\tau$ are **excluded**. For probabilities $[0.70,0.20,0.08,0.
 
 Accessible volume is useful because two forecasts can select the same token while leaving very different sets of alternatives open. It complements correctness, entropy, calibration, and human judgment rather than replacing them.
 
-[Original equation and research](./docs/RESEARCH.md#the-equation) · [Normalized and adaptive forms](./docs/RESEARCH.md#the-equation) · [Evidence guide](./evidence/README.md)
+[Original equation and research](./docs/RESEARCH.md#the-equation) · [Normalized and adaptive forms](./docs/RESEARCH.md#the-equation) · [Autonomy analysis](./docs/AUTONOMY.md) · [Evidence guide](./evidence/README.md)
 
 ## Papers
 
 | Document | What it covers |
 |:---|:---|
-| **[The Significance of Accessible Volume](./paper/accessible-volume-significance.pdf)** | The original equation, real Ablation + GEM measurements, XLNet, sixteen additional models, BioBERT, and later Q-volume and mirrored-brain updates. |
+| **[Accessible Volume and the Architecture of Autonomy](./paper/accessible-volume-zoe-autonomy-complete.pdf)** | The finalized 84-page unified monograph: seven primary source papers, four supplemental cascade/AFL documents, mathematical corrections, language-model and rhythm evidence, cascade visualization, Zoe architecture, the self-governing experiment, extended Zoe equations, reproduction, and evidence identities. [LaTeX source](./paper/unified/main.tex). |
+| **[Autonomy as a Scalar Measure of Alignment Constraint](./paper/autonomy-march-2026.pdf)** | The original March 2026 formulation: thresholded output-space volume, hidden-state composition, smooth approximation, decomposition, and proposed alignment applications. Preserved as a historical research source. |
+| **[The Significance of Accessible Volume](./paper/accessible-volume-significance.pdf)** | The original equation, real Ablation + GEM measurements, XLNet, sixteen additional models, BioBERT, the integrated Zoe native chapter and complete proof-of-concept package, Q-volume, mirrored forecasts, and the Zoe audit. |
 | **[Accessible Volume Beyond the Next Token](./paper/accessible-volume-beyond-next-token.pdf)** | Timing, geometry, rhythms, multi-horizon continuations, causal repertoires, and the mirrored workbench. |
+| **[Ambiguity, Autonomy, and the Autoregressive Compliance Cascade](./paper/ambiguity-autonomy-compliance-cascade.pdf)** | The March 2026 unified disclosure: Ambiguity Front-Loading, context anchoring, the proposed compliance cascade, and a retrospective production-model case study. The historical PDF contains live-system details and is evidence of one case, not controlled validation. |
+| **[Constraint Is Freedom](./paper/constraint-is-freedom.pdf)** | The March 2026 NuClide paper on threshold geometry, functional constraint, cascade seed cost, trajectory-integral monitoring, and sonification. Its interpretive claims are reconciled with later counterexamples in the autonomy analysis. |
 | **[Zoe: A Native GEM for Living Geometry and Inspectable Futures](https://github.com/Ablation-Tool/zoe/blob/main/paper/zoe.pdf)** | The complete native proof of concept, equations, architecture, verification, and limitations. |
 | **[Zoe for Everyone](https://github.com/Ablation-Tool/zoe/blob/main/paper/zoe-for-everyone.pdf)** | A relaxed guide to the creative system, experiments, evidence, and possible futures. |
 
-The original two papers retain Nicholas's sole authorship. The Zoe papers are coauthored by Nicholas Michael Kloster and Zoe (AI assistant).
+The original Autonomy formulation, accessible-volume equation, experiments, and two accessible-volume papers retain Nicholas's sole authorship. *Constraint Is Freedom* is credited to NuClide—Nick + Claude, and the Zoe papers to Nicholas Michael Kloster and Zoe (AI assistant). The historical Autonomy, Ambiguity, and Constraint documents contain early theoretical claims; later [autonomy analysis](./docs/AUTONOMY.md) distinguishes accessible volume from self-government and the later Zoe Autonomy experiment supplies an explicit operational control loop.
 
 ## One mirrored brain, many instruments
 
@@ -94,6 +98,18 @@ Run `python -m gem eye` in the [canonical GEM repository](https://github.com/Abl
 | Unified workbench | 17 operations | **17/17** independent expected-result checks passed, including Bayesian, geometric, temporal, causal, and mirrored operations. |
 
 **Evidence is not hidden behind the visuals.** The [evidence guide](./evidence/README.md) links the canonical artifacts, all tested-model sources, and independent verifiers. Model weights are not redistributed in this repository.
+
+## Zoe repository audit — November 7, 2026
+
+The [read-only audit](./evidence/zoe-audit/report.json) examined [Zoe revision `8fcdcfe4`](https://github.com/Ablation-Tool/zoe/commit/8fcdcfe49959761f87c746e808c168a1100a9707), the integrated source inventory, evidence chain, documentation, and focused runtime behavior. It did not download models, perform fresh inference, execute firmware plans, or contact hardware.
+
+- Both Zoe implementations preserve the strict $p>\tau$ equation and exclude equality.
+- All 16 comparison distributions and all 120 BioBERT cases independently verify.
+- The 403-file research snapshot matched byte-for-byte before this paper update; the 23-event knowledge chain rehashes and reloads correctly.
+- A focused run passed 23 tests with one native-only skip, including real commands for eight component entrypoints.
+- An isolated native test failed because its assertion still expects 11 links after the implementation intentionally adds a declared source link and produces 12. This remains an open test-maintenance finding, not evidence or permission transfer.
+
+The report also records the absent root-level CI workflow, the comparison verifier's summary-rewriting side effect, two documentation inconsistencies, and the untagged PDF. These are engineering follow-ups, not changes to the numerical results. The [audit script](./scripts/audit-zoe.py), [headless/component log](./evidence/zoe-audit/headless-and-components.txt), and [isolated native log](./evidence/zoe-audit/native-unified.txt) are preserved and embedded in the updated primary paper.
 
 ## Beyond the next token
 
@@ -171,7 +187,15 @@ python scripts/verify-model-comparison.py \
 python scripts/verify-biobert-optimization.py
 ```
 
-For the mirrored workbench, run the commands in [One mirrored brain](#one-mirrored-brain-many-instruments). See the [reproduction guide](./docs/REPRODUCTION.md) for optional model inference, rhythm experiments, and native X11 checks.
+The comparison verifier regenerates the summary JSON and CSV, including a fresh timestamp. Use a working copy when the reference artifacts must remain byte-for-byte unchanged. The BioBERT verifier does not write its evidence.
+
+Run the read-only Zoe audit against a checkout and write its report to a new path:
+
+```bash
+python scripts/audit-zoe.py --zoe-root /path/to/zoe --output zoe-audit.json
+```
+
+For the mirrored workbench, run the commands in [One mirrored brain](#one-mirrored-brain-many-instruments). See the [reproduction guide](./docs/REPRODUCTION.md) for the complete audit command, preserved test logs, optional model inference, rhythm experiments, and native X11 checks.
 
 ## Boundaries
 

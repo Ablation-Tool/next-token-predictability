@@ -11,6 +11,8 @@ These are the canonical artifacts for the current paper and reproduction procedu
 - [Sixteen-model comparison summary](./comparison/model-comparison-summary.json) and [frozen case manifest](./comparison/model-comparison-cases.json).
 - [BioBERT optimization results](./biobert-optimization/optimization.json), [per-case scores](./biobert-optimization/optimization-scores.csv), and [frozen cases](./biobert-optimization/cases.json).
 - [Current paper](../paper/accessible-volume-significance.pdf) and [LaTeX source](../paper/accessible-volume-significance.tex).
+- [Zoe repository audit](./zoe-audit/report.json), [read-only audit script](../scripts/audit-zoe.py), and focused [headless/component](./zoe-audit/headless-and-components.txt) and [native](./zoe-audit/native-unified.txt) logs. This is point-in-time engineering evidence for Zoe revision `8fcdcfe4`, not a new model measurement or an all-pass claim.
+- [Zoe integration provenance](./zoe-integration/provenance.json), the complete [Zoe proof of concept](./zoe-integration/zoe.pdf), core source, and worked memory artifacts. These later Zoe materials preserve their own authorship and historical verification scope; they do not reassign credit for the original accessible-volume equation or papers.
 
 ## Historical research context
 
