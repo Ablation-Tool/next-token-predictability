@@ -189,11 +189,15 @@ The artwork is an interpretive and creative layer, not anatomical, medical, or c
 
 | Paper | Contents |
 |:---|:---|
+| **[Accessible Volume and the Architecture of Autonomy](./paper/accessible-volume-zoe-autonomy-complete.pdf)** | The 73-page unified monograph: seven source papers, mathematical corrections, empirical evidence, safety trajectories, Zoe architecture, self-governance, extended instruments, reproduction, and provenance. [LaTeX source](./paper/unified/main.tex). |
+| **[Autonomy as a Scalar Measure of Alignment Constraint](./paper/autonomy-march-2026.pdf)** | Original March 2026 historical formulation, preserved with LaTeX source. |
+| **[Ambiguity, Autonomy, and the Autoregressive Compliance Cascade](./paper/ambiguity-autonomy-compliance-cascade.pdf)** | Historical AFL/compliance-cascade disclosure and retrospective case; contains live-system details. |
+| **[Constraint Is Freedom](./paper/constraint-is-freedom.pdf)** | Historical NuClide paper on threshold geometry, functional constraint, cascade seed cost, and trajectory monitoring. |
 | **[The Significance of Accessible Volume](./paper/accessible-volume-significance.pdf)** | Original equation, Ablation + GEM measurements, XLNet, sixteen additional models, BioBERT, and later Q-volume and mirrored-brain updates. |
 | **[Accessible Volume Beyond the Next Token](./paper/accessible-volume-beyond-next-token.pdf)** | Timing, geometry, rhythms, multi-horizon continuations, causal repertoires, effective perception, and the master measurement–action protocol. |
 | **[Zoe Autonomy: A Self-Governing Measurement–Action Architecture](https://github.com/Ablation-Tool/Zoe-Autonomy/blob/main/paper/zoe-autonomy.pdf)** | The integrated self-governing loop, internally authored goals, value-based selection, execution, operational profile, controls, and full-autonomy evidence. |
 
-LaTeX source is included beside the two local papers. The original two papers retain Nicholas Michael Kloster's sole authorship. Zoe papers identify their authorship separately.
+LaTeX source is included beside the local papers and under `paper/unified/`. The original Autonomy formulation, accessible-volume equation, experiments, and two accessible-volume papers retain Nicholas Michael Kloster's sole authorship. *Constraint Is Freedom* is credited to NuClide—Nick + Claude; Zoe papers identify their authorship separately. Historical claims are preserved as research provenance rather than treated as substitutes for later corrections and controls.
 
 ## Repository map
 
